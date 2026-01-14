@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Interactivo - Desarrollo Personal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4ade80;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .phase {
+            display: none;
+        }
+
+        .phase.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question {
+            margin-bottom: 30px;
+        }
+
+        .question h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .question p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        .summary-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .summary-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .activity-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .activity-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .activity-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .activity-card h5 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .activity-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .phase-indicator {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .timeline {
+            margin: 30px 0;
+        }
+
+        .timeline-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #667eea;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .timeline-item h5 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .category-select {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Tu Viaje de Transformación Personal</h1>
+            <p>Tutorial Interactivo para Desarrollo Auténtico</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- FASE 0: BIENVENIDA -->
+            <div class="phase active" id="phase0">
+                <div class="phase-indicator">BIENVENIDA</div>
+                <h2>¡Hola! Comencemos tu transformación 🌟</h2>
+                <p>Este tutorial te guiará paso a paso para convertirte en tu mejor versión. No se trata de "trucos" o manipulación, sino de desarrollo genuino que naturalmente atrae a las personas correctas.</p>
+                
+                <div class="alert alert-info">
+                    <strong>Importante:</strong> Este proceso toma tiempo. Los cambios reales requieren 8-12 semanas mínimo. ¿Estás listo/a para comprometerte?
+                </div>
+
+                <h3>¿Qué lograrás con este tutorial?</h3>
+                <ul style="line-height: 2; margin: 20px 0 20px 30px;">
+                    <li>Desarrollar tu vida independiente y rica</li>
+                    <li>Generar interés genuino de forma natural</li>
+                    <li>Mejorar tu autoestima y confianza</li>
+                    <li>Crear un equilibrio saludable en relaciones</li>
+                    <li>Convertirte en alguien naturalmente atractivo</li>
+                </ul>
+
+                <button class="btn-primary" onclick="nextPhase()">Comenzar mi transformación</button>
+            </div>
+
+            <!-- FASE 1: EVALUACIÓN INICIAL -->
+            <div class="phase" id="phase1">
+                <div class="phase-indicator">FASE 1: CONOCIENDO TU SITUACIÓN ACTUAL</div>
+                <h2>Evaluación Inicial 📊</h2>
+                <p>Primero necesitamos entender dónde estás ahora. Sé completamente honesto/a - nadie más verá esto.</p>
+
+                <div class="question">
+                    <h3>1. ¿Cuál es tu situación actual con la persona que te interesa?</h3>
+                    <select id="situacion" onchange="saveData('situacion', this.value)">
+                        <option value="">Selecciona una opción...</option>
+                        <option value="no_interesa">No me conoce o apenas me conoce</option>
+                        <option value="amigos">Somos amigos/conocidos</option>
+                        <option value="saliendo">Estamos saliendo casualmente</option>
+                        <option value="no_reciproco">Le intereso pero no estoy seguro/a de reciprocidad</option>
+                        <option value="rechazo">Me rechazó o mostró no interés</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <h3>2. ¿Cuánto piensas en esta persona durante el día?</h3>
+                    <div class="options">
+                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'ocasional')">
+                            Ocasionalmente - Menos del 20% del tiempo
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'moderado')">
+                            Moderadamente - 20-50% del tiempo
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'frecuente')">
+                            Frecuentemente - 50-80% del tiempo
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'constante')">
+                            Constantemente - Más del 80% del tiempo
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>3. ¿Con qué frecuencia revisas sus redes sociales?</h3>
+                    <div class="options">
+                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'rara')">
+                            Raramente - Menos de 1 vez al día
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'diaria')">
+                            Diariamente - 1-3 veces al día
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'multiple')">
+                            Múltiples veces - 4-10 veces al día
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'constante')">
+                            Constantemente - Más de 10 veces al día
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>4. ¿Qué tan activa es tu vida social actualmente?</h3>
+                    <div class="options">
+                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'muy_activa')">
+                            Muy activa - Salgo con amigos 4+ veces por semana
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'moderada')">
+                            Moderada - Salgo 1-3 veces por semana
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'limitada')">
+                            Limitada - Salgo 1-2 veces al mes
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'minima')">
+                            Mínima - Casi no salgo socialmente
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>5. ¿Tienes hobbies o pasiones activas?</h3>
+                    <textarea id="hobbies" placeholder="Escribe tus hobbies actuales o escribe 'ninguno' si no tienes..." onchange="saveData('hobbies', this.value)"></textarea>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="analyzeAndNext()">Analizar mi situación →</button>
+                </div>
+            </div>
+
+            <!-- FASE 2: DIAGNÓSTICO -->
+            <div class="phase" id="phase2">
+                <div class="phase-indicator">FASE 2: TU DIAGNÓSTICO PERSONALIZADO</div>
+                <h2>Análisis de tu Situación 🔍</h2>
+                
+                <div id="diagnostico-content">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="nextPhase()">Entendido, continuar →</button>
+                </div>
+            </div>
+
+            <!-- FASE 3: SELECCIÓN DE ACTIVIDADES FÍSICAS -->
+            <div class="phase" id="phase3">
+                <div class="phase-indicator">FASE 3: CONSTRUYENDO TU NUEVA VIDA - PARTE 1</div>
+                <h2>Elige tu Actividad FÍSICA 💪</h2>
+                <p>Esta será tu primera pieza fundamental. Elige algo que realmente te interese, no lo que creas que "deberías" hacer.</p>
+
+                <div class="alert alert-info">
+                    <strong>Criterios importantes:</strong> Debe ser algo que puedas hacer mínimo 3 veces por semana, y que te saque de casa.
+                </div>
+
+                <div class="filter-buttons" id="physical-filters">
+                    <button class="filter-btn active" onclick="filterActivities('physical', 'todas')">Todas</button>
+                    <button class="filter-btn" onclick="filterActivities('physical', 'bajo_costo')">Bajo costo</button>
+                    <button class="filter-btn" onclick="filterActivities('physical', 'social')">Sociales</button>
+                    <button class="filter-btn" onclick="filterActivities('physical', 'individual')">Individuales</button>
+                    <button class="filter-btn" onclick="filterActivities('physical', 'rapido')">Resultados rápidos</button>
+                </div>
+
+                <div class="activity-list" id="physical-activities">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+
+                <div class="question" style="margin-top: 30px;">
+                    <h3>¿Cuándo comenzarás?</h3>
+                    <input type="date" id="physical-start-date" onchange="saveData('physical_start_date', this.value)">
+                    
+                    <h3 style="margin-top: 20px;">¿A qué hora específica?</h3>
+                    <input type="time" id="physical-time" onchange="saveData('physical_time', this.value)">
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="validateAndNext('physical')">Continuar con actividades mentales →</button>
+                </div>
+            </div>
+
+            <!-- FASE 4: SELECCIÓN DE ACTIVIDADES MENTALES -->
+            <div class="phase" id="phase4">
+                <div class="phase-indicator">FASE 3: CONSTRUYENDO TU NUEVA VIDA - PARTE 2</div>
+                <h2>Elige tu Actividad MENTAL/CREATIVA 🧠</h2>
+                <p>Algo que desarrolle tu mente y te haga más interesante. Puede ser aprender, crear, o desarrollar una habilidad.</p>
+
+                <div class="filter-buttons" id="mental-filters">
+                    <button class="filter-btn active" onclick="filterActivities('mental', 'todas')">Todas</button>
+                    <button class="filter-btn" onclick="filterActivities('mental', 'creativo')">Creativas</button>
+                    <button class="filter-btn" onclick="filterActivities('mental', 'tech')">Tecnología</button>
+                    <button class="filter-btn" onclick="filterActivities('mental', 'arte')">Arte</button>
+                    <button class="filter-btn" onclick="filterActivities('mental', 'practico')">Prácticas</button>
+                </div>
+
+                <div class="activity-list" id="mental-activities">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+
+                <div class="question" style="margin-top: 30px;">
+                    <h3>¿Cuánto tiempo diario dedicarás? (mínimo 30 minutos)</h3>
+                    <input type="number" id="mental-time-daily" min="30" placeholder="Minutos por día" onchange="saveData('mental_time_daily', this.value)">
+                    
+                    <h3 style="margin-top: 20px;">¿A qué hora del día?</h3>
+                    <select id="mental-time-of-day" onchange="saveData('mental_time_of_day', this.value)">
+                        <option value="">Selecciona...</option>
+                        <option value="manana">Mañana (6am-12pm)</option>
+                        <option value="tarde">Tarde (12pm-6pm)</option>
+                        <option value="noche">Noche (6pm-12am)</option>
+                    </select>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="validateAndNext('mental')">Continuar con actividades sociales →</button>
+                </div>
+            </div>
+
+            <!-- FASE 5: SELECCIÓN DE ACTIVIDADES SOCIALES -->
+            <div class="phase" id="phase5">
+                <div class="phase-indicator">FASE 3: CONSTRUYENDO TU NUEVA VIDA - PARTE 3</div>
+                <h2>Elige tu Actividad SOCIAL 👥</h2>
+                <p>Esto es OBLIGATORIO. Necesitas expandir tu círculo social y practicar interacciones.</p>
+
+                <div class="alert alert-warning">
+                    <strong>Importante:</strong> Si eres introvertido/a, elige algo en grupos pequeños primero. No te forces a algo que te cause ansiedad extrema.
+                </div>
+
+                <div class="filter-buttons" id="social-filters">
+                    <button class="filter-btn active" onclick="filterActivities('social', 'todas')">Todas</button>
+                    <button class="filter-btn" onclick="filterActivities('social', 'introvertido')">Para introvertidos</button>
+                    <button class="filter-btn" onclick="filterActivities('social', 'extrovertido')">Para extrovertidos</button>
+                    <button class="filter-btn" onclick="filterActivities('social', 'voluntariado')">Voluntariado</button>
+                    <button class="filter-btn" onclick="filterActivities('social', 'grupos')">Grupos/Meetups</button>
+                </div>
+
+                <div class="activity-list" id="social-activities">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+
+                <div class="question" style="margin-top: 30px;">
+                    <h3>¿Con qué frecuencia participarás?</h3>
+                    <select id="social-frequency" onchange="saveData('social_frequency', this.value)">
+                        <option value="">Selecciona...</option>
+                        <option value="semanal">1 vez por semana</option>
+                        <option value="bisemanal">2 veces por semana</option>
+                        <option value="trisemanal">3+ veces por semana</option>
+                    </select>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="validateAndNext('social')">Ver mi plan completo →</button>
+                </div>
+            </div>
+
+            <!-- FASE 6: RESUMEN DEL PLAN -->
+            <div class="phase" id="phase6">
+                <div class="phase-indicator">TU PLAN PERSONALIZADO</div>
+                <h2>🎯 Tu Plan de Transformación de 12 Semanas</h2>
+                
+                <div class="stats-grid" id="stats-grid">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+
+                <div class="summary-box">
+                    <h4>📅 TUS ACTIVIDADES SELECCIONADAS</h4>
+                    <div id="selected-activities-summary">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <h3>⏱️ Timeline de Resultados Esperados</h3>
+                    <div class="timeline-item">
+                        <h5>Semanas 1-2: Adaptación</h5>
+                        <p>Comenzarás las actividades. Al principio sentirás incomodidad - es normal. Tu cerebro estará ocupado con cosas nuevas en lugar de obsesionarse con esa persona.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>Semanas 3-4: Primeros Cambios</h5>
+                        <p>Empezarás a disfrutar las actividades. Tu energía y confianza mejoran notablemente. Si hay contacto con la persona, notarás que ya no estás tan disponible (genuinamente).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>Semanas 5-8: Transformación Visible</h5>
+                        <p>Cambios físicos visibles. Tu círculo social se expande. Empiezas a recibir más atención de varias personas. La persona original puede notar el cambio.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h5>Semanas 9-12: Nueva Versión de Ti</h5>
+                        <p>Has desarrollado rutinas sólidas. Tu vida es genuinamente interesante. Si hay interés recíproco, será evidente. Si no, tendrás la claridad y autoestima para seguir adelante.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>¡Importante!</strong> Guarda este plan. Puedes tomar captura de pantalla o copiar la información. Revísalo semanalmente.
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="nextPhase()">Aprender sobre comunicación →</button>
+                </div>
+            </div>
+
+            <!-- FASE 7: GUÍA DE COMUNICACIÓN -->
+            <div class="phase" id="phase7">
+                <div class="phase-indicator">FASE 4: MANEJO DE COMUNICACIÓN</div>
+                <h2>💬 Cómo Comunicarte de Ahora en Adelante</h2>
+                
+                <p>Ahora que tienes actividades reales, tu comunicación será naturalmente diferente. Aquí están las reglas clave:</p>
+
+                <div class="question">
+                    <h3>Regla #1: Tiempo de Respuesta Natural</h3>
+                    <p>Antes de estos cambios, probablemente respondías inmediatamente. Ahora:</p>
+                    <div class="alert alert-info">
+                        <strong>NUEVA NORMA:</strong> Responde cuando genuinamente puedas dar atención de calidad.
+                        <ul style="margin-top: 10px; line-height: 1.8;">
+                            <li>Si estás en el gym → Responde después</li>
+                            <li>Si estás en clase/actividad → Responde después</li>
+                            <li>Si estás con amigos → Responde después</li>
+                            <li>Si es algo urgente → Responde razonablemente pronto</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Regla #2: Calidad sobre Cantidad</h3>
+                    <p>Ejemplos de conversación:</p>
+                    
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>❌ EVITA (Genérico y aburrido):</strong>
+                        <p style="margin: 10px 0; font-style: italic;">"Hola, ¿qué haces?"<br>"¿Cómo estuvo tu día?"</p>
+                    </div>
+
+                    <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>✅ MEJOR (Específico e interesante):</strong>
+                        <p style="margin: 10px 0; font-style: italic;">"Acabo de salir de mi clase de [tu actividad], fue intenso pero genial. ¿Has probado algo nuevo últimamente?"</p>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Regla #3: Termina Conversaciones</h3>
+                    <p>No alargues conversaciones artificialmente. Cuando llegue a un punto natural:</p>
+                    <div class="alert alert-info">
+                        "Bueno, tengo que ir a [actividad real]. ¡Hablamos luego!"
+                    </div>
+                    <p>Esto crea el ciclo de presencia-ausencia que genera interés.</p>
+                </div>
+
+                <div class="question">
+                    <h3>Regla #4: No Busques Validación</h3>
+                    <p>No envíes mensajes para "ver si responde" o "medir interés". Solo comunica cuando tengas algo genuino que decir.</p>
+                    <div class="alert alert-warning">
+                        <strong>Ejemplo de lo que NO hacer:</strong><br>
+                        "¿Te acuerdas de mí?"<br>
+                        "¿Estás ocupado/a?"<br>
+                        "¿Qué haces?" (sin contexto)
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
+                    <button class="btn-primary" onclick="nextPhase()">Finalizar y comenzar →</button>
+                </div>
+            </div>
+
+            <!-- FASE 8: FINAL -->
+            <div class="phase" id="phase8">
+                <div class="phase-indicator">¡FELICIDADES!</div>
+                <h2>🎉 ¡Estás Listo/a para Comenzar!</h2>
+                
+                <div class="alert alert-success">
+                    <strong>¡Excelente trabajo!</strong> Has creado un plan personalizado para tu transformación. Ahora depende de ti implementarlo.
+                </div>
+
+                <div class="summary-box">
+                    <h4>📋 Resumen de tu Compromiso</h4>
+                    <div id="final-summary">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>🎯 Próximos Pasos Recomendados</h3>
+                    <div class="checklist">
+                        <li><input type="checkbox"> Guardar este plan en un lugar visible</li>
+                        <li><input type="checkbox"> Configurar recordatorios en tu calendario</li>
+                        <li><input type="checkbox"> Compartir tu compromiso con un amigo/a de confianza</li>
+                        <li><input type="checkbox"> Tomar "antes y después" (fotos, estado mental)</li>
+                        <li><input type="checkbox"> Revisar progreso cada domingo</li>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Recuerda:</strong> Este proceso no se trata de la otra persona. Se trata de ti. Si sigues este plan, en 12 semanas estarás en un lugar completamente diferente, con o sin esa persona.
+                </div>
+
+                <button class="btn-primary" onclick="resetTutorial()" style="width: 100%; padding: 20px; font-size: 1.2em;">
+                    🚀 Comenzar Mi Transformación Ahora
+                </button>
+
+                <p style="text-align: center; margin-top: 20px; color: #666;">
+                    Puedes volver a revisar este tutorial cuando quieras refrescando la página.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos del usuario
+        const userData = {
+            // Fase 1
+            situacion: '',
+            frecuencia_pensamiento: '',
+            redes_sociales: '',
+            vida_social: '',
+            hobbies: '',
+            
+            // Fase 3-5
+            physical_activity: null,
+            physical_start_date: '',
+            physical_time: '',
+            
+            mental_activity: null,
+            mental_time_daily: '',
+            mental_time_of_day: '',
+            
+            social_activity: null,
+            social_frequency: '',
+            
+            // Estado
+            currentPhase: 0,
+            totalPhases: 9
+        };
+
+        // Actividades disponibles
+        const activities = {
+            physical: [
+                { id: 1, name: "Gimnasio/Fitness", category: "individual", tags: ["rapido"], description: "Resultados visibles en 4-6 semanas", time: "1 hora", frequency: "3-5 veces/semana" },
+                { id: 2, name: "CrossFit/Entrenamiento Funcional", category: "social", tags: ["social", "rapido"], description: "Comunidad muy unida, resultados rápidos", time: "1 hora", frequency: "3-4 veces/semana" },
+                { id: 3, name: "Natación", category: "individual", tags: ["bajo_costo"], description: "Bajo impacto, excelente para todo el cuerpo", time: "45 min", frequency: "3 veces/semana" },
+                { id: 4, name: "Running/Carrera", category: "individual", tags: ["bajo_costo", "individual"], description: "Solo necesitas zapatillas, puedes unirte a grupos", time: "30-60 min", frequency: "3-4 veces/semana" },
+                { id: 5, name: "Artes Marciales (Boxeo, Muay Thai, BJJ)", category: "social", tags: ["social", "rapido"], description: "Desarrolla confianza y disciplina", time: "1-1.5 horas", frequency: "2-3 veces/semana" },
+                { id: 6, name: "Yoga/Pilates", category: "individual", tags: ["bajo_costo"], description: "Mejora flexibilidad y reduce estrés", time: "1 hora", frequency: "3-4 veces/semana" },
+                { id: 7, name: "Escalada/Boulder", category: "social", tags: ["social"], description: "Comunidad muy amigable, desafío mental y físico", time: "1.5 horas", frequency: "2-3 veces/semana" },
+                { id: 8, name: "Baile (Salsa, Bachata, etc)", category: "social", tags: ["social", "rapido"], description: "Excelente para socializar y coordinación", time: "1-2 horas", frequency: "2 veces/semana" },
+                { id: 9, name: "Ciclismo", category: "individual", tags: ["individual"], description: "Explora tu ciudad, mejora resistencia", time: "1-2 horas", frequency: "2-3 veces/semana" },
+                { id: 10, name: "Deportes en Equipo (Fútbol, Básquet, Vóley)", category: "social", tags: ["social"], description: "Socialización forzada, trabajo en equipo", time: "1.5 horas", frequency: "1-2 veces/semana" }
+            ],
+            mental: [
+                { id: 1, name: "Aprender un Instrumento Musical", category: "creativo", tags: ["creativo", "arte"], description: "Guitarra, piano, ukelele - muy satisfactorio", time: "30-60 min/día", frequency: "Diario" },
+                { id: 2, name: "Programación/Desarrollo Web", category: "tech", tags: ["tech", "practico"], description: "Habilidad muy valiosa, comunidad global", time: "1 hora/día", frequency: "5-6 días/semana" },
+                { id: 3, name: "Idioma Extranjero", category: "practico", tags: ["practico"], description: "Abre puertas culturales y profesionales", time: "30-45 min/día", frequency: "Diario" },
+                { id: 4, name: "Fotografía", category: "arte", tags: ["arte", "creativo"], description: "Desarrolla tu ojo artístico, sal a explorar", time: "Varía", frequency: "2-3 veces/semana" },
+                { id: 5, name: "Escritura Creativa/Blogging", category: "creativo", tags: ["creativo"], description: "Expresa tus ideas, mejora comunicación", time: "30-45 min/día", frequency: "4-5 días/semana" },
+                { id: 6, name: "Cocina/Gastronomía", category: "practico", tags: ["practico"], description: "Habilidad práctica que impresiona", time: "1-2 horas", frequency: "2-3 veces/semana" },
+                { id: 7, name: "Dibujo/Pintura", category: "arte", tags: ["arte", "creativo"], description: "Desarrollo cerebral, expresión artística", time: "1 hora", frequency: "2-3 veces/semana" },
+                { id: 8, name: "Ajedrez/Puzzles Estratégicos", category: "tech", tags: ["tech"], description: "Mejora pensamiento estratégico y paciencia", time: "30-45 min/día", frequency: "Diario" },
+                { id: 9, name: "Jardinería/Huerto Urbano", category: "practico", tags: ["practico"], description: "Conectar con naturaleza, muy terapéutico", time: "30 min/día", frequency: "Diario" },
+                { id: 10, name: "Meditación/Mindfulness", category: "practico", tags: ["practico"], description: "Reduce ansiedad, mejora enfoque", time: "15-20 min/día", frequency: "Diario" }
+            ],
+            social: [
+                { id: 1, name: "Clases Grupales (cocina, arte, etc)", category: "grupos", tags: ["introvertido"], description: "Estructurado, propósito claro, conversación natural", time: "2-3 horas", frequency: "1 vez/semana" },
+                { id: 2, name: "Voluntariado en Causa que Te Importe", category: "voluntariado", tags: ["introvertido"], description: "Propósito mayor, gente con valores similares", time: "3-4 horas", frequency: "1-2 veces/semana" },
+                { id: 3, name: "Grupos de Interés (Meetup.com)", category: "grupos", tags: ["introvertido"], description: "Temas específicos, conversaciones más fáciles", time: "2-3 horas", frequency: "1-2 veces/semana" },
+                { id: 4, name: "Deportes en Equipo Amateur", category: "grupos", tags: ["extrovertido"], description: "Socialización estructurada alrededor de actividad", time: "1.5-2 horas", frequency: "1-2 veces/semana" },
+                { id: 5, name: "Grupos de Caminata/Senderismo", category: "grupos", tags: ["introvertido"], description: "Actividad física + socialización baja presión", time: "2-4 horas", frequency: "1 vez/semana" },
+                { id: 6, name: "Club de Libro o Debate", category: "grupos", tags: ["introvertido"], description: "Conversaciones profundas, gente pensante", time: "2 horas", frequency: "1 vez/semana" },
+                { id: 7, name: "Eventos de Networking Profesional", category: "grupos", tags: ["extrovertido"], description: "Desarrollo profesional + social", time: "2-3 horas", frequency: "2 veces/mes" },
+                { id: 8, name: "Talleres de Improvisación/Teatro", category: "grupos", tags: ["extrovertido"], description: "Salir de zona de confort, mejorar habilidades sociales", time: "2 horas", frequency: "1 vez/semana" },
+                { id: 9, name: "Grupos de Baile Social", category: "grupos", tags: ["extrovertido"], description: "Contacto físico apropiado, muy divertido", time: "2-3 horas", frequency: "1-2 veces/semana" },
+                { id: 10, name: "Clubes de Juegos de Mesa/Rol", category: "grupos", tags: ["introvertido"], description: "Estructurado, creativo, muy social", time: "3-4 horas", frequency: "1 vez/semana" }
+            ]
+        };
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressBar();
+            loadActivities();
+        });
+
+        // Navegación entre fases
+        function nextPhase() {
+            const current = document.querySelector('.phase.active');
+            current.classList.remove('active');
+            
+            userData.currentPhase = Math.min(userData.currentPhase + 1, userData.totalPhases - 1);
+            
+            const nextPhase = document.getElementById(`phase${userData.currentPhase}`);
+            nextPhase.classList.add('active');
+            
+            updateProgressBar();
+            
+            // Cargar contenido dinámico si es necesario
+            if (userData.currentPhase === 2) {
+                generateDiagnostico();
+            } else if (userData.currentPhase === 6) {
+                generatePlanSummary();
+            } else if (userData.currentPhase === 8) {
+                generateFinalSummary();
+            }
+        }
+
+        function previousPhase() {
+            const current = document.querySelector('.phase.active');
+            current.classList.remove('active');
+            
+            userData.currentPhase = Math.max(userData.currentPhase - 1, 0);
+            
+            const prevPhase = document.getElementById(`phase${userData.currentPhase}`);
+            prevPhase.classList.add('active');
+            
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const progress = (userData.currentPhase / (userData.totalPhases - 1)) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        // Funciones de selección de opciones
+        function selectOption(element, key, value) {
+            // Remover selección previa en el mismo grupo
+            const parent = element.parentElement;
+            parent.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Seleccionar nuevo
+            element.classList.add('selected');
+            userData[key] = value;
+        }
+
+        function saveData(key, value) {
+            userData[key] = value;
+        }
+
+        // Análisis de la fase 1
+        function analyzeAndNext() {
+            // Validar que se hayan completado todos los campos
+            const required = ['situacion', 'frecuencia_pensamiento', 'redes_sociales', 'vida_social', 'hobbies'];
+            let missing = false;
+            
+            required.forEach(field => {
+                if (!userData[field] || userData[field].trim() === '') {
+                    missing = true;
+                }
+            });
+            
+            if (missing) {
+                alert('Por favor, completa todas las preguntas antes de continuar.');
+                return;
+            }
+            
+            nextPhase();
+        }
+
+        function generateDiagnostico() {
+            const container = document.getElementById('diagnostico-content');
+            let html = '';
+            
+            // Análisis de situación
+            html += '<div class="alert alert-warning">';
+            html += '<h4>📈 Tu Análisis Personalizado:</h4>';
+            
+            // Análisis basado en situación
+            switch(userData.situacion) {
+                case 'no_interesa':
+                    html += '<p><strong>Situación:</strong> Esta persona no te conoce bien. Esto es una VENTAJA. Puedes construir una nueva versión de ti antes de acercarte.</p>';
+                    break;
+                case 'amigos':
+                    html += '<p><strong>Situación:</strong> Ya hay una relación establecida. El desafío es cambiar la dinámica existente mediante tu transformación personal.</p>';
+                    break;
+                case 'saliendo':
+                    html += '<p><strong>Situación:</strong> Ya hay interés mutuo. El enfoque ahora es desarrollar tu vida independiente para mantener equilibrio.</p>';
+                    break;
+                case 'no_reciproco':
+                    html += '<p><strong>Situación:</strong> Hay interés de tu parte pero no claro de la otra persona. La transformación personal es la mejor estrategia.</p>';
+                    break;
+                case 'rechazo':
+                    html += '<p><strong>Situación:</strong> Hubo rechazo. Esto requiere un reinicio completo con una nueva versión de ti mismo/a.</p>';
+                    break;
+            }
+            
+            // Análisis de obsesión
+            if (userData.frecuencia_pensamiento === 'constante' || userData.redes_sociales === 'constante') {
+                html += '<p><strong>🔴 Nivel de obsesión:</strong> ALTO. Necesitas urgentemente actividades que ocupen tu mente.</p>';
+            } else if (userData.frecuencia_pensamiento === 'frecuente' || userData.redes_sociales === 'multiple') {
+                html += '<p><strong>🟡 Nivel de obsesión:</strong> MODERADO. Las actividades nuevas ayudarán a redistribuir tu atención.</p>';
+            } else {
+                html += '<p><strong>🟢 Nivel de obsesión:</strong> BAJO. Tienes buena base para construir.</p>';
+            }
+            
+            // Análisis de vida social
+            if (userData.vida_social === 'minima' || userData.vida_social === 'limitada') {
+                html += '<p><strong>👥 Vida social:</strong> NECESITA EXPANSIÓN. La actividad social es prioridad absoluta.</p>';
+            }
+            
+            // Análisis de hobbies
+            if (!userData.hobbies || userData.hobbies.toLowerCase().includes('ninguno')) {
+                html += '<p><strong>🎯 Hobbies:</strong> INEXISTENTES. Esta es tu mayor oportunidad de mejora.</p>';
+            }
+            
+            html += '</div>';
+            
+            // Recomendaciones específicas
+            html += '<div class="summary-box">';
+            html += '<h4>🎯 Recomendaciones Específicas para Ti:</h4>';
+            html += '<ul style="line-height: 1.8; margin-left: 20px;">';
+            
+            if (userData.frecuencia_pensamiento === 'constante') {
+                html += '<li><strong>Prioridad #1:</strong> Actividades que ocupen completamente tu mente (ej: artes marciales, escalada, programación)</li>';
+            }
+            
+            if (userData.vida_social === 'minima') {
+                html += '<li><strong>Prioridad #2:</strong> Actividades sociales estructuradas (clases grupales, voluntariado)</li>';
+            }
+            
+            if (!userData.hobbies || userData.hobbies.toLowerCase().includes('ninguno')) {
+                html += '<li><strong>Prioridad #3:</strong> Explorar múltiples hobbies para descubrir pasiones</li>';
+            }
+            
+            html += '<li><strong>Regla general:</strong> NO contactar a la persona hasta completar al menos 4 semanas de actividades</li>';
+            html += '</ul>';
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
+        // Sistema de actividades
+        function loadActivities() {
+            loadActivityType('physical');
+            loadActivityType('mental');
+            loadActivityType('social');
+        }
+
+        function loadActivityType(type) {
+            const container = document.getElementById(`${type}-activities`);
+            const activityList = activities[type];
+            
+            let html = '';
+            activityList.forEach(activity => {
+                html += `
+                    <div class="activity-card" onclick="selectActivity('${type}', ${activity.id})" id="${type}-activity-${activity.id}">
+                        <h5>${activity.name}</h5>
+                        <p>${activity.description}</p>
+                        <p><small>🕒 ${activity.time} | 📅 ${activity.frequency}</small></p>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function selectActivity(type, id) {
+            // Deseleccionar todas las actividades de este tipo
+            const container = document.getElementById(`${type}-activities`);
+            container.querySelectorAll('.activity-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Seleccionar nueva actividad
+            const selectedCard = document.getElementById(`${type}-activity-${id}`);
+            selectedCard.classList.add('selected');
+            
+            // Guardar en userData
+            userData[`${type}_activity`] = activities[type].find(a => a.id === id);
+        }
+
+        function filterActivities(type, filter) {
+            // Actualizar botones de filtro
+            const filterButtons = document.getElementById(`${type}-filters`);
+            filterButtons.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filtrar actividades
+            const activityList = activities[type];
+            let filteredActivities = activityList;
+            
+            if (filter !== 'todas') {
+                filteredActivities = activityList.filter(activity => 
+                    activity.tags.includes(filter) || activity.category === filter
+                );
+            }
+            
+            // Mostrar actividades filtradas
+            const container = document.getElementById(`${type}-activities`);
+            let html = '';
+            filteredActivities.forEach(activity => {
+                html += `
+                    <div class="activity-card" onclick="selectActivity('${type}', ${activity.id})" id="${type}-activity-${activity.id}">
+                        <h5>${activity.name}</h5>
+                        <p>${activity.description}</p>
+                        <p><small>🕒 ${activity.time} | 📅 ${activity.frequency}</small></p>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function validateAndNext(type) {
+            if (!userData[`${type}_activity`]) {
+                alert(`Por favor, selecciona una actividad ${type === 'physical' ? 'física' : type === 'mental' ? 'mental' : 'social'} antes de continuar.`);
+                return;
+            }
+            
+            // Validar campos específicos
+            if (type === 'physical') {
+                if (!userData.physical_start_date) {
+                    alert('Por favor, selecciona una fecha de inicio.');
+                    return;
+                }
+            } else if (type === 'mental') {
+                if (!userData.mental_time_daily || userData.mental_time_daily < 30) {
+                    alert('Por favor, especifica al menos 30 minutos diarios.');
+                    return;
+                }
+                if (!userData.mental_time_of_day) {
+                    alert('Por favor, selecciona un horario del día.');
+                    return;
+                }
+            } else if (type === 'social') {
+                if (!userData.social_frequency) {
+                    alert('Por favor, selecciona una frecuencia.');
+                    return;
+                }
+            }
+            
+            nextPhase();
+        }
+
+        function generatePlanSummary() {
+            // Stats grid
+            const statsGrid = document.getElementById('stats-grid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <h3>12</h3>
+                    <p>Semanas de Transformación</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${userData.physical_activity ? '3' : '0'}</h3>
+                    <p>Actividades Principales</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${calculateWeeklyHours()}h</h3>
+                    <p>Horas/Semana en Ti</p>
+                </div>
+                <div class="stat-card">
+                    <h3>0</h3>
+                    <p>Contacto Innecesario</p>
+                </div>
+            `;
+            
+            // Resumen de actividades
+            const summaryContainer = document.getElementById('selected-activities-summary');
+            let html = '';
+            
+            if (userData.physical_activity) {
+                html += `
+                    <div class="timeline-item">
+                        <h5>💪 ${userData.physical_activity.name}</h5>
+                        <p><strong>Comienza:</strong> ${userData.physical_start_date} a las ${userData.physical_time}</p>
+                        <p><strong>Frecuencia:</strong> ${userData.physical_activity.frequency}</p>
+                    </div>
+                `;
+            }
+            
+            if (userData.mental_activity) {
+                html += `
+                    <div class="timeline-item">
+                        <h5>🧠 ${userData.mental_activity.name}</h5>
+                        <p><strong>Tiempo diario:</strong> ${userData.mental_time_daily} minutos</p>
+                        <p><strong>Horario:</strong> ${getTimeOfDayLabel(userData.mental_time_of_day)}</p>
+                    </div>
+                `;
+            }
+            
+            if (userData.social_activity) {
+                html += `
+                    <div class="timeline-item">
+                        <h5>👥 ${userData.social_activity.name}</h5>
+                        <p><strong>Frecuencia:</strong> ${getFrequencyLabel(userData.social_frequency)}</p>
+                        <p><strong>Duración:</strong> ${userData.social_activity.time} por sesión</p>
+                    </div>
+                `;
+            }
+            
+            summaryContainer.innerHTML = html;
+        }
+
+        function generateFinalSummary() {
+            const container = document.getElementById('final-summary');
+            let html = `
+                <p><strong>🎯 Tu Objetivo:</strong> Transformación personal en 12 semanas</p>
+                <p><strong>📅 Fecha de Inicio:</strong> ${userData.physical_start_date || 'Hoy'}</p>
+                <p><strong>🏆 Tu Compromiso:</strong> ${userData.physical_activity ? userData.physical_activity.name : 'Actividad física'}, ${userData.mental_activity ? userData.mental_activity.name : 'actividad mental'}, y ${userData.social_activity ? userData.social_activity.name : 'actividad social'}</p>
+                <p><strong>⏰ Tiempo Semanal:</strong> ${calculateWeeklyHours()} horas invertidas en ti</p>
+                <p><strong>🚫 Regla Fundamental:</strong> NO contactar por ansiedad o validación. Solo cuando tengas algo genuino que compartir.</p>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        // Funciones auxiliares
+        function calculateWeeklyHours() {
+            let hours = 0;
+            
+            if (userData.physical_activity) {
+                const matches = userData.physical_activity.frequency.match(/(\d+)/);
+                const timesPerWeek = matches ? parseInt(matches[0]) : 3;
+                const timeMatch = userData.physical_activity.time.match(/(\d+)/);
+                const timePerSession = timeMatch ? parseInt(timeMatch[0]) : 1;
+                hours += timesPerWeek * timePerSession;
+            }
+            
+            if (userData.mental_activity && userData.mental_time_daily) {
+                hours += (parseInt(userData.mental_time_daily) * 7) / 60; // Convertir minutos a horas
+            }
+            
+            if (userData.social_activity) {
+                const timeMatch = userData.social_activity.time.match(/(\d+)/);
+                const timePerSession = timeMatch ? parseInt(timeMatch[0]) : 2;
+                const frequency = getFrequencyValue(userData.social_frequency);
+                hours += frequency * timePerSession;
+            }
+            
+            return Math.round(hours * 10) / 10;
+        }
+
+        function getTimeOfDayLabel(time) {
+            switch(time) {
+                case 'manana': return 'Mañana (6am-12pm)';
+                case 'tarde': return 'Tarde (12pm-6pm)';
+                case 'noche': return 'Noche (6pm-12am)';
+                default: return 'Por definir';
+            }
+        }
+
+        function getFrequencyLabel(freq) {
+            switch(freq) {
+                case 'semanal': return '1 vez por semana';
+                case 'bisemanal': return '2 veces por semana';
+                case 'trisemanal': return '3+ veces por semana';
+                default: return 'Por definir';
+            }
+        }
+
+        function getFrequencyValue(freq) {
+            switch(freq) {
+                case 'semanal': return 1;
+                case 'bisemanal': return 2;
+                case 'trisemanal': return 3;
+                default: return 1;
+            }
+        }
+
+        function resetTutorial() {
+            if (confirm('¿Estás seguro de que quieres comenzar? Esto reiniciará el tutorial pero mantendrá tu plan.')) {
+                userData.currentPhase = 0;
+                
+                // Remover todas las clases active
+                document.querySelectorAll('.phase').forEach(phase => {
+                    phase.classList.remove('active');
+                });
+                
+                // Activar fase 0
+                document.getElementById('phase0').classList.add('active');
+                updateProgressBar();
+                
+                alert('¡Perfecto! Tu transformación comienza ahora. Recuerda revisar tu plan semanalmente.');
+            }
+        }
+    </script>
+</body>
+</html>
