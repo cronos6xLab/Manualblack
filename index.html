@@ -2,9 +2,29 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial Interactivo - Desarrollo Personal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GluGlu MX - Purificadora de Agua</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --accent: #2ecc71;
+            --bg-body: #f0f8ff;
+            --bg-card: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-light: #7D7D7D;
+            --border-radius: 16px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 48px rgba(52, 152, 219, 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,1219 +32,2402 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1280px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            padding: 0 24px;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* HEADER */
+        header {
+            background: linear-gradient(rgba(52, 152, 219, 0.9), rgba(41, 128, 185, 0.9)), url('https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
             color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .header h1 {
-            font-size: 2em;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.8);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            background: white;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* INFO PURIFICADORA */
+        .purificadora-info {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: -30px auto 40px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 101;
+            text-align: center;
+            max-width: 1000px;
+        }
+
+        .purificadora-info h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
             margin-bottom: 10px;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 10px;
+        /* LAYOUT PRINCIPAL */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .menu-section, .cart-section, .checkout-form {
+            background-color: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        /* CATEGORÍAS */
+        .menu-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .category-btn {
+            padding: 8px 20px;
+            background-color: transparent;
+            border: 2px solid #E0E0E0;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            border-color: var(--primary);
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* PRODUCTOS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--border-radius);
             overflow: hidden;
-            margin-top: 20px;
-        }
-
-        .progress-fill {
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
             height: 100%;
-            background: #4ade80;
-            width: 0%;
-            transition: width 0.5s ease;
+            cursor: pointer;
         }
 
-        .content {
-            padding: 40px;
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
         }
 
-        .phase {
+        .product-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .product-desc {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.4;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* CONTROLES DE CANTIDAD EN PRODUCTO */
+        .product-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quantity-display {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .add-to-cart {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .add-to-cart.in-cart {
+            background-color: var(--accent);
+        }
+
+        /* CARRITO LATERAL */
+        .cart-section {
+            position: sticky;
+            top: 110px;
+            height: fit-content;
+        }
+
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item h4 { 
+            font-size: 0.9rem; 
+            margin-bottom: 4px;
+        }
+        
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cart-item-qty { 
+            width: 40px; 
+            text-align: center; 
+            padding: 4px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 0.9rem;
+        }
+        
+        .remove-item {
+            background: #ffebee;
+            color: #d32f2f;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* MAPA Y FORMULARIOS */
+        .mapbox-container {
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            height: 300px;
+            position: relative;
             display: none;
         }
 
-        .phase.active {
+        .mapbox-container.active { 
+            display: block; 
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .map-address-search {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 10;
+            display: flex;
+            gap: 5px;
+        }
+
+        #mapSearch {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+        }
+
+        #mapSearchBtn {
+            padding: 0 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* BOTONES */
+        .checkout-btn, .submit-order-btn {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .checkout-btn { 
+            background-color: var(--accent); 
+        }
+        
+        .checkout-btn:hover { 
+            background-color: #27ae60; 
+        }
+        
+        .submit-order-btn { 
+            background-color: #25D366; 
+        }
+        
+        .submit-order-btn:hover { 
+            background-color: #1da851; 
+        }
+
+        .calculate-shipping-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .calculate-shipping-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+
+        /* FLOATING ICON */
+        .floating-cart-icon {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px; 
+            right: -5px;
+            background: var(--accent);
+            width: 24px; 
+            height: 24px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            font-weight: bold;
+        }
+
+        /* NOTIFICACIÓN TOAST */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 2000;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: max-content;
+            max-width: 90%;
+            text-align: center;
+            animation: fadeInOut 3s ease;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #2C3E50;
+            color: rgba(255,255,255,0.7);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .footer-logo { 
+            height: 60px; 
+            width: auto; 
+            border-radius: 50%; 
+            margin-bottom: 15px; 
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        /* CASH DETAILS */
+        .cash-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .cash-details.active {
             display: block;
-            animation: fadeIn 0.5s;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .change-info {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: #2d572c;
+            display: none;
         }
 
-        .question {
-            margin-bottom: 30px;
+        .change-info.active {
+            display: block;
         }
 
-        .question h3 {
-            color: #667eea;
+        /* DELIVERY INFO */
+        .distance-details {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+            border-left: 4px solid var(--primary);
+        }
+
+        .distance-details.active {
+            display: block;
+        }
+
+        .distance-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .distance-row.total {
+            font-weight: bold;
+            border-top: 1px solid var(--primary);
+            padding-top: 8px;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+
+        .delivery-limit-warning {
+            background: #ffeaea;
+            color: #c0392b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #c0392b;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .delivery-limit-warning.active {
+            display: block;
+        }
+
+        /* AUTO CALCULATING STATUS */
+        .auto-calculating-status {
+            background: #fff9e6;
+            color: #8a6d3b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #f0ad4e;
+            display: none;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .auto-calculating-status.active {
+            display: block;
+        }
+
+        .auto-calculating-status i {
+            margin-right: 8px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* MODAL DE PRODUCTO */
+        .product-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .product-modal.active {
+            display: flex;
+        }
+
+        .product-modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .product-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            z-index: 10;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .product-modal-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .product-modal-info {
+            padding: 25px;
+        }
+
+        .product-modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .product-modal-desc {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .product-modal-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        /* MODIFICADORES - MARCAS */
+        .modifiers-section {
+            margin-bottom: 25px;
+        }
+
+        .modifiers-title {
+            font-size: 1rem;
+            font-weight: 600;
             margin-bottom: 15px;
-            font-size: 1.3em;
+            color: var(--text-main);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
         }
 
-        .question p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .options {
+        .brand-selection {
             display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .brand-option {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .brand-option:hover {
+            border-color: var(--primary);
+        }
+
+        .brand-option.selected {
+            border-color: var(--primary);
+            background-color: #e8f4fc;
+        }
+
+        .brand-option input {
+            display: none;
+        }
+
+        .brand-name {
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .service-type {
+            display: flex;
+            justify-content: space-between;
             gap: 10px;
             margin-top: 15px;
         }
 
-        .option-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-        }
-
-        .option-btn:hover {
-            background: #e9ecef;
-            border-color: #667eea;
-            transform: translateX(5px);
-        }
-
-        .option-btn.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        input[type="text"], input[type="number"], textarea, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
+        .service-option {
+            flex: 1;
+            border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 1em;
-            margin-top: 10px;
-            transition: border 0.3s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: transform 0.3s;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background 0.3s;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .alert {
             padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left: 4px solid #17a2b8;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 4px solid #28a745;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left: 4px solid #ffc107;
-        }
-
-        .summary-box {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #667eea;
-        }
-
-        .summary-box h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .activity-card {
-            background: white;
-            border: 2px solid #e9ecef;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .activity-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .activity-card.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-
-        .activity-card h5 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .activity-card p {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .checklist {
-            list-style: none;
-        }
-
-        .checklist li {
-            padding: 10px;
-            margin: 5px 0;
-            background: #f8f9fa;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .checklist input[type="checkbox"] {
-            margin-right: 10px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .phase-indicator {
             text-align: center;
-            color: #667eea;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .timeline {
-            margin: 30px 0;
-        }
-
-        .timeline-item {
-            padding: 15px;
-            margin: 10px 0;
-            border-left: 3px solid #667eea;
-            background: #f8f9fa;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .timeline-item h5 {
-            color: #667eea;
-            margin-bottom: 8px;
-        }
-
-        .category-select {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .category-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
             cursor: pointer;
-            text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.2s;
         }
 
-        .category-card:hover {
-            transform: scale(1.05);
+        .service-option:hover {
+            border-color: var(--primary);
         }
 
-        .navigation-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e9ecef;
+        .service-option.selected {
+            border-color: var(--primary);
+            background-color: #e8f4fc;
         }
 
-        .hidden {
+        .service-option input {
             display: none;
         }
 
-        .activity-list {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .stat-card h3 {
-            font-size: 2em;
+        .service-name {
+            font-weight: 700;
+            font-size: 1.1rem;
             margin-bottom: 5px;
         }
 
-        .stat-card p {
-            font-size: 0.9em;
-            opacity: 0.9;
+        .service-price {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .service-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* CONTROLES DE CANTIDAD EN MODAL */
+        .modal-quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .modal-quantity-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .modal-quantity-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .modal-quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .modal-quantity-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .modal-add-to-cart {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .modal-add-to-cart:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .modal-add-to-cart.in-cart {
+            background-color: var(--accent);
+        }
+
+        /* TOTAL EN MODAL */
+        .modal-total {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .modal-total-price {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        /* MODAL DE CONFIRMACIÓN */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .confirmation-modal.active {
+            display: flex;
+        }
+
+        .confirmation-modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .confirmation-modal-logo {
+            height: 80px;
+            width: auto;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid var(--primary);
+        }
+
+        /* PAYMENT METHODS */
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary);
+            background-color: #fff9f0;
+        }
+
+        .payment-method input {
+            display: none;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 10px;
+            color: var(--primary);
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        /* =========================================
+           RESPONSIVIDAD
+           ========================================= */
+        
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-section {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 16px; }
+
+            header { padding: 20px 0; }
+            .header-content { flex-direction: column; text-align: center; }
+            .logo-container { flex-direction: column; gap: 10px; }
+            .logo-img { height: 60px; width: 60px; }
+            .logo-text { font-size: 1.6rem; }
+
+            .purificadora-info { padding: 20px; margin-top: -20px; }
+            .purificadora-info h3 { font-size: 1.4rem; }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 12px;
+            }
+            
+            .product-card { border-radius: 12px; }
+            .product-img { height: 130px; }
+            .product-info { padding: 12px; }
+            .product-title { font-size: 0.95rem; line-height: 1.2; }
+            .product-desc { display: none; }
+            .product-price { font-size: 1rem; }
+            .add-to-cart { padding: 5px 10px; font-size: 0.9rem; }
+
+            .floating-cart-icon { display: flex; }
+            
+            .product-modal-content {
+                max-height: 95vh;
+            }
+            
+            .confirmation-modal-content { 
+                width: 90%; 
+                padding: 20px; 
+            }
+            
+            .brand-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-type {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .section-title { font-size: 1.3rem; }
+            
+            .category-btn { padding: 6px 14px; font-size: 0.9rem; }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .product-modal-info {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🚀 Tu Viaje de Transformación Personal</h1>
-            <p>Tutorial Interactivo para Desarrollo Auténtico</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar"></div>
+
+    <div class="floating-cart-icon" id="floatingCartIcon">
+        <i class="fas fa-tint"></i> 
+        <div class="cart-count" id="floatingCartCount">0</div>
+    </div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo GluGlu MX" class="logo-img">
+                    <h1 class="logo-text">GluGlu MX</h1>
+                </div>
             </div>
         </div>
+    </header>
 
-        <div class="content">
-            <!-- FASE 0: BIENVENIDA -->
-            <div class="phase active" id="phase0">
-                <div class="phase-indicator">BIENVENIDA</div>
-                <h2>¡Hola! Comencemos tu transformación 🌟</h2>
-                <p>Este tutorial te guiará paso a paso para convertirte en tu mejor versión. No se trata de "trucos" o manipulación, sino de desarrollo genuino que naturalmente atrae a las personas correctas.</p>
+    <div class="container">
+        <div class="purificadora-info">
+            <h3><i class="fas fa-tint"></i> Agua Purificada de Calidad</h3>
+            <p style="font-size: 0.9rem; color: #666;">Lunes a Domingo 8:00 AM - 8:00 PM</p>
+            <p style="font-size: 0.9rem;"><i class="fas fa-map-pin" style="color:var(--accent)"></i> Tu ubicación</p>
+            <p style="font-size: 0.9rem; margin-top: 10px; background: #e8f4fc; padding: 8px; border-radius: 8px; border-left: 4px solid var(--primary);">
+                <strong>Servicio:</strong> Rellenamos tu envase con agua purificada de la marca que prefieras
+            </p>
+            <p style="font-size: 0.9rem; margin-top: 10px; background: #e8f4fc; padding: 8px; border-radius: 8px; border-left: 4px solid var(--accent);">
+                <strong>Precios:</strong> Tradicional $35 • Plus (con perlas de plata) $45 • Te confirmamos el precio al recoger
+            </p>
+        </div>
+        
+        <div class="main-content">
+            <section class="menu-section">
+                <h2 class="section-title">Selecciona tu marca</h2>
                 
-                <div class="alert alert-info">
-                    <strong>Importante:</strong> Este proceso toma tiempo. Los cambios reales requieren 8-12 semanas mínimo. ¿Estás listo/a para comprometerte?
+                <div class="menu-categories">
+                    <button class="category-btn active" data-category="all">Todas las marcas</button>
+                    <button class="category-btn" data-category="premium">Marcas Premium</button>
+                    <button class="category-btn" data-category="generico">Genérico</button>
                 </div>
 
-                <h3>¿Qué lograrás con este tutorial?</h3>
-                <ul style="line-height: 2; margin: 20px 0 20px 30px;">
-                    <li>Desarrollar tu vida independiente y rica</li>
-                    <li>Generar interés genuino de forma natural</li>
-                    <li>Mejorar tu autoestima y confianza</li>
-                    <li>Crear un equilibrio saludable en relaciones</li>
-                    <li>Convertirte en alguien naturalmente atractivo</li>
-                </ul>
-
-                <button class="btn-primary" onclick="nextPhase()">Comenzar mi transformación</button>
-            </div>
-
-            <!-- FASE 1: EVALUACIÓN INICIAL -->
-            <div class="phase" id="phase1">
-                <div class="phase-indicator">FASE 1: CONOCIENDO TU SITUACIÓN ACTUAL</div>
-                <h2>Evaluación Inicial 📊</h2>
-                <p>Primero necesitamos entender dónde estás ahora. Sé completamente honesto/a - nadie más verá esto.</p>
-
-                <div class="question">
-                    <h3>1. ¿Cuál es tu situación actual con la persona que te interesa?</h3>
-                    <select id="situacion" onchange="saveData('situacion', this.value)">
-                        <option value="">Selecciona una opción...</option>
-                        <option value="no_interesa">No me conoce o apenas me conoce</option>
-                        <option value="amigos">Somos amigos/conocidos</option>
-                        <option value="saliendo">Estamos saliendo casualmente</option>
-                        <option value="no_reciproco">Le intereso pero no estoy seguro/a de reciprocidad</option>
-                        <option value="rechazo">Me rechazó o mostró no interés</option>
-                    </select>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Los productos se cargarán aquí con JavaScript -->
                 </div>
+            </section>
 
-                <div class="question">
-                    <h3>2. ¿Cuánto piensas en esta persona durante el día?</h3>
-                    <div class="options">
-                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'ocasional')">
-                            Ocasionalmente - Menos del 20% del tiempo
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'moderado')">
-                            Moderadamente - 20-50% del tiempo
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'frecuente')">
-                            Frecuentemente - 50-80% del tiempo
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'frecuencia_pensamiento', 'constante')">
-                            Constantemente - Más del 80% del tiempo
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <h3>3. ¿Con qué frecuencia revisas sus redes sociales?</h3>
-                    <div class="options">
-                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'rara')">
-                            Raramente - Menos de 1 vez al día
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'diaria')">
-                            Diariamente - 1-3 veces al día
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'multiple')">
-                            Múltiples veces - 4-10 veces al día
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'redes_sociales', 'constante')">
-                            Constantemente - Más de 10 veces al día
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <h3>4. ¿Qué tan activa es tu vida social actualmente?</h3>
-                    <div class="options">
-                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'muy_activa')">
-                            Muy activa - Salgo con amigos 4+ veces por semana
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'moderada')">
-                            Moderada - Salgo 1-3 veces por semana
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'limitada')">
-                            Limitada - Salgo 1-2 veces al mes
-                        </div>
-                        <div class="option-btn" onclick="selectOption(this, 'vida_social', 'minima')">
-                            Mínima - Casi no salgo socialmente
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <h3>5. ¿Tienes hobbies o pasiones activas?</h3>
-                    <textarea id="hobbies" placeholder="Escribe tus hobbies actuales o escribe 'ninguno' si no tienes..." onchange="saveData('hobbies', this.value)"></textarea>
-                </div>
-
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="analyzeAndNext()">Analizar mi situación →</button>
-                </div>
-            </div>
-
-            <!-- FASE 2: DIAGNÓSTICO -->
-            <div class="phase" id="phase2">
-                <div class="phase-indicator">FASE 2: TU DIAGNÓSTICO PERSONALIZADO</div>
-                <h2>Análisis de tu Situación 🔍</h2>
+            <section class="cart-section" id="cartSection">
+                <h2 class="section-title">Tu Pedido</h2>
                 
-                <div id="diagnostico-content">
-                    <!-- Se llenará dinámicamente -->
+                <div class="cart-items" id="cartItems">
+                    <p style="text-align:center; color:#999; margin-top:20px;">Tu carrito está vacío</p>
                 </div>
 
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="nextPhase()">Entendido, continuar →</button>
-                </div>
-            </div>
-
-            <!-- FASE 3: SELECCIÓN DE ACTIVIDADES FÍSICAS -->
-            <div class="phase" id="phase3">
-                <div class="phase-indicator">FASE 3: CONSTRUYENDO TU NUEVA VIDA - PARTE 1</div>
-                <h2>Elige tu Actividad FÍSICA 💪</h2>
-                <p>Esta será tu primera pieza fundamental. Elige algo que realmente te interese, no lo que creas que "deberías" hacer.</p>
-
-                <div class="alert alert-info">
-                    <strong>Criterios importantes:</strong> Debe ser algo que puedas hacer mínimo 3 veces por semana, y que te saque de casa.
-                </div>
-
-                <div class="filter-buttons" id="physical-filters">
-                    <button class="filter-btn active" onclick="filterActivities('physical', 'todas')">Todas</button>
-                    <button class="filter-btn" onclick="filterActivities('physical', 'bajo_costo')">Bajo costo</button>
-                    <button class="filter-btn" onclick="filterActivities('physical', 'social')">Sociales</button>
-                    <button class="filter-btn" onclick="filterActivities('physical', 'individual')">Individuales</button>
-                    <button class="filter-btn" onclick="filterActivities('physical', 'rapido')">Resultados rápidos</button>
+                <div style="background:#f4f4f4; padding:15px; border-radius:8px; margin-bottom:15px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span>Subtotal:</span>
+                        <span id="subtotal" style="font-weight:bold;">$0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span>Envío:</span>
+                        <span id="shippingCost">$0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:1.2rem; color:var(--primary); border-top:1px dashed #ccc; padding-top:10px; margin-top:5px;">
+                        <span>Total:</span>
+                        <span id="total" style="font-weight:800;">$0.00</span>
+                    </div>
                 </div>
 
-                <div class="activity-list" id="physical-activities">
-                    <!-- Se llenará dinámicamente -->
+                <div style="margin-bottom:15px;">
+                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius:8px;">
+                        <input type="radio" name="deliveryType" value="pickup" checked>
+                        <span><i class="fas fa-store"></i> Recoger en el local</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius=8px;">
+                        <input type="radio" name="deliveryType" value="delivery">
+                        <span><i class="fas fa-motorcycle"></i> Envío a domicilio</span>
+                    </label>
                 </div>
 
-                <div class="question" style="margin-top: 30px;">
-                    <h3>¿Cuándo comenzarás?</h3>
-                    <input type="date" id="physical-start-date" onchange="saveData('physical_start_date', this.value)">
+                <div id="deliveryAddressSection" style="display: none;">
+                    <button id="useCurrentLocationBtn" style="width:100%; padding:10px; background:#e3f2fd; color:#1565c0; border:none; border-radius:8px; font-weight:600; cursor:pointer; margin-bottom:10px;">
+                        <i class="fas fa-location-arrow"></i> Usar mi ubicación
+                    </button>
+
+                    <div class="mapbox-container" id="mapboxContainer">
+                        <div class="map-address-search">
+                            <input type="text" id="mapSearch" placeholder="Buscar dirección...">
+                            <button id="mapSearchBtn"><i class="fas fa-search"></i></button>
+                        </div>
+                        <div id="map"></div>
+                    </div>
                     
-                    <h3 style="margin-top: 20px;">¿A qué hora específica?</h3>
-                    <input type="time" id="physical-time" onchange="saveData('physical_time', this.value)">
-                </div>
-
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="validateAndNext('physical')">Continuar con actividades mentales →</button>
-                </div>
-            </div>
-
-            <!-- FASE 4: SELECCIÓN DE ACTIVIDADES MENTALES -->
-            <div class="phase" id="phase4">
-                <div class="phase-indicator">FASE 3: CONSTRUYENDO TU NUEVA VIDA - PARTE 2</div>
-                <h2>Elige tu Actividad MENTAL/CREATIVA 🧠</h2>
-                <p>Algo que desarrolle tu mente y te haga más interesante. Puede ser aprender, crear, o desarrollar una habilidad.</p>
-
-                <div class="filter-buttons" id="mental-filters">
-                    <button class="filter-btn active" onclick="filterActivities('mental', 'todas')">Todas</button>
-                    <button class="filter-btn" onclick="filterActivities('mental', 'creativo')">Creativas</button>
-                    <button class="filter-btn" onclick="filterActivities('mental', 'tech')">Tecnología</button>
-                    <button class="filter-btn" onclick="filterActivities('mental', 'arte')">Arte</button>
-                    <button class="filter-btn" onclick="filterActivities('mental', 'practico')">Prácticas</button>
-                </div>
-
-                <div class="activity-list" id="mental-activities">
-                    <!-- Se llenará dinámicamente -->
-                </div>
-
-                <div class="question" style="margin-top: 30px;">
-                    <h3>¿Cuánto tiempo diario dedicarás? (mínimo 30 minutos)</h3>
-                    <input type="number" id="mental-time-daily" min="30" placeholder="Minutos por día" onchange="saveData('mental_time_daily', this.value)">
+                    <div style="margin-top: 10px;">
+                        <label for="deliveryAddress" style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--text-main);">Dirección seleccionada:</label>
+                        <input type="text" id="deliveryAddress" class="form-control" placeholder="Haz clic en el mapa o busca una dirección" readonly style="background-color: #f9f9f9; cursor: pointer;">
+                        <small style="display: block; margin-top: 5px; color: var(--text-light); font-size: 0.85rem;">
+                            <i class="fas fa-info-circle"></i> Haz clic en cualquier punto del mapa para seleccionar la dirección
+                        </small>
+                    </div>
                     
-                    <h3 style="margin-top: 20px;">¿A qué hora del día?</h3>
-                    <select id="mental-time-of-day" onchange="saveData('mental_time_of_day', this.value)">
-                        <option value="">Selecciona...</option>
-                        <option value="manana">Mañana (6am-12pm)</option>
-                        <option value="tarde">Tarde (12pm-6pm)</option>
-                        <option value="noche">Noche (6pm-12am)</option>
-                    </select>
-                </div>
-
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="validateAndNext('mental')">Continuar con actividades sociales →</button>
-                </div>
-            </div>
-
-            <!-- FASE 5: SELECCIÓN DE ACTIVIDADES SOCIALES -->
-            <div class="phase" id="phase5">
-                <div class="phase-indicator">FASE 3: CONSTRUYENDO TU NUEVA VIDA - PARTE 3</div>
-                <h2>Elige tu Actividad SOCIAL 👥</h2>
-                <p>Esto es OBLIGATORIO. Necesitas expandir tu círculo social y practicar interacciones.</p>
-
-                <div class="alert alert-warning">
-                    <strong>Importante:</strong> Si eres introvertido/a, elige algo en grupos pequeños primero. No te forces a algo que te cause ansiedad extrema.
-                </div>
-
-                <div class="filter-buttons" id="social-filters">
-                    <button class="filter-btn active" onclick="filterActivities('social', 'todas')">Todas</button>
-                    <button class="filter-btn" onclick="filterActivities('social', 'introvertido')">Para introvertidos</button>
-                    <button class="filter-btn" onclick="filterActivities('social', 'extrovertido')">Para extrovertidos</button>
-                    <button class="filter-btn" onclick="filterActivities('social', 'voluntariado')">Voluntariado</button>
-                    <button class="filter-btn" onclick="filterActivities('social', 'grupos')">Grupos/Meetups</button>
-                </div>
-
-                <div class="activity-list" id="social-activities">
-                    <!-- Se llenará dinámicamente -->
-                </div>
-
-                <div class="question" style="margin-top: 30px;">
-                    <h3>¿Con qué frecuencia participarás?</h3>
-                    <select id="social-frequency" onchange="saveData('social_frequency', this.value)">
-                        <option value="">Selecciona...</option>
-                        <option value="semanal">1 vez por semana</option>
-                        <option value="bisemanal">2 veces por semana</option>
-                        <option value="trisemanal">3+ veces por semana</option>
-                    </select>
-                </div>
-
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="validateAndNext('social')">Ver mi plan completo →</button>
-                </div>
-            </div>
-
-            <!-- FASE 6: RESUMEN DEL PLAN -->
-            <div class="phase" id="phase6">
-                <div class="phase-indicator">TU PLAN PERSONALIZADO</div>
-                <h2>🎯 Tu Plan de Transformación de 12 Semanas</h2>
-                
-                <div class="stats-grid" id="stats-grid">
-                    <!-- Se llenará dinámicamente -->
-                </div>
-
-                <div class="summary-box">
-                    <h4>📅 TUS ACTIVIDADES SELECCIONADAS</h4>
-                    <div id="selected-activities-summary">
-                        <!-- Se llenará dinámicamente -->
+                    <div class="loading" id="shippingLoading">
+                        <i class="fas fa-spinner"></i> Calculando distancia...
                     </div>
-                </div>
-
-                <div class="timeline">
-                    <h3>⏱️ Timeline de Resultados Esperados</h3>
-                    <div class="timeline-item">
-                        <h5>Semanas 1-2: Adaptación</h5>
-                        <p>Comenzarás las actividades. Al principio sentirás incomodidad - es normal. Tu cerebro estará ocupado con cosas nuevas en lugar de obsesionarse con esa persona.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h5>Semanas 3-4: Primeros Cambios</h5>
-                        <p>Empezarás a disfrutar las actividades. Tu energía y confianza mejoran notablemente. Si hay contacto con la persona, notarás que ya no estás tan disponible (genuinamente).</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h5>Semanas 5-8: Transformación Visible</h5>
-                        <p>Cambios físicos visibles. Tu círculo social se expande. Empiezas a recibir más atención de varias personas. La persona original puede notar el cambio.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <h5>Semanas 9-12: Nueva Versión de Ti</h5>
-                        <p>Has desarrollado rutinas sólidas. Tu vida es genuinamente interesante. Si hay interés recíproco, será evidente. Si no, tendrás la claridad y autoestima para seguir adelante.</p>
-                    </div>
-                </div>
-
-                <div class="alert alert-success">
-                    <strong>¡Importante!</strong> Guarda este plan. Puedes tomar captura de pantalla o copiar la información. Revísalo semanalmente.
-                </div>
-
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="nextPhase()">Aprender sobre comunicación →</button>
-                </div>
-            </div>
-
-            <!-- FASE 7: GUÍA DE COMUNICACIÓN -->
-            <div class="phase" id="phase7">
-                <div class="phase-indicator">FASE 4: MANEJO DE COMUNICACIÓN</div>
-                <h2>💬 Cómo Comunicarte de Ahora en Adelante</h2>
-                
-                <p>Ahora que tienes actividades reales, tu comunicación será naturalmente diferente. Aquí están las reglas clave:</p>
-
-                <div class="question">
-                    <h3>Regla #1: Tiempo de Respuesta Natural</h3>
-                    <p>Antes de estos cambios, probablemente respondías inmediatamente. Ahora:</p>
-                    <div class="alert alert-info">
-                        <strong>NUEVA NORMA:</strong> Responde cuando genuinamente puedas dar atención de calidad.
-                        <ul style="margin-top: 10px; line-height: 1.8;">
-                            <li>Si estás en el gym → Responde después</li>
-                            <li>Si estás en clase/actividad → Responde después</li>
-                            <li>Si estás con amigos → Responde después</li>
-                            <li>Si es algo urgente → Responde razonablemente pronto</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <h3>Regla #2: Calidad sobre Cantidad</h3>
-                    <p>Ejemplos de conversación:</p>
                     
-                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 10px 0;">
-                        <strong>❌ EVITA (Genérico y aburrido):</strong>
-                        <p style="margin: 10px 0; font-style: italic;">"Hola, ¿qué haces?"<br>"¿Cómo estuvo tu día?"</p>
+                    <!-- Estado de cálculo automático -->
+                    <div class="auto-calculating-status" id="autoCalculatingStatus">
+                        <i class="fas fa-sync-alt"></i> Calculando costo de envío...
                     </div>
-
-                    <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 10px 0;">
-                        <strong>✅ MEJOR (Específico e interesante):</strong>
-                        <p style="margin: 10px 0; font-style: italic;">"Acabo de salir de mi clase de [tu actividad], fue intenso pero genial. ¿Has probado algo nuevo últimamente?"</p>
+                    
+                    <div class="distance-details" id="distanceDetails">
+                        <div class="distance-row">
+                            <span>Distancia:</span>
+                            <span id="distanceText">-- km</span>
+                        </div>
+                        <div class="distance-row">
+                            <span>Tiempo estimado:</span>
+                            <span id="timeText">-- min</span>
+                        </div>
+                        <div class="distance-row">
+                            <span>Tarifa por km:</span>
+                            <span>$10.00</span>
+                        </div>
+                        <div class="distance-row total">
+                            <span>Costo de envío:</span>
+                            <span id="calculatedShippingCost" style="color: var(--primary);">$0.00</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="question">
-                    <h3>Regla #3: Termina Conversaciones</h3>
-                    <p>No alargues conversaciones artificialmente. Cuando llegue a un punto natural:</p>
-                    <div class="alert alert-info">
-                        "Bueno, tengo que ir a [actividad real]. ¡Hablamos luego!"
+                    
+                    <div class="delivery-limit-warning" id="deliveryLimitWarning">
+                        <i class="fas fa-exclamation-triangle"></i> No entregamos a más de 15 km de distancia.
                     </div>
-                    <p>Esto crea el ciclo de presencia-ausencia que genera interés.</p>
+                    
+                    <!-- Botón de calcular envío eliminado - ahora es automático -->
                 </div>
 
-                <div class="question">
-                    <h3>Regla #4: No Busques Validación</h3>
-                    <p>No envíes mensajes para "ver si responde" o "medir interés". Solo comunica cuando tengas algo genuino que decir.</p>
-                    <div class="alert alert-warning">
-                        <strong>Ejemplo de lo que NO hacer:</strong><br>
-                        "¿Te acuerdas de mí?"<br>
-                        "¿Estás ocupado/a?"<br>
-                        "¿Qué haces?" (sin contexto)
-                    </div>
-                </div>
-
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" onclick="previousPhase()">← Anterior</button>
-                    <button class="btn-primary" onclick="nextPhase()">Finalizar y comenzar →</button>
-                </div>
-            </div>
-
-            <!-- FASE 8: FINAL -->
-            <div class="phase" id="phase8">
-                <div class="phase-indicator">¡FELICIDADES!</div>
-                <h2>🎉 ¡Estás Listo/a para Comenzar!</h2>
-                
-                <div class="alert alert-success">
-                    <strong>¡Excelente trabajo!</strong> Has creado un plan personalizado para tu transformación. Ahora depende de ti implementarlo.
-                </div>
-
-                <div class="summary-box">
-                    <h4>📋 Resumen de tu Compromiso</h4>
-                    <div id="final-summary">
-                        <!-- Se llenará dinámicamente -->
-                    </div>
-                </div>
-
-                <div class="question">
-                    <h3>🎯 Próximos Pasos Recomendados</h3>
-                    <div class="checklist">
-                        <li><input type="checkbox"> Guardar este plan en un lugar visible</li>
-                        <li><input type="checkbox"> Configurar recordatorios en tu calendario</li>
-                        <li><input type="checkbox"> Compartir tu compromiso con un amigo/a de confianza</li>
-                        <li><input type="checkbox"> Tomar "antes y después" (fotos, estado mental)</li>
-                        <li><input type="checkbox"> Revisar progreso cada domingo</li>
-                    </div>
-                </div>
-
-                <div class="alert alert-info">
-                    <strong>Recuerda:</strong> Este proceso no se trata de la otra persona. Se trata de ti. Si sigues este plan, en 12 semanas estarás en un lugar completamente diferente, con o sin esa persona.
-                </div>
-
-                <button class="btn-primary" onclick="resetTutorial()" style="width: 100%; padding: 20px; font-size: 1.2em;">
-                    🚀 Comenzar Mi Transformación Ahora
+                <button class="checkout-btn" id="checkoutBtn">
+                    <i class="fas fa-shopping-bag"></i> Proceder al Pedido
                 </button>
+            </section>
+        </div>
 
-                <p style="text-align: center; margin-top: 20px; color: #666;">
-                    Puedes volver a revisar este tutorial cuando quieras refrescando la página.
-                </p>
+        <section class="checkout-form" id="checkoutForm" style="display: none; max-width: 600px; margin: 0 auto;">
+            <h2 class="section-title">Finalizar Pedido</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>Nombre Completo *</label>
+                    <input type="text" id="customerName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono *</label>
+                    <input type="tel" id="customerPhone" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de Entrega</label>
+                    <select id="deliveryTypeFinal" class="form-control" required>
+                        <option value="pickup">Recoger en local</option>
+                        <option value="delivery">Envío a domicilio</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="finalAddressSection" style="display: none;">
+                    <label>Dirección para envío *</label>
+                    <input type="text" id="customerAddress" class="form-control" placeholder="Calle, número, colonia">
+                </div>
+                
+                <div class="form-group">
+                    <label>Método de Pago *</label>
+                    <div class="payment-methods">
+                        <div class="payment-method" id="cashMethod">
+                            <input type="radio" id="cash" name="paymentMethod" value="cash">
+                            <i class="fas fa-money-bill-wave"></i> Efectivo
+                        </div>
+                        <div class="payment-method selected" id="cardMethod">
+                            <input type="radio" id="card" name="paymentMethod" value="card" checked>
+                            <i class="fas fa-credit-card"></i> Tarjeta
+                        </div>
+                    </div>
+                    
+                    <div class="cash-details" id="cashDetails">
+                        <label>¿Con cuánto pagarás? *</label>
+                        <input type="number" id="cashAmount" class="form-control" placeholder="Ej. 500.00" min="0" step="0.01">
+                        <div class="change-info" id="changeInfo">
+                            Cambio: <span id="changeAmount">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Notas adicionales</label>
+                    <textarea id="customerNotes" class="form-control" rows="2" placeholder="Ej: Entregar después de las 5pm, timbre azul, etc."></textarea>
+                </div>
+
+                <button type="submit" class="submit-order-btn">
+                    <i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp
+                </button>
+                <button type="button" id="cancelCheckout" style="width:100%; padding:10px; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer;">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Modal de producto -->
+    <div class="product-modal" id="productModal">
+        <div class="product-modal-content">
+            <button class="product-modal-close" id="closeProductModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalProductImage" src="" alt="" class="product-modal-img">
+            <div class="product-modal-info">
+                <h3 id="modalProductTitle" class="product-modal-title"></h3>
+                <p id="modalProductDesc" class="product-modal-desc"></p>
+                <div id="modalProductPrice" class="product-modal-price"></div>
+                
+                <!-- SECCIÓN DE MARCAS Y TIPO DE SERVICIO -->
+                <div class="modifiers-section" id="modifiersSection">
+                    <h4 class="modifiers-title">Selecciona la marca de tu envase</h4>
+                    <div class="brand-selection" id="brandsList">
+                        <!-- Las marcas se cargarán aquí dinámicamente -->
+                    </div>
+                    
+                    <h4 class="modifiers-title" style="margin-top: 25px;">Tipo de servicio</h4>
+                    <div class="service-type" id="serviceType">
+                        <div class="service-option" id="tradicionalOption">
+                            <input type="radio" id="tradicional" name="serviceType" value="tradicional">
+                            <div class="service-name">Tradicional</div>
+                            <div class="service-price">$35.00</div>
+                            <div class="service-desc">Proceso estándar de purificación</div>
+                        </div>
+                        <div class="service-option" id="plusOption">
+                            <input type="radio" id="plus" name="serviceType" value="plus">
+                            <div class="service-name">Plus</div>
+                            <div class="service-price">$45.00</div>
+                            <div class="service-desc">Proceso con perlas de plata</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-total">
+                    Total: <span id="modalTotalPrice" class="modal-total-price">$0.00</span>
+                </div>
+                
+                <div class="modal-quantity-controls">
+                    <button class="modal-quantity-btn" id="modalDecreaseBtn">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <div id="modalQuantityDisplay" class="modal-quantity-display">1</div>
+                    <button class="modal-quantity-btn" id="modalIncreaseBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <button class="modal-add-to-cart" id="modalAddToCartBtn">
+                    <i class="fas fa-cart-plus"></i> Añadir al carrito
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Modal de confirmación -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-modal-content">
+            <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo" class="confirmation-modal-logo">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">¡Pedido Enviado!</h3>
+            <p style="margin-bottom: 20px; color: var(--text-light);">Tu pedido ha sido enviado por WhatsApp. Te contactaremos pronto para confirmar el precio exacto.</p>
+            <p style="margin-bottom: 20px; font-weight: 600;">WhatsApp: +52 55 7867 7774</p>
+            <button class="checkout-btn" id="closeModalBtn" style="background: var(--primary);">
+                <i class="fas fa-check"></i> Cerrar
+            </button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">Mensaje aquí</div>
+
+    <footer>
+        <div class="container">
+            <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo Footer" class="footer-logo">
+            <p>&copy; 2025 GluGlu MX - Purificadora de Agua</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp: +52 55 7867 7774
+            </p>
+            <p style="margin-top: 5px; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
+                Selecciona tu marca: Bonafont, E-pura, Electropura, Ciel, Genérico
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
     <script>
-        // Datos del usuario
-        const userData = {
-            // Fase 1
-            situacion: '',
-            frecuencia_pensamiento: '',
-            redes_sociales: '',
-            vida_social: '',
-            hobbies: '',
-            
-            // Fase 3-5
-            physical_activity: null,
-            physical_start_date: '',
-            physical_time: '',
-            
-            mental_activity: null,
-            mental_time_daily: '',
-            mental_time_of_day: '',
-            
-            social_activity: null,
-            social_frequency: '',
-            
-            // Estado
-            currentPhase: 0,
-            totalPhases: 9
+        // ============================================
+        // CONFIGURACIÓN
+        // ============================================
+        const whatsappNumber = "+525578677774";
+        const purificadoraAddress = "Tu ubicación, Ciudad de México";
+        const purificadoraCoords = [-99.1853, 19.4646];
+        
+        // Tarifas de envío
+        const shippingRates = {
+            perKmRate: 10.00, // $10 por km
+            maxDistance: 15, // Límite de 15 km
+            minOrderForDelivery: 50.00 // Pedido mínimo para envío
         };
 
-        // Actividades disponibles
-        const activities = {
-            physical: [
-                { id: 1, name: "Gimnasio/Fitness", category: "individual", tags: ["rapido"], description: "Resultados visibles en 4-6 semanas", time: "1 hora", frequency: "3-5 veces/semana" },
-                { id: 2, name: "CrossFit/Entrenamiento Funcional", category: "social", tags: ["social", "rapido"], description: "Comunidad muy unida, resultados rápidos", time: "1 hora", frequency: "3-4 veces/semana" },
-                { id: 3, name: "Natación", category: "individual", tags: ["bajo_costo"], description: "Bajo impacto, excelente para todo el cuerpo", time: "45 min", frequency: "3 veces/semana" },
-                { id: 4, name: "Running/Carrera", category: "individual", tags: ["bajo_costo", "individual"], description: "Solo necesitas zapatillas, puedes unirte a grupos", time: "30-60 min", frequency: "3-4 veces/semana" },
-                { id: 5, name: "Artes Marciales (Boxeo, Muay Thai, BJJ)", category: "social", tags: ["social", "rapido"], description: "Desarrolla confianza y disciplina", time: "1-1.5 horas", frequency: "2-3 veces/semana" },
-                { id: 6, name: "Yoga/Pilates", category: "individual", tags: ["bajo_costo"], description: "Mejora flexibilidad y reduce estrés", time: "1 hora", frequency: "3-4 veces/semana" },
-                { id: 7, name: "Escalada/Boulder", category: "social", tags: ["social"], description: "Comunidad muy amigable, desafío mental y físico", time: "1.5 horas", frequency: "2-3 veces/semana" },
-                { id: 8, name: "Baile (Salsa, Bachata, etc)", category: "social", tags: ["social", "rapido"], description: "Excelente para socializar y coordinación", time: "1-2 horas", frequency: "2 veces/semana" },
-                { id: 9, name: "Ciclismo", category: "individual", tags: ["individual"], description: "Explora tu ciudad, mejora resistencia", time: "1-2 horas", frequency: "2-3 veces/semana" },
-                { id: 10, name: "Deportes en Equipo (Fútbol, Básquet, Vóley)", category: "social", tags: ["social"], description: "Socialización forzada, trabajo en equipo", time: "1.5 horas", frequency: "1-2 veces/semana" }
-            ],
-            mental: [
-                { id: 1, name: "Aprender un Instrumento Musical", category: "creativo", tags: ["creativo", "arte"], description: "Guitarra, piano, ukelele - muy satisfactorio", time: "30-60 min/día", frequency: "Diario" },
-                { id: 2, name: "Programación/Desarrollo Web", category: "tech", tags: ["tech", "practico"], description: "Habilidad muy valiosa, comunidad global", time: "1 hora/día", frequency: "5-6 días/semana" },
-                { id: 3, name: "Idioma Extranjero", category: "practico", tags: ["practico"], description: "Abre puertas culturales y profesionales", time: "30-45 min/día", frequency: "Diario" },
-                { id: 4, name: "Fotografía", category: "arte", tags: ["arte", "creativo"], description: "Desarrolla tu ojo artístico, sal a explorar", time: "Varía", frequency: "2-3 veces/semana" },
-                { id: 5, name: "Escritura Creativa/Blogging", category: "creativo", tags: ["creativo"], description: "Expresa tus ideas, mejora comunicación", time: "30-45 min/día", frequency: "4-5 días/semana" },
-                { id: 6, name: "Cocina/Gastronomía", category: "practico", tags: ["practico"], description: "Habilidad práctica que impresiona", time: "1-2 horas", frequency: "2-3 veces/semana" },
-                { id: 7, name: "Dibujo/Pintura", category: "arte", tags: ["arte", "creativo"], description: "Desarrollo cerebral, expresión artística", time: "1 hora", frequency: "2-3 veces/semana" },
-                { id: 8, name: "Ajedrez/Puzzles Estratégicos", category: "tech", tags: ["tech"], description: "Mejora pensamiento estratégico y paciencia", time: "30-45 min/día", frequency: "Diario" },
-                { id: 9, name: "Jardinería/Huerto Urbano", category: "practico", tags: ["practico"], description: "Conectar con naturaleza, muy terapéutico", time: "30 min/día", frequency: "Diario" },
-                { id: 10, name: "Meditación/Mindfulness", category: "practico", tags: ["practico"], description: "Reduce ansiedad, mejora enfoque", time: "15-20 min/día", frequency: "Diario" }
-            ],
-            social: [
-                { id: 1, name: "Clases Grupales (cocina, arte, etc)", category: "grupos", tags: ["introvertido"], description: "Estructurado, propósito claro, conversación natural", time: "2-3 horas", frequency: "1 vez/semana" },
-                { id: 2, name: "Voluntariado en Causa que Te Importe", category: "voluntariado", tags: ["introvertido"], description: "Propósito mayor, gente con valores similares", time: "3-4 horas", frequency: "1-2 veces/semana" },
-                { id: 3, name: "Grupos de Interés (Meetup.com)", category: "grupos", tags: ["introvertido"], description: "Temas específicos, conversaciones más fáciles", time: "2-3 horas", frequency: "1-2 veces/semana" },
-                { id: 4, name: "Deportes en Equipo Amateur", category: "grupos", tags: ["extrovertido"], description: "Socialización estructurada alrededor de actividad", time: "1.5-2 horas", frequency: "1-2 veces/semana" },
-                { id: 5, name: "Grupos de Caminata/Senderismo", category: "grupos", tags: ["introvertido"], description: "Actividad física + socialización baja presión", time: "2-4 horas", frequency: "1 vez/semana" },
-                { id: 6, name: "Club de Libro o Debate", category: "grupos", tags: ["introvertido"], description: "Conversaciones profundas, gente pensante", time: "2 horas", frequency: "1 vez/semana" },
-                { id: 7, name: "Eventos de Networking Profesional", category: "grupos", tags: ["extrovertido"], description: "Desarrollo profesional + social", time: "2-3 horas", frequency: "2 veces/mes" },
-                { id: 8, name: "Talleres de Improvisación/Teatro", category: "grupos", tags: ["extrovertido"], description: "Salir de zona de confort, mejorar habilidades sociales", time: "2 horas", frequency: "1 vez/semana" },
-                { id: 9, name: "Grupos de Baile Social", category: "grupos", tags: ["extrovertido"], description: "Contacto físico apropiado, muy divertido", time: "2-3 horas", frequency: "1-2 veces/semana" },
-                { id: 10, name: "Clubes de Juegos de Mesa/Rol", category: "grupos", tags: ["introvertido"], description: "Estructurado, creativo, muy social", time: "3-4 horas", frequency: "1 vez/semana" }
-            ]
-        };
+        const mapboxToken = 'pk.eyJ1IjoiY3Jvbm9zYmFyYmFjb2EiLCJhIjoiY21qYXlzN2EzMGEwcTNkcTF3c2w2YWc2bCJ9.dKvmIuJz1h-loUcVlx5Ojw';
+        mapboxgl.accessToken = mapboxToken;
 
-        // Inicialización
+        // Marcas de agua disponibles
+        const brands = [
+            {
+                id: 1,
+                name: "Bonafont",
+                category: "premium",
+                description: "Agua purificada de la marca Bonafont. Te entregamos el mismo envase Bonafont.",
+                price: 35, // Precio base tradicional
+                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                premium: true
+            },
+            {
+                id: 2,
+                name: "E-pura",
+                category: "premium",
+                description: "Agua purificada de la marca E-pura. Te entregamos el mismo envase E-pura.",
+                price: 35,
+                image: "https://images.unsplash.com/photo-1548839149-8c6d67235a8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                premium: true
+            },
+            {
+                id: 3,
+                name: "Electropura",
+                category: "premium",
+                description: "Agua purificada de la marca Electropura. Te entregamos el mismo envase Electropura.",
+                price: 35,
+                image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                premium: true
+            },
+            {
+                id: 4,
+                name: "Ciel",
+                category: "premium",
+                description: "Agua purificada de la marca Ciel. Te entregamos el mismo envase Ciel.",
+                price: 35,
+                image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                premium: true
+            },
+            {
+                id: 5,
+                name: "Genérico",
+                category: "generico",
+                description: "Agua purificada genérica. Te entregamos un envase estándar.",
+                price: 35,
+                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                premium: false
+            }
+        ];
+
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentCategory = 'all';
+        let currentShippingCost = 0;
+        let deliveryDistance = 0;
+        let deliveryTime = 0;
+        let paymentMethod = 'card';
+        let cashAmount = 0;
+        let changeAmount = 0;
+        let map = null;
+        let purificadoraMarker = null;
+        let deliveryMarker = null;
+        let routeLayer = null;
+        let userLocation = null;
+        let deliveryZone = "";
+        
+        // Variables para el modal de producto
+        let currentModalBrand = null;
+        let modalQuantity = 1;
+        let selectedBrand = null;
+        let selectedServiceType = "tradicional"; // Por defecto tradicional
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            updateProgressBar();
-            loadActivities();
+            renderBrands();
+            updateCartDisplay();
+            
+            // Categorías
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.getAttribute('data-category');
+                    renderBrands();
+                });
+            });
+            
+            // Icono flotante del carrito
+            document.getElementById('floatingCartIcon').addEventListener('click', function() {
+                document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Cambio en tipo de entrega
+            document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const deliveryType = this.value;
+                    const addressSection = document.getElementById('deliveryAddressSection');
+                    const finalAddressSection = document.getElementById('finalAddressSection');
+                    
+                    if (deliveryType === 'delivery') {
+                        addressSection.style.display = 'block';
+                        document.getElementById('mapboxContainer').classList.add('active');
+                        initMap();
+                    } else {
+                        addressSection.style.display = 'none';
+                        currentShippingCost = 0;
+                        updateCartDisplay();
+                        document.getElementById('mapboxContainer').classList.remove('active');
+                        document.getElementById('distanceDetails').classList.remove('active');
+                        document.getElementById('deliveryLimitWarning').classList.remove('active');
+                        document.getElementById('autoCalculatingStatus').classList.remove('active');
+                    }
+                });
+            });
+            
+            // Usar ubicación actual
+            document.getElementById('useCurrentLocationBtn').addEventListener('click', getCurrentLocation);
+            
+            // Buscar dirección
+            document.getElementById('mapSearchBtn').addEventListener('click', searchAddressOnMap);
+            document.getElementById('mapSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchAddressOnMap();
+                }
+            });
+            
+            // Métodos de pago
+            document.getElementById('cashMethod').addEventListener('click', function() {
+                selectPaymentMethod('cash');
+            });
+            
+            document.getElementById('cardMethod').addEventListener('click', function() {
+                selectPaymentMethod('card');
+            });
+            
+            // Calcular cambio
+            document.getElementById('cashAmount').addEventListener('input', calculateChange);
+            
+            // Checkout
+            document.getElementById('checkoutBtn').addEventListener('click', function() {
+                if (cart.length === 0) {
+                    showNotification('Tu carrito está vacío');
+                    return;
+                }
+                
+                const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+                const deliveryTypeFinal = document.getElementById('deliveryTypeFinal');
+                const finalAddressSection = document.getElementById('finalAddressSection');
+                
+                if (deliveryType === 'delivery') {
+                    deliveryTypeFinal.value = 'delivery';
+                    finalAddressSection.style.display = 'block';
+                    
+                    if (currentShippingCost === 0) {
+                        showNotification('Por favor selecciona una ubicación valida en el mapa primero');
+                        return;
+                    }
+                    
+                    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    if (subtotal < shippingRates.minOrderForDelivery) {
+                        showNotification(`El pedido mínimo para envío a domicilio es de $${shippingRates.minOrderForDelivery}.00`);
+                        return;
+                    }
+                    
+                    document.getElementById('customerAddress').value = document.getElementById('deliveryAddress').value;
+                } else {
+                    deliveryTypeFinal.value = 'pickup';
+                    finalAddressSection.style.display = 'none';
+                }
+                
+                selectPaymentMethod('card');
+                
+                document.getElementById('checkoutForm').style.display = 'block';
+                window.scrollTo({
+                    top: document.getElementById('checkoutForm').offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Cancelar checkout
+            document.getElementById('cancelCheckout').addEventListener('click', function() {
+                document.getElementById('checkoutForm').style.display = 'none';
+            });
+            
+            // Enviar formulario
+            document.getElementById('orderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validatePayment()) {
+                    sendOrderToWhatsApp();
+                }
+            });
+            
+            // Cerrar modal de confirmación
+            document.getElementById('closeModalBtn').addEventListener('click', function() {
+                document.getElementById('confirmationModal').classList.remove('active');
+            });
+            
+            // Modal de producto
+            document.getElementById('closeProductModal').addEventListener('click', function() {
+                document.getElementById('productModal').classList.remove('active');
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            document.getElementById('productModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+            
+            // Controles de cantidad en modal
+            document.getElementById('modalDecreaseBtn').addEventListener('click', function() {
+                if (modalQuantity > 1) {
+                    modalQuantity--;
+                    updateModalQuantity();
+                    calculateModalTotal();
+                }
+            });
+            
+            document.getElementById('modalIncreaseBtn').addEventListener('click', function() {
+                modalQuantity++;
+                updateModalQuantity();
+                calculateModalTotal();
+            });
+            
+            // Selección de tipo de servicio
+            document.querySelectorAll('.service-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const serviceTypeInput = this.querySelector('input');
+                    selectedServiceType = serviceTypeInput.value;
+                    
+                    // Actualizar precio según tipo de servicio
+                    if (currentModalBrand) {
+                        calculateModalTotal();
+                    }
+                });
+            });
+            
+            // Añadir al carrito desde modal
+            document.getElementById('modalAddToCartBtn').addEventListener('click', function() {
+                if (currentModalBrand && selectedBrand) {
+                    addToCartFromModal();
+                } else {
+                    showNotification('Por favor selecciona una marca primero');
+                }
+            });
+            
+            // Seleccionar tradicional por defecto
+            document.getElementById('tradicionalOption').click();
         });
 
-        // Navegación entre fases
-        function nextPhase() {
-            const current = document.querySelector('.phase.active');
-            current.classList.remove('active');
+        // ============================================
+        // FUNCIONES DE MARCAS Y CARRITO
+        // ============================================
+        function renderBrands() {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = '';
             
-            userData.currentPhase = Math.min(userData.currentPhase + 1, userData.totalPhases - 1);
+            const filteredBrands = currentCategory === 'all' 
+                ? brands 
+                : brands.filter(brand => brand.category === currentCategory);
             
-            const nextPhase = document.getElementById(`phase${userData.currentPhase}`);
-            nextPhase.classList.add('active');
-            
-            updateProgressBar();
-            
-            // Cargar contenido dinámico si es necesario
-            if (userData.currentPhase === 2) {
-                generateDiagnostico();
-            } else if (userData.currentPhase === 6) {
-                generatePlanSummary();
-            } else if (userData.currentPhase === 8) {
-                generateFinalSummary();
-            }
-        }
-
-        function previousPhase() {
-            const current = document.querySelector('.phase.active');
-            current.classList.remove('active');
-            
-            userData.currentPhase = Math.max(userData.currentPhase - 1, 0);
-            
-            const prevPhase = document.getElementById(`phase${userData.currentPhase}`);
-            prevPhase.classList.add('active');
-            
-            updateProgressBar();
-        }
-
-        function updateProgressBar() {
-            const progress = (userData.currentPhase / (userData.totalPhases - 1)) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
-        }
-
-        // Funciones de selección de opciones
-        function selectOption(element, key, value) {
-            // Remover selección previa en el mismo grupo
-            const parent = element.parentElement;
-            parent.querySelectorAll('.option-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            
-            // Seleccionar nuevo
-            element.classList.add('selected');
-            userData[key] = value;
-        }
-
-        function saveData(key, value) {
-            userData[key] = value;
-        }
-
-        // Análisis de la fase 1
-        function analyzeAndNext() {
-            // Validar que se hayan completado todos los campos
-            const required = ['situacion', 'frecuencia_pensamiento', 'redes_sociales', 'vida_social', 'hobbies'];
-            let missing = false;
-            
-            required.forEach(field => {
-                if (!userData[field] || userData[field].trim() === '') {
-                    missing = true;
-                }
-            });
-            
-            if (missing) {
-                alert('Por favor, completa todas las preguntas antes de continuar.');
+            if (filteredBrands.length === 0) {
+                productsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #7f8c8d; padding: 40px;">No hay marcas en esta categoría.</p>';
                 return;
             }
             
-            nextPhase();
-        }
-
-        function generateDiagnostico() {
-            const container = document.getElementById('diagnostico-content');
-            let html = '';
-            
-            // Análisis de situación
-            html += '<div class="alert alert-warning">';
-            html += '<h4>📈 Tu Análisis Personalizado:</h4>';
-            
-            // Análisis basado en situación
-            switch(userData.situacion) {
-                case 'no_interesa':
-                    html += '<p><strong>Situación:</strong> Esta persona no te conoce bien. Esto es una VENTAJA. Puedes construir una nueva versión de ti antes de acercarte.</p>';
-                    break;
-                case 'amigos':
-                    html += '<p><strong>Situación:</strong> Ya hay una relación establecida. El desafío es cambiar la dinámica existente mediante tu transformación personal.</p>';
-                    break;
-                case 'saliendo':
-                    html += '<p><strong>Situación:</strong> Ya hay interés mutuo. El enfoque ahora es desarrollar tu vida independiente para mantener equilibrio.</p>';
-                    break;
-                case 'no_reciproco':
-                    html += '<p><strong>Situación:</strong> Hay interés de tu parte pero no claro de la otra persona. La transformación personal es la mejor estrategia.</p>';
-                    break;
-                case 'rechazo':
-                    html += '<p><strong>Situación:</strong> Hubo rechazo. Esto requiere un reinicio completo con una nueva versión de ti mismo/a.</p>';
-                    break;
-            }
-            
-            // Análisis de obsesión
-            if (userData.frecuencia_pensamiento === 'constante' || userData.redes_sociales === 'constante') {
-                html += '<p><strong>🔴 Nivel de obsesión:</strong> ALTO. Necesitas urgentemente actividades que ocupen tu mente.</p>';
-            } else if (userData.frecuencia_pensamiento === 'frecuente' || userData.redes_sociales === 'multiple') {
-                html += '<p><strong>🟡 Nivel de obsesión:</strong> MODERADO. Las actividades nuevas ayudarán a redistribuir tu atención.</p>';
-            } else {
-                html += '<p><strong>🟢 Nivel de obsesión:</strong> BAJO. Tienes buena base para construir.</p>';
-            }
-            
-            // Análisis de vida social
-            if (userData.vida_social === 'minima' || userData.vida_social === 'limitada') {
-                html += '<p><strong>👥 Vida social:</strong> NECESITA EXPANSIÓN. La actividad social es prioridad absoluta.</p>';
-            }
-            
-            // Análisis de hobbies
-            if (!userData.hobbies || userData.hobbies.toLowerCase().includes('ninguno')) {
-                html += '<p><strong>🎯 Hobbies:</strong> INEXISTENTES. Esta es tu mayor oportunidad de mejora.</p>';
-            }
-            
-            html += '</div>';
-            
-            // Recomendaciones específicas
-            html += '<div class="summary-box">';
-            html += '<h4>🎯 Recomendaciones Específicas para Ti:</h4>';
-            html += '<ul style="line-height: 1.8; margin-left: 20px;">';
-            
-            if (userData.frecuencia_pensamiento === 'constante') {
-                html += '<li><strong>Prioridad #1:</strong> Actividades que ocupen completamente tu mente (ej: artes marciales, escalada, programación)</li>';
-            }
-            
-            if (userData.vida_social === 'minima') {
-                html += '<li><strong>Prioridad #2:</strong> Actividades sociales estructuradas (clases grupales, voluntariado)</li>';
-            }
-            
-            if (!userData.hobbies || userData.hobbies.toLowerCase().includes('ninguno')) {
-                html += '<li><strong>Prioridad #3:</strong> Explorar múltiples hobbies para descubrir pasiones</li>';
-            }
-            
-            html += '<li><strong>Regla general:</strong> NO contactar a la persona hasta completar al menos 4 semanas de actividades</li>';
-            html += '</ul>';
-            html += '</div>';
-            
-            container.innerHTML = html;
-        }
-
-        // Sistema de actividades
-        function loadActivities() {
-            loadActivityType('physical');
-            loadActivityType('mental');
-            loadActivityType('social');
-        }
-
-        function loadActivityType(type) {
-            const container = document.getElementById(`${type}-activities`);
-            const activityList = activities[type];
-            
-            let html = '';
-            activityList.forEach(activity => {
-                html += `
-                    <div class="activity-card" onclick="selectActivity('${type}', ${activity.id})" id="${type}-activity-${activity.id}">
-                        <h5>${activity.name}</h5>
-                        <p>${activity.description}</p>
-                        <p><small>🕒 ${activity.time} | 📅 ${activity.frequency}</small></p>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-
-        function selectActivity(type, id) {
-            // Deseleccionar todas las actividades de este tipo
-            const container = document.getElementById(`${type}-activities`);
-            container.querySelectorAll('.activity-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // Seleccionar nueva actividad
-            const selectedCard = document.getElementById(`${type}-activity-${id}`);
-            selectedCard.classList.add('selected');
-            
-            // Guardar en userData
-            userData[`${type}_activity`] = activities[type].find(a => a.id === id);
-        }
-
-        function filterActivities(type, filter) {
-            // Actualizar botones de filtro
-            const filterButtons = document.getElementById(`${type}-filters`);
-            filterButtons.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Filtrar actividades
-            const activityList = activities[type];
-            let filteredActivities = activityList;
-            
-            if (filter !== 'todas') {
-                filteredActivities = activityList.filter(activity => 
-                    activity.tags.includes(filter) || activity.category === filter
-                );
-            }
-            
-            // Mostrar actividades filtradas
-            const container = document.getElementById(`${type}-activities`);
-            let html = '';
-            filteredActivities.forEach(activity => {
-                html += `
-                    <div class="activity-card" onclick="selectActivity('${type}', ${activity.id})" id="${type}-activity-${activity.id}">
-                        <h5>${activity.name}</h5>
-                        <p>${activity.description}</p>
-                        <p><small>🕒 ${activity.time} | 📅 ${activity.frequency}</small></p>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-
-        function validateAndNext(type) {
-            if (!userData[`${type}_activity`]) {
-                alert(`Por favor, selecciona una actividad ${type === 'physical' ? 'física' : type === 'mental' ? 'mental' : 'social'} antes de continuar.`);
-                return;
-            }
-            
-            // Validar campos específicos
-            if (type === 'physical') {
-                if (!userData.physical_start_date) {
-                    alert('Por favor, selecciona una fecha de inicio.');
-                    return;
-                }
-            } else if (type === 'mental') {
-                if (!userData.mental_time_daily || userData.mental_time_daily < 30) {
-                    alert('Por favor, especifica al menos 30 minutos diarios.');
-                    return;
-                }
-                if (!userData.mental_time_of_day) {
-                    alert('Por favor, selecciona un horario del día.');
-                    return;
-                }
-            } else if (type === 'social') {
-                if (!userData.social_frequency) {
-                    alert('Por favor, selecciona una frecuencia.');
-                    return;
-                }
-            }
-            
-            nextPhase();
-        }
-
-        function generatePlanSummary() {
-            // Stats grid
-            const statsGrid = document.getElementById('stats-grid');
-            statsGrid.innerHTML = `
-                <div class="stat-card">
-                    <h3>12</h3>
-                    <p>Semanas de Transformación</p>
-                </div>
-                <div class="stat-card">
-                    <h3>${userData.physical_activity ? '3' : '0'}</h3>
-                    <p>Actividades Principales</p>
-                </div>
-                <div class="stat-card">
-                    <h3>${calculateWeeklyHours()}h</h3>
-                    <p>Horas/Semana en Ti</p>
-                </div>
-                <div class="stat-card">
-                    <h3>0</h3>
-                    <p>Contacto Innecesario</p>
-                </div>
-            `;
-            
-            // Resumen de actividades
-            const summaryContainer = document.getElementById('selected-activities-summary');
-            let html = '';
-            
-            if (userData.physical_activity) {
-                html += `
-                    <div class="timeline-item">
-                        <h5>💪 ${userData.physical_activity.name}</h5>
-                        <p><strong>Comienza:</strong> ${userData.physical_start_date} a las ${userData.physical_time}</p>
-                        <p><strong>Frecuencia:</strong> ${userData.physical_activity.frequency}</p>
-                    </div>
-                `;
-            }
-            
-            if (userData.mental_activity) {
-                html += `
-                    <div class="timeline-item">
-                        <h5>🧠 ${userData.mental_activity.name}</h5>
-                        <p><strong>Tiempo diario:</strong> ${userData.mental_time_daily} minutos</p>
-                        <p><strong>Horario:</strong> ${getTimeOfDayLabel(userData.mental_time_of_day)}</p>
-                    </div>
-                `;
-            }
-            
-            if (userData.social_activity) {
-                html += `
-                    <div class="timeline-item">
-                        <h5>👥 ${userData.social_activity.name}</h5>
-                        <p><strong>Frecuencia:</strong> ${getFrequencyLabel(userData.social_frequency)}</p>
-                        <p><strong>Duración:</strong> ${userData.social_activity.time} por sesión</p>
-                    </div>
-                `;
-            }
-            
-            summaryContainer.innerHTML = html;
-        }
-
-        function generateFinalSummary() {
-            const container = document.getElementById('final-summary');
-            let html = `
-                <p><strong>🎯 Tu Objetivo:</strong> Transformación personal en 12 semanas</p>
-                <p><strong>📅 Fecha de Inicio:</strong> ${userData.physical_start_date || 'Hoy'}</p>
-                <p><strong>🏆 Tu Compromiso:</strong> ${userData.physical_activity ? userData.physical_activity.name : 'Actividad física'}, ${userData.mental_activity ? userData.mental_activity.name : 'actividad mental'}, y ${userData.social_activity ? userData.social_activity.name : 'actividad social'}</p>
-                <p><strong>⏰ Tiempo Semanal:</strong> ${calculateWeeklyHours()} horas invertidas en ti</p>
-                <p><strong>🚫 Regla Fundamental:</strong> NO contactar por ansiedad o validación. Solo cuando tengas algo genuino que compartir.</p>
-            `;
-            
-            container.innerHTML = html;
-        }
-
-        // Funciones auxiliares
-        function calculateWeeklyHours() {
-            let hours = 0;
-            
-            if (userData.physical_activity) {
-                const matches = userData.physical_activity.frequency.match(/(\d+)/);
-                const timesPerWeek = matches ? parseInt(matches[0]) : 3;
-                const timeMatch = userData.physical_activity.time.match(/(\d+)/);
-                const timePerSession = timeMatch ? parseInt(timeMatch[0]) : 1;
-                hours += timesPerWeek * timePerSession;
-            }
-            
-            if (userData.mental_activity && userData.mental_time_daily) {
-                hours += (parseInt(userData.mental_time_daily) * 7) / 60; // Convertir minutos a horas
-            }
-            
-            if (userData.social_activity) {
-                const timeMatch = userData.social_activity.time.match(/(\d+)/);
-                const timePerSession = timeMatch ? parseInt(timeMatch[0]) : 2;
-                const frequency = getFrequencyValue(userData.social_frequency);
-                hours += frequency * timePerSession;
-            }
-            
-            return Math.round(hours * 10) / 10;
-        }
-
-        function getTimeOfDayLabel(time) {
-            switch(time) {
-                case 'manana': return 'Mañana (6am-12pm)';
-                case 'tarde': return 'Tarde (12pm-6pm)';
-                case 'noche': return 'Noche (6pm-12am)';
-                default: return 'Por definir';
-            }
-        }
-
-        function getFrequencyLabel(freq) {
-            switch(freq) {
-                case 'semanal': return '1 vez por semana';
-                case 'bisemanal': return '2 veces por semana';
-                case 'trisemanal': return '3+ veces por semana';
-                default: return 'Por definir';
-            }
-        }
-
-        function getFrequencyValue(freq) {
-            switch(freq) {
-                case 'semanal': return 1;
-                case 'bisemanal': return 2;
-                case 'trisemanal': return 3;
-                default: return 1;
-            }
-        }
-
-        function resetTutorial() {
-            if (confirm('¿Estás seguro de que quieres comenzar? Esto reiniciará el tutorial pero mantendrá tu plan.')) {
-                userData.currentPhase = 0;
+            filteredBrands.forEach(brand => {
+                const cartItem = cart.find(item => item.id === brand.id && item.serviceType === selectedServiceType);
+                const quantity = cartItem ? cartItem.quantity : 0;
                 
-                // Remover todas las clases active
-                document.querySelectorAll('.phase').forEach(phase => {
-                    phase.classList.remove('active');
+                const brandCard = document.createElement('div');
+                brandCard.className = 'product-card';
+                brandCard.dataset.brandId = brand.id;
+                brandCard.innerHTML = `
+                    <img src="${brand.image}" alt="${brand.name}" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">${brand.name}</h3>
+                        <p class="product-desc">${brand.description}</p>
+                        <div class="product-footer">
+                            <div class="product-price">Desde $${brand.price.toFixed(2)}</div>
+                            <div class="product-quantity-controls">
+                                ${quantity > 0 ? `
+                                    <button class="quantity-btn" onclick="adjustQuantity(${brand.id}, '${selectedServiceType}', -1)" ${quantity <= 1 ? 'disabled' : ''}>
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <div class="quantity-display">${quantity}</div>
+                                    <button class="quantity-btn" onclick="adjustQuantity(${brand.id}, '${selectedServiceType}', 1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                ` : ''}
+                                <button class="add-to-cart ${quantity > 0 ? 'in-cart' : ''}" onclick="event.stopPropagation(); openBrandModal(${brand.id})">
+                                    <i class="fas fa-${quantity > 0 ? 'check' : 'cart-plus'}"></i>
+                                    ${quantity > 0 ? 'En carrito' : 'Seleccionar'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Abrir modal al hacer clic en la marca (excepto en los botones)
+                brandCard.addEventListener('click', function(e) {
+                    if (!e.target.closest('.quantity-btn') && !e.target.closest('.add-to-cart')) {
+                        openBrandModal(brand.id);
+                    }
                 });
                 
-                // Activar fase 0
-                document.getElementById('phase0').classList.add('active');
-                updateProgressBar();
+                productsGrid.appendChild(brandCard);
+            });
+        }
+
+        function openBrandModal(brandId) {
+            const brand = brands.find(b => b.id === brandId);
+            if (!brand) return;
+            
+            currentModalBrand = brand;
+            modalQuantity = 1;
+            selectedBrand = brand;
+            
+            // Actualizar contenido del modal
+            document.getElementById('modalProductImage').src = brand.image;
+            document.getElementById('modalProductImage').alt = brand.name;
+            document.getElementById('modalProductTitle').textContent = brand.name;
+            document.getElementById('modalProductDesc').textContent = brand.description;
+            document.getElementById('modalProductPrice').textContent = `Desde $${brand.price.toFixed(2)}`;
+            
+            // Actualizar controles de cantidad
+            updateModalQuantity();
+            
+            // Cargar opciones de marca
+            loadBrandOptions();
+            
+            // Calcular total inicial
+            calculateModalTotal();
+            
+            // Mostrar modal
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        function loadBrandOptions() {
+            const brandsList = document.getElementById('brandsList');
+            brandsList.innerHTML = '';
+            
+            brands.forEach(brand => {
+                const brandOption = document.createElement('div');
+                brandOption.className = `brand-option ${brand.id === currentModalBrand.id ? 'selected' : ''}`;
+                brandOption.dataset.brandId = brand.id;
                 
-                alert('¡Perfecto! Tu transformación comienza ahora. Recuerda revisar tu plan semanalmente.');
+                brandOption.innerHTML = `
+                    <input type="radio" name="brand" id="brand-${brand.id}" value="${brand.id}" ${brand.id === currentModalBrand.id ? 'checked' : ''}>
+                    <div class="brand-name">${brand.name}</div>
+                `;
+                
+                brandOption.addEventListener('click', function() {
+                    document.querySelectorAll('.brand-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const selectedBrandId = parseInt(this.dataset.brandId);
+                    selectedBrand = brands.find(b => b.id === selectedBrandId);
+                    
+                    // Actualizar contenido del modal con la nueva marca seleccionada
+                    document.getElementById('modalProductTitle').textContent = selectedBrand.name;
+                    document.getElementById('modalProductDesc').textContent = selectedBrand.description;
+                    document.getElementById('modalProductImage').src = selectedBrand.image;
+                    document.getElementById('modalProductImage').alt = selectedBrand.name;
+                    
+                    calculateModalTotal();
+                });
+                
+                brandsList.appendChild(brandOption);
+            });
+        }
+
+        function updateModalQuantity() {
+            document.getElementById('modalQuantityDisplay').textContent = modalQuantity;
+            document.getElementById('modalDecreaseBtn').disabled = modalQuantity <= 1;
+        }
+
+        function calculateModalTotal() {
+            if (!selectedBrand) return;
+            
+            let basePrice = selectedBrand.price;
+            
+            // Ajustar precio según tipo de servicio
+            if (selectedServiceType === "plus") {
+                basePrice = 45; // Precio plus con perlas de plata
+            } else {
+                basePrice = 35; // Precio tradicional
             }
+            
+            // Multiplicar por cantidad
+            let total = basePrice * modalQuantity;
+            
+            document.getElementById('modalTotalPrice').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function addToCartFromModal() {
+            if (!selectedBrand) return;
+            
+            // Determinar precio según tipo de servicio
+            let price = selectedServiceType === "plus" ? 45 : 35;
+            
+            const cartItem = {
+                id: selectedBrand.id,
+                name: selectedBrand.name,
+                basePrice: price,
+                price: price,
+                quantity: modalQuantity,
+                serviceType: selectedServiceType,
+                serviceName: selectedServiceType === "plus" ? "Plus (perlas de plata)" : "Tradicional",
+                image: selectedBrand.image
+            };
+            
+            // Buscar si ya existe el mismo producto con el mismo tipo de servicio
+            const existingIndex = cart.findIndex(item => {
+                return item.id === cartItem.id && item.serviceType === cartItem.serviceType;
+            });
+            
+            if (existingIndex >= 0) {
+                // Actualizar cantidad si es la misma marca y tipo de servicio
+                cart[existingIndex].quantity += modalQuantity;
+            } else {
+                // Añadir nuevo item
+                cart.push(cartItem);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            renderBrands();
+            
+            // Cerrar modal
+            document.getElementById('productModal').classList.remove('active');
+            
+            // Mostrar notificación
+            showNotification(`${selectedBrand.name} (${selectedServiceType === "plus" ? "Plus" : "Tradicional"}) agregado al carrito`);
+        }
+
+        function adjustQuantity(brandId, serviceType, change) {
+            const item = cart.find(item => item.id === brandId && item.serviceType === serviceType);
+            
+            if (item) {
+                item.quantity += change;
+                
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => !(item.id === brandId && item.serviceType === serviceType));
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+                renderBrands();
+            }
+        }
+
+        function removeFromCart(brandId, serviceType) {
+            cart = cart.filter(item => !(item.id === brandId && item.serviceType === serviceType));
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            renderBrands();
+            showNotification('Producto eliminado del carrito');
+        }
+
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const floatingCartCount = document.getElementById('floatingCartCount');
+            const subtotalElement = document.getElementById('subtotal');
+            const shippingCostElement = document.getElementById('shippingCost');
+            const totalElement = document.getElementById('total');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            floatingCartCount.textContent = totalItems;
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + currentShippingCost;
+            
+            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            shippingCostElement.textContent = `$${currentShippingCost.toFixed(2)}`;
+            totalElement.textContent = `$${total.toFixed(2)}`;
+            
+            if (paymentMethod === 'cash' && cashAmount > 0) {
+                calculateChange();
+            }
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <p style="text-align:center; color:#999; margin-top:20px;">Tu carrito está vacío</p>
+                `;
+            } else {
+                cartItemsContainer.innerHTML = '';
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div>
+                            <h4>${item.name}</h4>
+                            <small style="color: var(--accent); font-size: 0.8rem;">
+                                ${item.serviceName}
+                            </small><br>
+                            <small>$${item.price.toFixed(2)} c/u</small>
+                        </div>
+                        <div class="cart-item-controls">
+                            <input type="number" min="1" value="${item.quantity}" class="cart-item-qty" onchange="updateQuantity(${item.id}, '${item.serviceType}', this.value)">
+                            <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.serviceType}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+            }
+        }
+
+        function updateQuantity(brandId, serviceType, newQuantity) {
+            const quantity = parseInt(newQuantity);
+            
+            if (quantity < 1) {
+                removeFromCart(brandId, serviceType);
+                return;
+            }
+            
+            const item = cart.find(item => item.id === brandId && item.serviceType === serviceType);
+            if (item) {
+                item.quantity = quantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+                renderBrands();
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE MAPA Y ENVÍO - CORREGIDAS
+        // ============================================
+        function initMap() {
+            if (map) return;
+            
+            if (!mapboxgl.accessToken) {
+                console.error('Token de Mapbox no configurado');
+                return;
+            }
+            
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v12',
+                center: purificadoraCoords,
+                zoom: 13
+            });
+            
+            purificadoraMarker = new mapboxgl.Marker({ color: '#3498db' })
+                .setLngLat(purificadoraCoords)
+                .setPopup(new mapboxgl.Popup().setHTML(`
+                    <div style="padding: 10px;">
+                        <h4 style="margin: 0 0 5px; color: #3498db;">GluGlu MX</h4>
+                        <p style="margin: 0; font-size: 0.9rem;">${purificadoraAddress}</p>
+                    </div>
+                `))
+                .addTo(map);
+            
+            // Al hacer clic en el mapa, obtener la dirección del lugar
+            map.on('click', function(e) {
+                placeDeliveryMarker(e.lngLat);
+                getAddressFromCoordinates(e.lngLat);
+            });
+        }
+
+        function getCurrentLocation() {
+            if (!navigator.geolocation) {
+                showNotification('Tu navegador no soporta geolocalización');
+                return;
+            }
+            
+            // Mostrar estado de cálculo
+            document.getElementById('autoCalculatingStatus').classList.add('active');
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const userCoords = [position.coords.longitude, position.coords.latitude];
+                    userLocation = userCoords;
+                    
+                    placeDeliveryMarker({lng: userCoords[0], lat: userCoords[1]});
+                    getAddressFromCoordinates({lng: userCoords[0], lat: userCoords[1]});
+                },
+                function(error) {
+                    console.error('Error al obtener ubicación:', error);
+                    showNotification('No se pudo obtener tu ubicación. Por favor ingresa tu dirección manualmente.');
+                    document.getElementById('autoCalculatingStatus').classList.remove('active');
+                },
+                { 
+                    enableHighAccuracy: true, 
+                    timeout: 10000, 
+                    maximumAge: 0 
+                }
+            );
+        }
+
+        // FUNCIÓN CORREGIDA: Obtener dirección a partir de coordenadas con restricción a México
+        function getAddressFromCoordinates(coords) {
+            // Configurar parámetros para geocodificación inversa en México
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?access_token=${mapboxgl.accessToken}&language=es&country=mx&limit=1`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features && data.features.length > 0) {
+                        const address = data.features[0].place_name;
+                        document.getElementById('deliveryAddress').value = address;
+                        document.getElementById('mapSearch').value = address;
+                        
+                        // Calcular envío automáticamente
+                        setTimeout(() => calculateShippingWithMapbox(), 500);
+                        
+                    } else {
+                        // Si no encuentra dirección en México, intentar sin restricción de país
+                        const fallbackUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?access_token=${mapboxgl.accessToken}&language=es&limit=1`;
+                        
+                        return fetch(fallbackUrl)
+                            .then(response => response.json())
+                            .then(fallbackData => {
+                                if (fallbackData.features && fallbackData.features.length > 0) {
+                                    const fallbackAddress = fallbackData.features[0].place_name;
+                                    document.getElementById('deliveryAddress').value = fallbackAddress;
+                                    document.getElementById('mapSearch').value = fallbackAddress;
+                                    
+                                    // Calcular envío automáticamente
+                                    setTimeout(() => calculateShippingWithMapbox(), 500);
+                                } else {
+                                    document.getElementById('deliveryAddress').value = `Coordenadas: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`;
+                                    // Calcular envío automáticamente incluso sin dirección
+                                    setTimeout(() => calculateShippingWithMapbox(), 500);
+                                }
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener dirección:', error);
+                    showNotification('Error al obtener la dirección');
+                    document.getElementById('deliveryAddress').value = `Coordenadas: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`;
+                    // Calcular envío automáticamente incluso con error
+                    setTimeout(() => calculateShippingWithMapbox(), 500);
+                });
+        }
+
+        function placeDeliveryMarker(coords) {
+            if (deliveryMarker) {
+                deliveryMarker.remove();
+            }
+            
+            if (routeLayer && map.getLayer('route')) {
+                map.removeLayer('route');
+                map.removeSource('route');
+            }
+            
+            deliveryMarker = new mapboxgl.Marker({ color: '#2ecc71' })
+                .setLngLat(coords)
+                .setPopup(new mapboxgl.Popup().setHTML(`
+                    <div style="padding: 10px;">
+                        <h4 style="margin: 0 0 5px; color: #2ecc71;">Dirección de entrega</h4>
+                        <p style="margin: 0; font-size: 0.9rem;">Ubicación seleccionada para entrega</p>
+                    </div>
+                `))
+                .addTo(map);
+            
+            if (purificadoraMarker && deliveryMarker) {
+                const bounds = new mapboxgl.LngLatBounds();
+                bounds.extend(purificadoraMarker.getLngLat());
+                bounds.extend(deliveryMarker.getLngLat());
+                map.fitBounds(bounds, { padding: 50 });
+            }
+        }
+
+        function searchAddressOnMap() {
+            const searchInput = document.getElementById('mapSearch').value;
+            if (!searchInput.trim()) return;
+            
+            // Mostrar estado de cálculo
+            document.getElementById('autoCalculatingStatus').classList.add('active');
+            
+            // Configurar búsqueda en México
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchInput)}.json?access_token=${mapboxgl.accessToken}&limit=1&language=es&country=mx&proximity=${purificadoraCoords[0]},${purificadoraCoords[1]}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features && data.features.length > 0) {
+                        const coords = data.features[0].center;
+                        const placeName = data.features[0].place_name;
+                        
+                        document.getElementById('deliveryAddress').value = placeName;
+                        placeDeliveryMarker({lng: coords[0], lat: coords[1]});
+                        
+                        // Calcular envío automáticamente
+                        setTimeout(() => calculateShippingWithMapbox(), 500);
+                        
+                    } else {
+                        showNotification('Dirección no encontrada en México. Intenta con más detalles.');
+                        document.getElementById('autoCalculatingStatus').classList.remove('active');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en búsqueda de dirección:', error);
+                    showNotification('Error al buscar la dirección. Intenta nuevamente.');
+                    document.getElementById('autoCalculatingStatus').classList.remove('active');
+                });
+        }
+
+        // FUNCIÓN MODIFICADA: Cálculo automático de envío
+        function calculateShippingWithMapbox() {
+            if (!deliveryMarker) {
+                showNotification('Por favor selecciona una ubicación en el mapa primero');
+                document.getElementById('autoCalculatingStatus').classList.remove('active');
+                return;
+            }
+            
+            const deliveryCoords = deliveryMarker.getLngLat();
+            const address = document.getElementById('deliveryAddress').value.trim();
+            
+            if (!address) {
+                showNotification('Por favor ingresa una dirección');
+                document.getElementById('autoCalculatingStatus').classList.remove('active');
+                return;
+            }
+            
+            // Mostrar estado de cálculo
+            document.getElementById('autoCalculatingStatus').classList.add('active');
+            document.getElementById('distanceDetails').classList.remove('active');
+            document.getElementById('deliveryLimitWarning').classList.remove('active');
+            
+            const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${purificadoraCoords[0]},${purificadoraCoords[1]};${deliveryCoords.lng},${deliveryCoords.lat}?access_token=${mapboxgl.accessToken}&overview=full&geometries=geojson&steps=true&language=es`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.routes && data.routes.length > 0) {
+                        const route = data.routes[0];
+                        
+                        deliveryDistance = route.distance / 1000;
+                        deliveryTime = Math.round(route.duration / 60);
+                        
+                        calculateShippingCost();
+                        updateShippingUI();
+                        
+                        drawRouteOnMap(route.geometry);
+                        
+                        showNotification('Costo de envío calculado automáticamente');
+                    } else {
+                        throw new Error('No se pudo calcular la ruta');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al calcular ruta:', error);
+                    
+                    // Calcular distancia en línea recta como respaldo
+                    calculateStraightLineDistance(deliveryCoords);
+                    calculateShippingCost();
+                    updateShippingUI();
+                    
+                    showNotification('Costo de envío calculado (distancia aproximada)');
+                })
+                .finally(() => {
+                    // Ocultar estado de cálculo
+                    document.getElementById('autoCalculatingStatus').classList.remove('active');
+                });
+        }
+
+        function calculateStraightLineDistance(deliveryCoords) {
+            const R = 6371;
+            const lat1 = purificadoraCoords[1] * Math.PI / 180;
+            const lat2 = deliveryCoords.lat * Math.PI / 180;
+            const deltaLat = (deliveryCoords.lat - purificadoraCoords[1]) * Math.PI / 180;
+            const deltaLon = (deliveryCoords.lng - purificadoraCoords[0]) * Math.PI / 180;
+            
+            const a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
+                     Math.cos(lat1) * Math.cos(lat2) *
+                     Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            
+            deliveryDistance = R * c;
+            deliveryTime = Math.round(deliveryDistance * 1.5);
+        }
+
+        function drawRouteOnMap(routeGeometry) {
+            if (routeLayer && map.getLayer('route')) {
+                map.removeLayer('route');
+                map.removeSource('route');
+            }
+            
+            map.addSource('route', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    properties: {},
+                    geometry: routeGeometry
+                }
+            });
+            
+            map.addLayer({
+                id: 'route',
+                type: 'line',
+                source: 'route',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#2ecc71',
+                    'line-width': 4,
+                    'line-opacity': 0.7
+                }
+            });
+            
+            routeLayer = 'route';
+        }
+
+        function calculateShippingCost() {
+            let zoneName = "Fuera de zona";
+            let zoneClass = "zone-out";
+            
+            if (deliveryDistance <= 5) {
+                zoneName = "Zona Cercana";
+                zoneClass = "zone-close";
+            } else if (deliveryDistance <= 10) {
+                zoneName = "Zona Media";
+                zoneClass = "zone-medium";
+            } else if (deliveryDistance <= 15) {
+                zoneName = "Zona Lejana";
+                zoneClass = "zone-far";
+            } else {
+                zoneName = "Fuera de zona";
+                zoneClass = "zone-out";
+            }
+            
+            deliveryZone = zoneName;
+            
+            let calculatedCost = 0;
+            
+            if (deliveryDistance <= shippingRates.maxDistance && deliveryDistance > 0) {
+                calculatedCost = deliveryDistance * shippingRates.perKmRate;
+                calculatedCost = Math.round(calculatedCost * 100) / 100;
+            } else if (deliveryDistance > shippingRates.maxDistance) {
+                document.getElementById('deliveryLimitWarning').classList.add('active');
+                calculatedCost = 0;
+            } else {
+                document.getElementById('deliveryLimitWarning').classList.remove('active');
+            }
+            
+            currentShippingCost = calculatedCost;
+            
+            updateCartDisplay();
+            
+            return {
+                cost: calculatedCost,
+                zone: zoneName,
+                zoneClass: zoneClass
+            };
+        }
+
+        function updateShippingUI() {
+            const shippingInfo = calculateShippingCost();
+            
+            if (deliveryDistance > 0 && deliveryDistance <= shippingRates.maxDistance) {
+                document.getElementById('distanceText').textContent = `${deliveryDistance.toFixed(1)} km`;
+                document.getElementById('timeText').textContent = `${deliveryTime} min`;
+                document.getElementById('calculatedShippingCost').innerHTML = `$${currentShippingCost.toFixed(2)}`;
+                
+                document.getElementById('distanceDetails').classList.add('active');
+                document.getElementById('deliveryLimitWarning').classList.remove('active');
+            } else if (deliveryDistance > shippingRates.maxDistance) {
+                document.getElementById('distanceDetails').classList.remove('active');
+                document.getElementById('deliveryLimitWarning').classList.add('active');
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE PAGO
+        // ============================================
+        function selectPaymentMethod(method) {
+            paymentMethod = method;
+            
+            document.getElementById('cashMethod').classList.remove('selected');
+            document.getElementById('cardMethod').classList.remove('selected');
+            document.getElementById('cashDetails').classList.remove('active');
+            document.getElementById('changeInfo').classList.remove('active');
+            
+            if (method === 'cash') {
+                document.getElementById('cashMethod').classList.add('selected');
+                document.getElementById('cashDetails').classList.add('active');
+                document.getElementById('cash').checked = true;
+                calculateChange();
+            } else {
+                document.getElementById('cardMethod').classList.add('selected');
+                document.getElementById('card').checked = true;
+            }
+        }
+
+        function calculateChange() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + currentShippingCost;
+            
+            cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+            
+            if (cashAmount > 0 && cashAmount >= total) {
+                changeAmount = cashAmount - total;
+                document.getElementById('changeAmount').textContent = `$${changeAmount.toFixed(2)}`;
+                document.getElementById('changeInfo').classList.add('active');
+            } else if (cashAmount > 0 && cashAmount < total) {
+                document.getElementById('changeInfo').classList.remove('active');
+            } else {
+                document.getElementById('changeInfo').classList.remove('active');
+            }
+        }
+
+        function validatePayment() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + currentShippingCost;
+            
+            if (paymentMethod === 'cash') {
+                cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+                
+                if (cashAmount === 0) {
+                    showNotification('Por favor ingresa el monto con el que pagarás en efectivo');
+                    return false;
+                }
+                
+                if (cashAmount < total) {
+                    showNotification(`El monto en efectivo debe ser mayor o igual al total de $${total.toFixed(2)}`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // ============================================
+        // WHATSAPP
+        // ============================================
+        function sendOrderToWhatsApp() {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const deliveryType = document.getElementById('deliveryTypeFinal').value;
+            const customerNotes = document.getElementById('customerNotes').value;
+            
+            let customerAddress = '';
+            if (deliveryType === 'delivery') {
+                customerAddress = document.getElementById('customerAddress').value;
+                if (!customerAddress) {
+                    showNotification('Por favor ingresa una dirección para envío');
+                    return;
+                }
+            }
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + currentShippingCost;
+            
+            const paymentMethodText = paymentMethod === 'cash' ? 'Efectivo' : 'Tarjeta (Terminal)';
+            let paymentDetails = '';
+            
+            if (paymentMethod === 'cash') {
+                cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+                changeAmount = cashAmount - total;
+                paymentDetails = `*Monto con el que paga:* $${cashAmount.toFixed(2)}%0A*Cambio a dar:* $${changeAmount.toFixed(2)}%0A`;
+            }
+            
+            let message = `*NUEVO PEDIDO - GluGlu MX Purificadora*%0A%0A`;
+            message += `*Cliente:* ${customerName}%0A`;
+            message += `*Teléfono:* ${customerPhone}%0A`;
+            
+            if (deliveryType === 'delivery') {
+                message += `*Tipo de entrega:* Envío a domicilio%0A`;
+                message += `*Dirección:* ${customerAddress}%0A`;
+                message += `*Distancia:* ${deliveryDistance.toFixed(1)} km%0A`;
+                message += `*Zona de entrega:* ${deliveryZone}%0A`;
+                message += `*Costo de envío:* $${currentShippingCost.toFixed(2)}%0A`;
+            } else {
+                message += `*Tipo de entrega:* Recoger en local%0A`;
+            }
+            
+            message += `*Método de pago:* ${paymentMethodText}%0A`;
+            
+            if (paymentMethod === 'cash') {
+                message += paymentDetails;
+            }
+            
+            if (customerNotes) {
+                message += `*Instrucciones:* ${customerNotes}%0A`;
+            }
+            
+            message += `%0A*DETALLE DEL PEDIDO:*%0A`;
+            
+            cart.forEach(item => {
+                message += `- ${item.name} (${item.serviceName}) x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}%0A`;
+            });
+            
+            message += `%0A*SUBTOTAL:* $${subtotal.toFixed(2)}%0A`;
+            
+            if (deliveryType === 'delivery') {
+                message += `*ENVÍO:* $${currentShippingCost.toFixed(2)}%0A`;
+            }
+            
+            message += `*TOTAL:* $${total.toFixed(2)}%0A%0A`;
+            message += `*Nota:* Te confirmaremos el precio exacto al momento de recoger o entregar tu pedido.%0A`;
+            message += `*Fecha y hora:* ${new Date().toLocaleString('es-MX')}`;
+            
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+            
+            document.getElementById('confirmationModal').classList.add('active');
+            
+            cart = [];
+            localStorage.removeItem('cart');
+            document.getElementById('orderForm').reset();
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('deliveryAddress').value = '';
+            document.getElementById('mapSearch').value = '';
+            document.getElementById('distanceDetails').classList.remove('active');
+            document.getElementById('deliveryLimitWarning').classList.remove('active');
+            document.getElementById('autoCalculatingStatus').classList.remove('active');
+            
+            if (deliveryMarker) {
+                deliveryMarker.remove();
+                deliveryMarker = null;
+            }
+            
+            if (routeLayer && map.getLayer('route')) {
+                map.removeLayer('route');
+                map.removeSource('route');
+                routeLayer = null;
+            }
+            
+            currentShippingCost = 0;
+            cashAmount = 0;
+            changeAmount = 0;
+            
+            selectPaymentMethod('card');
+            updateCartDisplay();
+            renderBrands();
+        }
+
+        // ============================================
+        // UTILIDADES
+        // ============================================
+        function showNotification(text) {
+            const notification = document.getElementById('notification');
+            notification.textContent = text;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>
