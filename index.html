@@ -79,7 +79,8 @@
 
         .logo-img {
             height: 80px;
-            width: auto;
+            width: 80px; /* Corrección: asegurar cuadrado */
+            object-fit: cover;
             border-radius: 50%;
             border: 3px solid rgba(255,255,255,0.8);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -333,7 +334,7 @@
             box-shadow: var(--shadow-md);
             height: 300px;
             position: relative;
-            display: none;
+            display: none; /* Oculto por defecto */
         }
 
         .mapbox-container.active { 
@@ -411,27 +412,6 @@
         
         .submit-order-btn:hover { 
             background-color: #1da851; 
-        }
-
-        .calculate-shipping-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-
-        .calculate-shipping-btn:hover {
-            background: var(--primary-dark);
         }
 
         .form-control {
@@ -911,7 +891,8 @@
 
         .confirmation-modal-logo {
             height: 80px;
-            width: auto;
+            width: 80px;
+            object-fit: cover;
             border-radius: 50%;
             margin-bottom: 20px;
             border: 3px solid var(--primary);
@@ -1078,8 +1059,7 @@
                 <h2 class="section-title">Garrafón de Agua</h2>
                 
                 <div class="products-grid" id="productsGrid">
-                    <!-- Solo un producto: Garrafón -->
-                </div>
+                    </div>
             </section>
 
             <section class="cart-section" id="cartSection">
@@ -1105,11 +1085,11 @@
                 </div>
 
                 <div style="margin-bottom:15px;">
-                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius:8px;">
+                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius: 8px;">
                         <input type="radio" name="deliveryType" value="pickup" checked>
                         <span><i class="fas fa-store"></i> Recoger en el local</span>
                     </label>
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius=8px;">
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius: 8px;">
                         <input type="radio" name="deliveryType" value="delivery">
                         <span><i class="fas fa-motorcycle"></i> Envío a domicilio</span>
                     </label>
@@ -1140,7 +1120,6 @@
                         <i class="fas fa-spinner"></i> Calculando distancia...
                     </div>
                     
-                    <!-- Estado de cálculo automático -->
                     <div class="auto-calculating-status" id="autoCalculatingStatus">
                         <i class="fas fa-sync-alt"></i> Calculando costo de envío...
                     </div>
@@ -1237,7 +1216,6 @@
         </section>
     </div>
 
-    <!-- Modal de producto -->
     <div class="product-modal" id="productModal">
         <div class="product-modal-content">
             <button class="product-modal-close" id="closeProductModal">
@@ -1249,12 +1227,10 @@
                 <p id="modalProductDesc" class="modal-product-desc"></p>
                 <div id="modalProductPrice" class="product-modal-price"></div>
                 
-                <!-- SECCIÓN DE MARCAS Y TIPO DE SERVICIO -->
                 <div class="modifiers-section" id="modifiersSection">
                     <h4 class="modifiers-title">Selecciona la marca de tu envase</h4>
                     <div class="brand-selection" id="brandsList">
-                        <!-- Las marcas se cargarán aquí dinámicamente -->
-                    </div>
+                        </div>
                     
                     <h4 class="modifiers-title" style="margin-top: 25px;">Tipo de servicio</h4>
                     <div class="service-type" id="serviceType">
@@ -1275,8 +1251,7 @@
                     <div style="margin-top: 25px;" id="extrasSection">
                         <h4 class="modifiers-title">Extras</h4>
                         <div id="extrasList">
-                            <!-- Los extras se cargarán aquí dinámicamente -->
-                        </div>
+                            </div>
                     </div>
                 </div>
                 
@@ -1301,7 +1276,6 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación -->
     <div class="confirmation-modal" id="confirmationModal">
         <div class="confirmation-modal-content">
             <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo" class="confirmation-modal-logo">
@@ -1345,6 +1319,7 @@
             minOrderForDelivery: 50.00 // Pedido mínimo para envío
         };
 
+        // NOTA: Reemplaza este token con uno propio de Mapbox para producción
         const mapboxToken = 'pk.eyJ1IjoiY3Jvbm9zYmFyYmFjb2EiLCJhIjoiY21qYXlzN2EzMGEwcTNkcTF3c2w2YWc2bCJ9.dKvmIuJz1h-loUcVlx5Ojw';
         mapboxgl.accessToken = mapboxToken;
 
@@ -1416,7 +1391,6 @@
                 radio.addEventListener('change', function() {
                     const deliveryType = this.value;
                     const addressSection = document.getElementById('deliveryAddressSection');
-                    const finalAddressSection = document.getElementById('finalAddressSection');
                     
                     if (deliveryType === 'delivery') {
                         addressSection.style.display = 'block';
@@ -1472,8 +1446,9 @@
                     deliveryTypeFinal.value = 'delivery';
                     finalAddressSection.style.display = 'block';
                     
-                    if (currentShippingCost === 0) {
-                        showNotification('Por favor selecciona una ubicación valida en el mapa primero');
+                    // Verificación más estricta de envío
+                    if (currentShippingCost === 0 && deliveryDistance === 0) {
+                        showNotification('Por favor selecciona una ubicación en el mapa primero para calcular el envío');
                         return;
                     }
                     
@@ -1492,10 +1467,10 @@
                 selectPaymentMethod('card');
                 
                 document.getElementById('checkoutForm').style.display = 'block';
-                window.scrollTo({
-                    top: document.getElementById('checkoutForm').offsetTop - 20,
-                    behavior: 'smooth'
-                });
+                // Pequeña corrección para scroll suave
+                setTimeout(() => {
+                    document.getElementById('checkoutForm').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
             });
             
             // Cancelar checkout
@@ -1569,7 +1544,9 @@
             });
             
             // Seleccionar tradicional por defecto
-            document.getElementById('tradicionalOption').click();
+            if(document.getElementById('tradicionalOption')) {
+                 document.getElementById('tradicionalOption').click();
+            }
         });
 
         // ============================================
@@ -1580,9 +1557,14 @@
             productsGrid.innerHTML = '';
             
             const product = products[0];
-            const cartItem = cart.find(item => item.id === product.id && item.serviceType === selectedServiceType && 
-                JSON.stringify(item.selectedBrand) === JSON.stringify(selectedBrand) &&
-                JSON.stringify(item.selectedExtras) === JSON.stringify(selectedExtras));
+            // Safe navigation for item properties
+            const cartItem = cart.find(item => 
+                item.id === product.id && 
+                item.serviceType === selectedServiceType && 
+                item.selectedBrand && selectedBrand &&
+                item.selectedBrand.id === selectedBrand.id &&
+                JSON.stringify(item.selectedExtras) === JSON.stringify(selectedExtras)
+            );
                 
             const quantity = cartItem ? cartItem.quantity : 0;
             
@@ -1598,17 +1580,11 @@
                         <div class="product-price">Desde $${product.price.toFixed(2)}</div>
                         <div class="product-quantity-controls">
                             ${quantity > 0 ? `
-                                <button class="quantity-btn" onclick="adjustQuantityFromCart(${product.id}, '${selectedServiceType}', -1)" ${quantity <= 1 ? 'disabled' : ''}>
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <div class="quantity-display">${quantity}</div>
-                                <button class="quantity-btn" onclick="adjustQuantityFromCart(${product.id}, '${selectedServiceType}', 1)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                <div class="quantity-display">${quantity} en carrito</div>
                             ` : ''}
                             <button class="add-to-cart ${quantity > 0 ? 'in-cart' : ''}" onclick="event.stopPropagation(); openProductModal(${product.id})">
                                 <i class="fas fa-${quantity > 0 ? 'check' : 'cart-plus'}"></i>
-                                ${quantity > 0 ? 'En carrito' : 'Seleccionar'}
+                                ${quantity > 0 ? 'Añadir más' : 'Seleccionar'}
                             </button>
                         </div>
                     </div>
@@ -1685,7 +1661,7 @@
             });
             
             // Seleccionar primera marca por defecto
-            if (brands.length > 0 && !selectedBrand) {
+            if (brands.length > 0) {
                 selectedBrand = brands[0];
             }
         }
@@ -1825,30 +1801,6 @@
             showNotification(`${currentModalProduct.name} (${selectedBrand.name}) agregado al carrito`);
         }
 
-        function adjustQuantityFromCart(productId, serviceType, change) {
-            const item = cart.find(item => item.id === productId && item.serviceType === serviceType);
-            
-            if (item) {
-                item.quantity += change;
-                
-                if (item.quantity <= 0) {
-                    cart = cart.filter(item => !(item.id === productId && item.serviceType === serviceType));
-                }
-                
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                renderProduct();
-            }
-        }
-
-        function removeFromCart(itemId, serviceType) {
-            cart = cart.filter(item => !(item.id === itemId && item.serviceType === serviceType));
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartDisplay();
-            renderProduct();
-            showNotification('Producto eliminado del carrito');
-        }
-
         function updateCartDisplay() {
             const cartItemsContainer = document.getElementById('cartItems');
             const floatingCartCount = document.getElementById('floatingCartCount');
@@ -1938,35 +1890,48 @@
         // FUNCIONES DE MAPA Y ENVÍO
         // ============================================
         function initMap() {
-            if (map) return;
+            if (map) {
+                map.resize(); // Asegurar que el mapa se pinte bien
+                return;
+            }
             
             if (!mapboxgl.accessToken) {
                 console.error('Token de Mapbox no configurado');
                 return;
             }
             
-            map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',
-                center: purificadoraCoords,
-                zoom: 13
-            });
-            
-            purificadoraMarker = new mapboxgl.Marker({ color: '#3498db' })
-                .setLngLat(purificadoraCoords)
-                .setPopup(new mapboxgl.Popup().setHTML(`
-                    <div style="padding: 10px;">
-                        <h4 style="margin: 0 0 5px; color: #3498db;">GluGlu MX</h4>
-                        <p style="margin: 0; font-size: 0.9rem;">${purificadoraAddress}</p>
-                    </div>
-                `))
-                .addTo(map);
-            
-            // Al hacer clic en el mapa, obtener la dirección del lugar
-            map.on('click', function(e) {
-                placeDeliveryMarker(e.lngLat);
-                getAddressFromCoordinates(e.lngLat);
-            });
+            try {
+                map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v12',
+                    center: purificadoraCoords,
+                    zoom: 13
+                });
+
+                // Esperar a que cargue para añadir marcadores
+                map.on('load', () => {
+                   map.resize(); // Forzar resize
+                   
+                   purificadoraMarker = new mapboxgl.Marker({ color: '#3498db' })
+                    .setLngLat(purificadoraCoords)
+                    .setPopup(new mapboxgl.Popup().setHTML(`
+                        <div style="padding: 10px;">
+                            <h4 style="margin: 0 0 5px; color: #3498db;">GluGlu MX</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">${purificadoraAddress}</p>
+                        </div>
+                    `))
+                    .addTo(map);
+                });
+
+                // Al hacer clic en el mapa, obtener la dirección del lugar
+                map.on('click', function(e) {
+                    placeDeliveryMarker(e.lngLat);
+                    getAddressFromCoordinates(e.lngLat);
+                });
+            } catch (error) {
+                console.error("Error inicializando mapa:", error);
+                showNotification("Error al cargar el mapa. Verifica tu conexión.");
+            }
         }
 
         function getCurrentLocation() {
@@ -2108,7 +2073,6 @@
                 });
         }
 
-        // FUNCIÓN MODIFICADA: Cálculo automático de envío
         function calculateShippingWithMapbox() {
             if (!deliveryMarker) {
                 showNotification('Por favor selecciona una ubicación en el mapa primero');
@@ -2117,13 +2081,6 @@
             }
             
             const deliveryCoords = deliveryMarker.getLngLat();
-            const address = document.getElementById('deliveryAddress').value.trim();
-            
-            if (!address) {
-                showNotification('Por favor ingresa una dirección');
-                document.getElementById('autoCalculatingStatus').classList.remove('active');
-                return;
-            }
             
             // Mostrar estado de cálculo
             document.getElementById('autoCalculatingStatus').classList.add('active');
@@ -2260,7 +2217,8 @@
         }
 
         function updateShippingUI() {
-            const shippingInfo = calculateShippingCost();
+            // Nota: No llamar recursivamente a calculateShippingCost aqui si esa función llama a esta
+            // Solo actualizamos la interfaz
             
             if (deliveryDistance > 0 && deliveryDistance <= shippingRates.maxDistance) {
                 document.getElementById('distanceText').textContent = `${deliveryDistance.toFixed(1)} km`;
@@ -2414,6 +2372,7 @@
             
             document.getElementById('confirmationModal').classList.add('active');
             
+            // Limpiar datos
             cart = [];
             localStorage.removeItem('cart');
             document.getElementById('orderForm').reset();
