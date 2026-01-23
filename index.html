@@ -146,39 +146,10 @@
             background-color: var(--accent);
         }
 
-        /* CATEGORÍAS */
-        .menu-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-
-        .category-btn {
-            padding: 8px 20px;
-            background-color: transparent;
-            border: 2px solid #E0E0E0;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .category-btn:hover, .category-btn.active {
-            border-color: var(--primary);
-            background-color: var(--primary);
-            color: white;
-        }
-
         /* PRODUCTOS */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
 
@@ -201,30 +172,30 @@
         }
 
         .product-img {
-            height: 180px;
+            height: 200px;
             width: 100%;
             object-fit: cover;
         }
 
         .product-info {
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
         .product-title {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
             color: var(--text-main);
         }
 
         .product-desc {
             color: var(--text-light);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-bottom: 15px;
             flex-grow: 1;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .product-footer {
@@ -235,7 +206,7 @@
         }
 
         .product-price {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary);
         }
@@ -281,7 +252,7 @@
             color: white;
             border: none;
             border-radius: 10px;
-            padding: 6px 14px;
+            padding: 8px 16px;
             cursor: pointer;
             font-weight: 700;
             transition: all 0.2s;
@@ -1020,17 +991,17 @@
             .purificadora-info h3 { font-size: 1.4rem; }
             
             .products-grid {
-                grid-template-columns: repeat(2, 1fr); 
+                grid-template-columns: 1fr; 
                 gap: 12px;
             }
             
             .product-card { border-radius: 12px; }
-            .product-img { height: 130px; }
-            .product-info { padding: 12px; }
-            .product-title { font-size: 0.95rem; line-height: 1.2; }
-            .product-desc { display: none; }
-            .product-price { font-size: 1rem; }
-            .add-to-cart { padding: 5px 10px; font-size: 0.9rem; }
+            .product-img { height: 180px; }
+            .product-info { padding: 15px; }
+            .product-title { font-size: 1.1rem; line-height: 1.2; }
+            .product-desc { font-size: 0.85rem; }
+            .product-price { font-size: 1.2rem; }
+            .add-to-cart { padding: 8px 12px; font-size: 0.9rem; }
 
             .floating-cart-icon { display: flex; }
             
@@ -1054,11 +1025,9 @@
 
         @media (max-width: 480px) {
             .products-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
             .section-title { font-size: 1.3rem; }
-            
-            .category-btn { padding: 6px 14px; font-size: 0.9rem; }
             
             .payment-methods {
                 flex-direction: column;
@@ -1099,20 +1068,17 @@
             <p style="font-size: 0.9rem; margin-top: 10px; background: #e8f4fc; padding: 8px; border-radius: 8px; border-left: 4px solid var(--accent);">
                 <strong>Precios:</strong> Tradicional $35 • Plus (con perlas de plata) $45 • Te confirmamos el precio al recoger
             </p>
+            <p style="font-size: 0.9rem; margin-top: 10px; background: #fff5e6; padding: 8px; border-radius: 8px; border-left: 4px solid #f39c12;">
+                <strong>Marcas disponibles:</strong> Bonafont, E-pura, Electropura, Ciel, Genérico
+            </p>
         </div>
         
         <div class="main-content">
             <section class="menu-section">
-                <h2 class="section-title">Selecciona tu marca</h2>
+                <h2 class="section-title">Garrafón de Agua</h2>
                 
-                <div class="menu-categories">
-                    <button class="category-btn active" data-category="all">Todas las marcas</button>
-                    <button class="category-btn" data-category="premium">Marcas Premium</button>
-                    <button class="category-btn" data-category="generico">Genérico</button>
-                </div>
-
                 <div class="products-grid" id="productsGrid">
-                    <!-- Los productos se cargarán aquí con JavaScript -->
+                    <!-- Solo un producto: Garrafón -->
                 </div>
             </section>
 
@@ -1201,8 +1167,6 @@
                     <div class="delivery-limit-warning" id="deliveryLimitWarning">
                         <i class="fas fa-exclamation-triangle"></i> No entregamos a más de 15 km de distancia.
                     </div>
-                    
-                    <!-- Botón de calcular envío eliminado - ahora es automático -->
                 </div>
 
                 <button class="checkout-btn" id="checkoutBtn">
@@ -1282,7 +1246,7 @@
             <img id="modalProductImage" src="" alt="" class="product-modal-img">
             <div class="product-modal-info">
                 <h3 id="modalProductTitle" class="product-modal-title"></h3>
-                <p id="modalProductDesc" class="product-modal-desc"></p>
+                <p id="modalProductDesc" class="modal-product-desc"></p>
                 <div id="modalProductPrice" class="product-modal-price"></div>
                 
                 <!-- SECCIÓN DE MARCAS Y TIPO DE SERVICIO -->
@@ -1305,6 +1269,13 @@
                             <div class="service-name">Plus</div>
                             <div class="service-price">$45.00</div>
                             <div class="service-desc">Proceso con perlas de plata</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 25px;" id="extrasSection">
+                        <h4 class="modifiers-title">Extras</h4>
+                        <div id="extrasList">
+                            <!-- Los extras se cargarán aquí dinámicamente -->
                         </div>
                     </div>
                 </div>
@@ -1377,60 +1348,37 @@
         const mapboxToken = 'pk.eyJ1IjoiY3Jvbm9zYmFyYmFjb2EiLCJhIjoiY21qYXlzN2EzMGEwcTNkcTF3c2w2YWc2bCJ9.dKvmIuJz1h-loUcVlx5Ojw';
         mapboxgl.accessToken = mapboxToken;
 
-        // Marcas de agua disponibles
-        const brands = [
+        // Un solo producto: Garrafón
+        const products = [
             {
                 id: 1,
-                name: "Bonafont",
-                category: "premium",
-                description: "Agua purificada de la marca Bonafont. Te entregamos el mismo envase Bonafont.",
-                price: 35, // Precio base tradicional
+                name: "Garrafón de Agua",
+                category: "agua",
+                description: "Garrafón de agua purificada. Te entregamos un garrafón de la marca que prefieras: Bonafont, E-pura, Electropura, Ciel o Genérico.",
+                price: 35.00, // Precio base tradicional
                 image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                premium: true
-            },
-            {
-                id: 2,
-                name: "E-pura",
-                category: "premium",
-                description: "Agua purificada de la marca E-pura. Te entregamos el mismo envase E-pura.",
-                price: 35,
-                image: "https://images.unsplash.com/photo-1548839149-8c6d67235a8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                premium: true
-            },
-            {
-                id: 3,
-                name: "Electropura",
-                category: "premium",
-                description: "Agua purificada de la marca Electropura. Te entregamos el mismo envase Electropura.",
-                price: 35,
-                image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                premium: true
-            },
-            {
-                id: 4,
-                name: "Ciel",
-                category: "premium",
-                description: "Agua purificada de la marca Ciel. Te entregamos el mismo envase Ciel.",
-                price: 35,
-                image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                premium: true
-            },
-            {
-                id: 5,
-                name: "Genérico",
-                category: "generico",
-                description: "Agua purificada genérica. Te entregamos un envase estándar.",
-                price: 35,
-                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                premium: false
+                extras: [
+                    { id: 1, name: "Dispensador de agua", description: "Dispensador para facilitar el uso del garrafón", price: 120.00 },
+                    { id: 2, name: "Base para garrafón", description: "Base con grifo incluido", price: 85.00 },
+                    { id: 3, name: "Garrafón adicional", description: "Un garrafón extra vacío", price: 65.00 },
+                    { id: 4, name: "Entrega urgente", description: "Entrega en menos de 2 horas", price: 50.00 }
+                ]
             }
+        ];
+
+        // Marcas disponibles para el garrafón
+        const brands = [
+            { id: 1, name: "Bonafont", image: "https://logodownload.org/wp-content/uploads/2018/10/bonafont-logo.png" },
+            { id: 2, name: "E-pura", image: "https://seeklogo.com/images/E/epura-logo-CEB7AB3A69-seeklogo.com.png" },
+            { id: 3, name: "Electropura", image: "https://www.electropura.com.mx/images/logo-electropura.png" },
+            { id: 4, name: "Ciel", image: "https://logodownload.org/wp-content/uploads/2018/10/ciel-logo.png" },
+            { id: 5, name: "Genérico", image: "https://cdn-icons-png.flaticon.com/512/3208/3208720.png" }
         ];
 
         // ============================================
         // VARIABLES GLOBALES
         // ============================================
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let currentCategory = 'all';
         let currentShippingCost = 0;
         let deliveryDistance = 0;
         let deliveryTime = 0;
@@ -1445,27 +1393,18 @@
         let deliveryZone = "";
         
         // Variables para el modal de producto
-        let currentModalBrand = null;
+        let currentModalProduct = null;
         let modalQuantity = 1;
         let selectedBrand = null;
         let selectedServiceType = "tradicional"; // Por defecto tradicional
+        let selectedExtras = [];
 
         // ============================================
         // INICIALIZACIÓN
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            renderBrands();
+            renderProduct();
             updateCartDisplay();
-            
-            // Categorías
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCategory = this.getAttribute('data-category');
-                    renderBrands();
-                });
-            });
             
             // Icono flotante del carrito
             document.getElementById('floatingCartIcon').addEventListener('click', function() {
@@ -1614,7 +1553,7 @@
                     selectedServiceType = serviceTypeInput.value;
                     
                     // Actualizar precio según tipo de servicio
-                    if (currentModalBrand) {
+                    if (currentModalProduct) {
                         calculateModalTotal();
                     }
                 });
@@ -1622,7 +1561,7 @@
             
             // Añadir al carrito desde modal
             document.getElementById('modalAddToCartBtn').addEventListener('click', function() {
-                if (currentModalBrand && selectedBrand) {
+                if (currentModalProduct && selectedBrand) {
                     addToCartFromModal();
                 } else {
                     showNotification('Por favor selecciona una marca primero');
@@ -1634,85 +1573,82 @@
         });
 
         // ============================================
-        // FUNCIONES DE MARCAS Y CARRITO
+        // FUNCIONES DE PRODUCTO Y CARRITO
         // ============================================
-        function renderBrands() {
+        function renderProduct() {
             const productsGrid = document.getElementById('productsGrid');
             productsGrid.innerHTML = '';
             
-            const filteredBrands = currentCategory === 'all' 
-                ? brands 
-                : brands.filter(brand => brand.category === currentCategory);
-            
-            if (filteredBrands.length === 0) {
-                productsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #7f8c8d; padding: 40px;">No hay marcas en esta categoría.</p>';
-                return;
-            }
-            
-            filteredBrands.forEach(brand => {
-                const cartItem = cart.find(item => item.id === brand.id && item.serviceType === selectedServiceType);
-                const quantity = cartItem ? cartItem.quantity : 0;
+            const product = products[0];
+            const cartItem = cart.find(item => item.id === product.id && item.serviceType === selectedServiceType && 
+                JSON.stringify(item.selectedBrand) === JSON.stringify(selectedBrand) &&
+                JSON.stringify(item.selectedExtras) === JSON.stringify(selectedExtras));
                 
-                const brandCard = document.createElement('div');
-                brandCard.className = 'product-card';
-                brandCard.dataset.brandId = brand.id;
-                brandCard.innerHTML = `
-                    <img src="${brand.image}" alt="${brand.name}" class="product-img">
-                    <div class="product-info">
-                        <h3 class="product-title">${brand.name}</h3>
-                        <p class="product-desc">${brand.description}</p>
-                        <div class="product-footer">
-                            <div class="product-price">Desde $${brand.price.toFixed(2)}</div>
-                            <div class="product-quantity-controls">
-                                ${quantity > 0 ? `
-                                    <button class="quantity-btn" onclick="adjustQuantity(${brand.id}, '${selectedServiceType}', -1)" ${quantity <= 1 ? 'disabled' : ''}>
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <div class="quantity-display">${quantity}</div>
-                                    <button class="quantity-btn" onclick="adjustQuantity(${brand.id}, '${selectedServiceType}', 1)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                ` : ''}
-                                <button class="add-to-cart ${quantity > 0 ? 'in-cart' : ''}" onclick="event.stopPropagation(); openBrandModal(${brand.id})">
-                                    <i class="fas fa-${quantity > 0 ? 'check' : 'cart-plus'}"></i>
-                                    ${quantity > 0 ? 'En carrito' : 'Seleccionar'}
+            const quantity = cartItem ? cartItem.quantity : 0;
+            
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.dataset.productId = product.id;
+            productCard.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-desc">${product.description}</p>
+                    <div class="product-footer">
+                        <div class="product-price">Desde $${product.price.toFixed(2)}</div>
+                        <div class="product-quantity-controls">
+                            ${quantity > 0 ? `
+                                <button class="quantity-btn" onclick="adjustQuantityFromCart(${product.id}, '${selectedServiceType}', -1)" ${quantity <= 1 ? 'disabled' : ''}>
+                                    <i class="fas fa-minus"></i>
                                 </button>
-                            </div>
+                                <div class="quantity-display">${quantity}</div>
+                                <button class="quantity-btn" onclick="adjustQuantityFromCart(${product.id}, '${selectedServiceType}', 1)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            ` : ''}
+                            <button class="add-to-cart ${quantity > 0 ? 'in-cart' : ''}" onclick="event.stopPropagation(); openProductModal(${product.id})">
+                                <i class="fas fa-${quantity > 0 ? 'check' : 'cart-plus'}"></i>
+                                ${quantity > 0 ? 'En carrito' : 'Seleccionar'}
+                            </button>
                         </div>
                     </div>
-                `;
-                
-                // Abrir modal al hacer clic en la marca (excepto en los botones)
-                brandCard.addEventListener('click', function(e) {
-                    if (!e.target.closest('.quantity-btn') && !e.target.closest('.add-to-cart')) {
-                        openBrandModal(brand.id);
-                    }
-                });
-                
-                productsGrid.appendChild(brandCard);
+                </div>
+            `;
+            
+            // Abrir modal al hacer clic en el producto (excepto en los botones)
+            productCard.addEventListener('click', function(e) {
+                if (!e.target.closest('.quantity-btn') && !e.target.closest('.add-to-cart')) {
+                    openProductModal(product.id);
+                }
             });
+            
+            productsGrid.appendChild(productCard);
         }
 
-        function openBrandModal(brandId) {
-            const brand = brands.find(b => b.id === brandId);
-            if (!brand) return;
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
             
-            currentModalBrand = brand;
+            currentModalProduct = product;
             modalQuantity = 1;
-            selectedBrand = brand;
+            selectedBrand = null;
+            selectedExtras = [];
             
             // Actualizar contenido del modal
-            document.getElementById('modalProductImage').src = brand.image;
-            document.getElementById('modalProductImage').alt = brand.name;
-            document.getElementById('modalProductTitle').textContent = brand.name;
-            document.getElementById('modalProductDesc').textContent = brand.description;
-            document.getElementById('modalProductPrice').textContent = `Desde $${brand.price.toFixed(2)}`;
+            document.getElementById('modalProductImage').src = product.image;
+            document.getElementById('modalProductImage').alt = product.name;
+            document.getElementById('modalProductTitle').textContent = product.name;
+            document.getElementById('modalProductDesc').textContent = product.description;
+            document.getElementById('modalProductPrice').textContent = `Desde $${product.price.toFixed(2)}`;
             
             // Actualizar controles de cantidad
             updateModalQuantity();
             
             // Cargar opciones de marca
             loadBrandOptions();
+            
+            // Cargar extras
+            loadExtras(product.extras);
             
             // Calcular total inicial
             calculateModalTotal();
@@ -1727,11 +1663,11 @@
             
             brands.forEach(brand => {
                 const brandOption = document.createElement('div');
-                brandOption.className = `brand-option ${brand.id === currentModalBrand.id ? 'selected' : ''}`;
+                brandOption.className = `brand-option ${brand.id === 1 ? 'selected' : ''}`;
                 brandOption.dataset.brandId = brand.id;
                 
                 brandOption.innerHTML = `
-                    <input type="radio" name="brand" id="brand-${brand.id}" value="${brand.id}" ${brand.id === currentModalBrand.id ? 'checked' : ''}>
+                    <img src="${brand.image}" alt="${brand.name}" style="width: 40px; height: 40px; object-fit: contain; margin: 0 auto 5px;">
                     <div class="brand-name">${brand.name}</div>
                 `;
                 
@@ -1742,16 +1678,71 @@
                     const selectedBrandId = parseInt(this.dataset.brandId);
                     selectedBrand = brands.find(b => b.id === selectedBrandId);
                     
-                    // Actualizar contenido del modal con la nueva marca seleccionada
-                    document.getElementById('modalProductTitle').textContent = selectedBrand.name;
-                    document.getElementById('modalProductDesc').textContent = selectedBrand.description;
-                    document.getElementById('modalProductImage').src = selectedBrand.image;
-                    document.getElementById('modalProductImage').alt = selectedBrand.name;
-                    
                     calculateModalTotal();
                 });
                 
                 brandsList.appendChild(brandOption);
+            });
+            
+            // Seleccionar primera marca por defecto
+            if (brands.length > 0 && !selectedBrand) {
+                selectedBrand = brands[0];
+            }
+        }
+
+        function loadExtras(extras) {
+            const extrasList = document.getElementById('extrasList');
+            extrasList.innerHTML = '';
+            
+            if (!extras || extras.length === 0) {
+                document.getElementById('extrasSection').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('extrasSection').style.display = 'block';
+            
+            extras.forEach(extra => {
+                const extraItem = document.createElement('div');
+                extraItem.className = 'extra-item';
+                extraItem.style.display = 'flex';
+                extraItem.style.justifyContent = 'space-between';
+                extraItem.style.alignItems = 'center';
+                extraItem.style.padding = '10px 0';
+                extraItem.style.borderBottom = '1px solid #eee';
+                extraItem.dataset.extraId = extra.id;
+                
+                extraItem.innerHTML = `
+                    <div>
+                        <div style="font-weight: 600;">${extra.name}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">${extra.description}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="font-weight: 700; color: var(--primary);">+$${extra.price.toFixed(2)}</div>
+                        <div class="extra-toggle" style="width: 40px; height: 20px; border-radius: 10px; background: #ddd; position: relative; cursor: pointer; transition: all 0.3s;">
+                            <div style="position: absolute; width: 16px; height: 16px; border-radius: 50%; background: white; top: 2px; left: 2px; transition: all 0.3s;"></div>
+                        </div>
+                    </div>
+                `;
+                
+                // Configurar el toggle
+                const toggle = extraItem.querySelector('.extra-toggle');
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    if (this.classList.contains('active')) {
+                        this.style.backgroundColor = 'var(--primary)';
+                        this.querySelector('div').style.left = '22px';
+                        selectedExtras.push(extra);
+                    } else {
+                        this.style.backgroundColor = '#ddd';
+                        this.querySelector('div').style.left = '2px';
+                        selectedExtras = selectedExtras.filter(e => e.id !== extra.id);
+                    }
+                    
+                    calculateModalTotal();
+                });
+                
+                extrasList.appendChild(extraItem);
             });
         }
 
@@ -1761,47 +1752,62 @@
         }
 
         function calculateModalTotal() {
-            if (!selectedBrand) return;
+            if (!currentModalProduct) return;
             
-            let basePrice = selectedBrand.price;
+            let basePrice = selectedServiceType === "plus" ? 45 : 35;
+            let total = basePrice;
             
-            // Ajustar precio según tipo de servicio
-            if (selectedServiceType === "plus") {
-                basePrice = 45; // Precio plus con perlas de plata
-            } else {
-                basePrice = 35; // Precio tradicional
-            }
+            // Sumar precios de extras seleccionados
+            selectedExtras.forEach(extra => {
+                total += extra.price;
+            });
             
             // Multiplicar por cantidad
-            let total = basePrice * modalQuantity;
+            total *= modalQuantity;
             
             document.getElementById('modalTotalPrice').textContent = `$${total.toFixed(2)}`;
         }
 
         function addToCartFromModal() {
-            if (!selectedBrand) return;
+            if (!currentModalProduct || !selectedBrand) return;
             
             // Determinar precio según tipo de servicio
-            let price = selectedServiceType === "plus" ? 45 : 35;
+            let basePrice = selectedServiceType === "plus" ? 45 : 35;
+            let totalPrice = basePrice;
+            
+            // Sumar precios de extras
+            selectedExtras.forEach(extra => {
+                totalPrice += extra.price;
+            });
             
             const cartItem = {
-                id: selectedBrand.id,
-                name: selectedBrand.name,
-                basePrice: price,
-                price: price,
+                id: currentModalProduct.id,
+                name: currentModalProduct.name,
+                basePrice: basePrice,
+                price: totalPrice,
                 quantity: modalQuantity,
                 serviceType: selectedServiceType,
                 serviceName: selectedServiceType === "plus" ? "Plus (perlas de plata)" : "Tradicional",
-                image: selectedBrand.image
+                selectedBrand: selectedBrand,
+                selectedExtras: [...selectedExtras],
+                image: currentModalProduct.image
             };
             
-            // Buscar si ya existe el mismo producto con el mismo tipo de servicio
+            // Buscar si ya existe el mismo producto con las mismas características
             const existingIndex = cart.findIndex(item => {
-                return item.id === cartItem.id && item.serviceType === cartItem.serviceType;
+                if (item.id !== cartItem.id) return false;
+                if (item.serviceType !== cartItem.serviceType) return false;
+                if (item.selectedBrand.id !== cartItem.selectedBrand.id) return false;
+                
+                // Verificar si los extras son iguales
+                const itemExtras = item.selectedExtras.map(e => e.id).sort();
+                const cartExtras = cartItem.selectedExtras.map(e => e.id).sort();
+                
+                return JSON.stringify(itemExtras) === JSON.stringify(cartExtras);
             });
             
             if (existingIndex >= 0) {
-                // Actualizar cantidad si es la misma marca y tipo de servicio
+                // Actualizar cantidad si es el mismo producto con las mismas características
                 cart[existingIndex].quantity += modalQuantity;
             } else {
                 // Añadir nuevo item
@@ -1810,36 +1816,36 @@
             
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartDisplay();
-            renderBrands();
+            renderProduct();
             
             // Cerrar modal
             document.getElementById('productModal').classList.remove('active');
             
             // Mostrar notificación
-            showNotification(`${selectedBrand.name} (${selectedServiceType === "plus" ? "Plus" : "Tradicional"}) agregado al carrito`);
+            showNotification(`${currentModalProduct.name} (${selectedBrand.name}) agregado al carrito`);
         }
 
-        function adjustQuantity(brandId, serviceType, change) {
-            const item = cart.find(item => item.id === brandId && item.serviceType === serviceType);
+        function adjustQuantityFromCart(productId, serviceType, change) {
+            const item = cart.find(item => item.id === productId && item.serviceType === serviceType);
             
             if (item) {
                 item.quantity += change;
                 
                 if (item.quantity <= 0) {
-                    cart = cart.filter(item => !(item.id === brandId && item.serviceType === serviceType));
+                    cart = cart.filter(item => !(item.id === productId && item.serviceType === serviceType));
                 }
                 
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartDisplay();
-                renderBrands();
+                renderProduct();
             }
         }
 
-        function removeFromCart(brandId, serviceType) {
-            cart = cart.filter(item => !(item.id === brandId && item.serviceType === serviceType));
+        function removeFromCart(itemId, serviceType) {
+            cart = cart.filter(item => !(item.id === itemId && item.serviceType === serviceType));
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartDisplay();
-            renderBrands();
+            renderProduct();
             showNotification('Producto eliminado del carrito');
         }
 
@@ -1870,20 +1876,29 @@
                 `;
             } else {
                 cartItemsContainer.innerHTML = '';
-                cart.forEach(item => {
+                cart.forEach((item, index) => {
                     const cartItem = document.createElement('div');
                     cartItem.className = 'cart-item';
+                    
+                    let extrasText = '';
+                    if (item.selectedExtras && item.selectedExtras.length > 0) {
+                        extrasText = `<small style="color: var(--accent); font-size: 0.8rem;">
+                            Extras: ${item.selectedExtras.map(e => e.name).join(', ')}
+                        </small><br>`;
+                    }
+                    
                     cartItem.innerHTML = `
                         <div>
-                            <h4>${item.name}</h4>
-                            <small style="color: var(--accent); font-size: 0.8rem;">
+                            <h4>${item.name} (${item.selectedBrand.name})</h4>
+                            <small style="color: #666; font-size: 0.8rem;">
                                 ${item.serviceName}
                             </small><br>
+                            ${extrasText}
                             <small>$${item.price.toFixed(2)} c/u</small>
                         </div>
                         <div class="cart-item-controls">
-                            <input type="number" min="1" value="${item.quantity}" class="cart-item-qty" onchange="updateQuantity(${item.id}, '${item.serviceType}', this.value)">
-                            <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.serviceType}')">
+                            <input type="number" min="1" value="${item.quantity}" class="cart-item-qty" onchange="updateQuantity(${index}, this.value)">
+                            <button class="remove-item" onclick="removeItem(${index})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1893,25 +1908,34 @@
             }
         }
 
-        function updateQuantity(brandId, serviceType, newQuantity) {
+        function updateQuantity(index, newQuantity) {
             const quantity = parseInt(newQuantity);
             
             if (quantity < 1) {
-                removeFromCart(brandId, serviceType);
+                removeItem(index);
                 return;
             }
             
-            const item = cart.find(item => item.id === brandId && item.serviceType === serviceType);
-            if (item) {
-                item.quantity = quantity;
+            if (cart[index]) {
+                cart[index].quantity = quantity;
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartDisplay();
-                renderBrands();
+                renderProduct();
+            }
+        }
+
+        function removeItem(index) {
+            if (cart[index]) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+                renderProduct();
+                showNotification('Producto eliminado del carrito');
             }
         }
 
         // ============================================
-        // FUNCIONES DE MAPA Y ENVÍO - CORREGIDAS
+        // FUNCIONES DE MAPA Y ENVÍO
         // ============================================
         function initMap() {
             if (map) return;
@@ -1975,7 +1999,6 @@
             );
         }
 
-        // FUNCIÓN CORREGIDA: Obtener dirección a partir de coordenadas con restricción a México
         function getAddressFromCoordinates(coords) {
             // Configurar parámetros para geocodificación inversa en México
             const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?access_token=${mapboxgl.accessToken}&language=es&country=mx&limit=1`;
@@ -2369,7 +2392,11 @@
             message += `%0A*DETALLE DEL PEDIDO:*%0A`;
             
             cart.forEach(item => {
-                message += `- ${item.name} (${item.serviceName}) x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}%0A`;
+                message += `- ${item.name} (${item.selectedBrand.name}) - ${item.serviceName} x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}`;
+                if (item.selectedExtras && item.selectedExtras.length > 0) {
+                    message += `%0A  Extras: ${item.selectedExtras.map(e => e.name).join(', ')}`;
+                }
+                message += `%0A`;
             });
             
             message += `%0A*SUBTOTAL:* $${subtotal.toFixed(2)}%0A`;
@@ -2414,7 +2441,7 @@
             
             selectPaymentMethod('card');
             updateCartDisplay();
-            renderBrands();
+            renderProduct();
         }
 
         // ============================================
