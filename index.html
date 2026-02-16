@@ -2,2418 +2,737 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GluGlu MX - Purificadora de Agua</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial CONTPAQi Colabora - Ver Recibos de Nómina</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #3498db;
-            --primary-dark: #2980b9;
-            --accent: #2ecc71;
-            --bg-body: #f0f8ff;
-            --bg-card: #FFFFFF;
-            --text-main: #2C3E50;
-            --text-light: #7D7D7D;
-            --border-radius: 16px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --shadow-lg: 0 12px 48px rgba(52, 152, 219, 0.15);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'DM Sans', sans-serif;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
+        .tutorial-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
+        .step-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        /* HEADER */
-        header {
-            background: linear-gradient(rgba(52, 152, 219, 0.9), rgba(41, 128, 185, 0.9)), url('https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
+        .step-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo-img {
-            height: 80px;
-            width: 80px; /* Corrección: asegurar cuadrado */
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.8);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            background: white;
-        }
-
-        .logo-text {
-            font-size: 2rem;
-            letter-spacing: -0.5px;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        /* INFO PURIFICADORA */
-        .purificadora-info {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            margin: -30px auto 40px;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            z-index: 101;
-            text-align: center;
-            max-width: 1000px;
-        }
-
-        .purificadora-info h3 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        /* LAYOUT PRINCIPAL */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .menu-section, .cart-section, .checkout-form {
-            background-color: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .section-title {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
             width: 50px;
-            height: 3px;
-            background-color: var(--accent);
-        }
-
-        /* PRODUCTOS */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.2s ease;
-            border: 1px solid rgba(0,0,0,0.02);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .product-img {
-            height: 200px;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .product-title {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .product-desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            flex-grow: 1;
-            line-height: 1.5;
-        }
-
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .product-price {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* CONTROLES DE CANTIDAD EN PRODUCTO */
-        .product-quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .quantity-btn {
-            width: 32px;
-            height: 32px;
+            height: 50px;
             border-radius: 50%;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
+            font-size: 24px;
             font-weight: bold;
-            transition: all 0.2s;
+            margin-right: 20px;
+            flex-shrink: 0;
         }
-
-        .quantity-btn:hover {
-            background-color: #e0e0e0;
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-
-        .quantity-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
         }
-
-        .quantity-display {
-            min-width: 30px;
-            text-align: center;
+        .tab-button {
+            padding: 12px 25px;
+            border: none;
+            background: #e2e8f0;
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
-
-        .add-to-cart {
-            background-color: var(--primary);
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-            justify-content: center;
         }
-
-        .add-to-cart:hover {
-            background-color: var(--primary-dark);
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
         }
-
-        .add-to-cart.in-cart {
-            background-color: var(--accent);
+        .tab-content.active {
+            display: block;
         }
-
-        /* CARRITO LATERAL */
-        .cart-section {
-            position: sticky;
-            top: 110px;
-            height: fit-content;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .cart-items {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item h4 { 
-            font-size: 0.9rem; 
-            margin-bottom: 4px;
-        }
-        
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .cart-item-qty { 
-            width: 40px; 
-            text-align: center; 
-            padding: 4px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            font-size: 0.9rem;
-        }
-        
-        .remove-item {
-            background: #ffebee;
-            color: #d32f2f;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* MAPA Y FORMULARIOS */
-        .mapbox-container {
-            margin-top: 20px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            height: 300px;
-            position: relative;
-            display: none; /* Oculto por defecto */
-        }
-
-        .mapbox-container.active { 
-            display: block; 
-        }
-
-        #map {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .map-address-search {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            z-index: 10;
-            display: flex;
-            gap: 5px;
-        }
-
-        #mapSearch {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            font-size: 0.9rem;
-        }
-
-        #mapSearchBtn {
-            padding: 0 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* BOTONES */
-        .checkout-btn, .submit-order-btn {
-            width: 100%;
-            border: none;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 15px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .checkout-btn { 
-            background-color: var(--accent); 
-        }
-        
-        .checkout-btn:hover { 
-            background-color: #27ae60; 
-        }
-        
-        .submit-order-btn { 
-            background-color: #25D366; 
-        }
-        
-        .submit-order-btn:hover { 
-            background-color: #1da851; 
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-top: 5px;
-            font-size: 1rem;
-        }
-
-        .form-group { 
-            margin-bottom: 15px; 
-        }
-
-        /* FLOATING ICON */
-        .floating-cart-icon {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: var(--primary);
+        .icon-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             width: 60px;
             height: 60px;
-            border-radius: 50%;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            cursor: pointer;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -5px; 
-            right: -5px;
-            background: var(--accent);
-            width: 24px; 
-            height: 24px;
-            border-radius: 50%;
-            font-size: 0.8rem;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid white;
-            font-weight: bold;
-        }
-
-        /* NOTIFICACIÓN TOAST */
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            z-index: 2000;
-            display: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            width: max-content;
-            max-width: 90%;
-            text-align: center;
-            animation: fadeInOut 3s ease;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        /* FOOTER */
-        footer {
-            background-color: #2C3E50;
-            color: rgba(255,255,255,0.7);
-            padding: 40px 0 20px;
-            margin-top: 50px;
-            text-align: center;
-        }
-        
-        .footer-logo { 
-            height: 60px; 
-            width: auto; 
-            border-radius: 50%; 
-            margin-bottom: 15px; 
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        /* CASH DETAILS */
-        .cash-details {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .cash-details.active {
-            display: block;
-        }
-
-        .change-info {
-            background: #e8f5e8;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
-            text-align: center;
-            font-weight: 600;
-            color: #2d572c;
-            display: none;
-        }
-
-        .change-info.active {
-            display: block;
-        }
-
-        /* DELIVERY INFO */
-        .distance-details {
-            background: #e8f4fc;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
-            border-left: 4px solid var(--primary);
-        }
-
-        .distance-details.active {
-            display: block;
-        }
-
-        .distance-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .distance-row.total {
-            font-weight: bold;
-            border-top: 1px solid var(--primary);
-            padding-top: 8px;
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-
-        .delivery-limit-warning {
-            background: #ffeaea;
-            color: #c0392b;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border-left: 4px solid #c0392b;
-            display: none;
-            font-size: 0.9rem;
-        }
-
-        .delivery-limit-warning.active {
-            display: block;
-        }
-
-        /* AUTO CALCULATING STATUS */
-        .auto-calculating-status {
-            background: #fff9e6;
-            color: #8a6d3b;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border-left: 4px solid #f0ad4e;
-            display: none;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        .auto-calculating-status.active {
-            display: block;
-        }
-
-        .auto-calculating-status i {
-            margin-right: 8px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* MODAL DE PRODUCTO */
-        .product-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .product-modal.active {
-            display: flex;
-        }
-
-        .product-modal-content {
-            background: white;
-            border-radius: var(--border-radius);
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-        }
-
-        .product-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: var(--text-main);
-            z-index: 10;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .product-modal-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-        }
-
-        .product-modal-info {
-            padding: 25px;
-        }
-
-        .product-modal-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .product-modal-desc {
-            color: var(--text-light);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .product-modal-price {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 25px;
-        }
-
-        /* MODIFICADORES - MARCAS */
-        .modifiers-section {
-            margin-bottom: 25px;
-        }
-
-        .modifiers-title {
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 28px;
             margin-bottom: 15px;
-            color: var(--text-main);
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
         }
-
-        .brand-selection {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .brand-option {
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
+        .faq-item {
             background: white;
-        }
-
-        .brand-option:hover {
-            border-color: var(--primary);
-        }
-
-        .brand-option.selected {
-            border-color: var(--primary);
-            background-color: #e8f4fc;
-        }
-
-        .brand-option input {
-            display: none;
-        }
-
-        .brand-name {
-            font-weight: 600;
-            margin-top: 5px;
-        }
-
-        .service-type {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .service-option {
-            flex: 1;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .service-option:hover {
-            border-color: var(--primary);
-        }
-
-        .service-option.selected {
-            border-color: var(--primary);
-            background-color: #e8f4fc;
-        }
-
-        .service-option input {
-            display: none;
-        }
-
-        .service-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .service-price {
-            color: var(--primary);
-            font-weight: 800;
-            font-size: 1.2rem;
-        }
-
-        .service-desc {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 5px;
-        }
-
-        /* CONTROLES DE CANTIDAD EN MODAL */
-        .modal-quantity-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin: 25px 0;
-        }
-
-        .modal-quantity-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background-color: #f5f5f5;
-            border: 2px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: all 0.2s;
-        }
-
-        .modal-quantity-btn:hover {
-            background-color: #e0e0e0;
-        }
-
-        .modal-quantity-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .modal-quantity-display {
-            min-width: 50px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-
-        .modal-add-to-cart {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 18px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-        }
-
-        .modal-add-to-cart:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .modal-add-to-cart.in-cart {
-            background-color: var(--accent);
-        }
-
-        /* TOTAL EN MODAL */
-        .modal-total {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .modal-total-price {
-            color: var(--primary);
-            font-size: 1.4rem;
-            font-weight: 800;
-        }
-
-        /* MODAL DE CONFIRMACIÓN */
-        .confirmation-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            border-radius: 10px;
             padding: 20px;
-        }
-
-        .confirmation-modal.active {
-            display: flex;
-        }
-
-        .confirmation-modal-content {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .confirmation-modal-logo {
-            height: 80px;
-            width: 80px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            border: 3px solid var(--primary);
-        }
-
-        /* PAYMENT METHODS */
-        .payment-methods {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .payment-method {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
+            margin: 10px 0;
             cursor: pointer;
-            transition: all 0.2s;
-            background: white;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
         }
-
-        .payment-method:hover {
-            border-color: var(--primary);
+        .faq-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
         }
-
-        .payment-method.selected {
-            border-color: var(--primary);
-            background-color: #fff9f0;
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-top: 0;
         }
-
-        .payment-method input {
-            display: none;
+        .faq-answer.open {
+            max-height: 500px;
+            padding-top: 15px;
         }
-
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 10px;
-            color: var(--primary);
-            display: none;
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
         }
-
-        .loading.active {
-            display: block;
-        }
-
-        .fa-spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        /* =========================================
-           RESPONSIVIDAD
-           ========================================= */
-        
-        @media (max-width: 992px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .cart-section {
-                order: 2;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 0 16px; }
-
-            header { padding: 20px 0; }
-            .header-content { flex-direction: column; text-align: center; }
-            .logo-container { flex-direction: column; gap: 10px; }
-            .logo-img { height: 60px; width: 60px; }
-            .logo-text { font-size: 1.6rem; }
-
-            .purificadora-info { padding: 20px; margin-top: -20px; }
-            .purificadora-info h3 { font-size: 1.4rem; }
-            
-            .products-grid {
-                grid-template-columns: 1fr; 
-                gap: 12px;
-            }
-            
-            .product-card { border-radius: 12px; }
-            .product-img { height: 180px; }
-            .product-info { padding: 15px; }
-            .product-title { font-size: 1.1rem; line-height: 1.2; }
-            .product-desc { font-size: 0.85rem; }
-            .product-price { font-size: 1.2rem; }
-            .add-to-cart { padding: 8px 12px; font-size: 0.9rem; }
-
-            .floating-cart-icon { display: flex; }
-            
-            .product-modal-content {
-                max-height: 95vh;
-            }
-            
-            .confirmation-modal-content { 
-                width: 90%; 
-                padding: 20px; 
-            }
-            
-            .brand-selection {
-                grid-template-columns: 1fr;
-            }
-            
-            .service-type {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            .section-title { font-size: 1.3rem; }
-            
-            .payment-methods {
-                flex-direction: column;
-            }
-            
-            .product-modal-info {
-                padding: 20px;
-            }
+        .device-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 10px;
         }
     </style>
 </head>
-<body>
-
-    <div class="floating-cart-icon" id="floatingCartIcon">
-        <i class="fas fa-tint"></i> 
-        <div class="cart-count" id="floatingCartCount">0</div>
-    </div>
-    
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-container">
-                    <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo GluGlu MX" class="logo-img">
-                    <h1 class="logo-text">GluGlu MX</h1>
+<body class="min-h-screen py-8 px-4">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="tutorial-card p-8 mb-8 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="icon-box">
+                    <i class="fas fa-file-invoice-dollar"></i>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="purificadora-info">
-            <h3><i class="fas fa-tint"></i> Agua Purificada de Calidad</h3>
-            <p style="font-size: 0.9rem; color: #666;">Lunes a Domingo 8:00 AM - 8:00 PM</p>
-            <p style="font-size: 0.9rem;"><i class="fas fa-map-pin" style="color:var(--accent)"></i> Tu ubicación</p>
-            <p style="font-size: 0.9rem; margin-top: 10px; background: #e8f4fc; padding: 8px; border-radius: 8px; border-left: 4px solid var(--primary);">
-                <strong>Servicio:</strong> Rellenamos tu envase con agua purificada de la marca que prefieras
-            </p>
-            <p style="font-size: 0.9rem; margin-top: 10px; background: #e8f4fc; padding: 8px; border-radius: 8px; border-left: 4px solid var(--accent);">
-                <strong>Precios:</strong> Tradicional $35 • Plus (con perlas de plata) $45 • Te confirmamos el precio al recoger
-            </p>
-            <p style="font-size: 0.9rem; margin-top: 10px; background: #fff5e6; padding: 8px; border-radius: 8px; border-left: 4px solid #f39c12;">
-                <strong>Marcas disponibles:</strong> Bonafont, E-pura, Electropura, Ciel, Genérico
-            </p>
-        </div>
-        
-        <div class="main-content">
-            <section class="menu-section">
-                <h2 class="section-title">Garrafón de Agua</h2>
-                
-                <div class="products-grid" id="productsGrid">
-                    </div>
-            </section>
-
-            <section class="cart-section" id="cartSection">
-                <h2 class="section-title">Tu Pedido</h2>
-                
-                <div class="cart-items" id="cartItems">
-                    <p style="text-align:center; color:#999; margin-top:20px;">Tu carrito está vacío</p>
-                </div>
-
-                <div style="background:#f4f4f4; padding:15px; border-radius:8px; margin-bottom:15px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <span>Subtotal:</span>
-                        <span id="subtotal" style="font-weight:bold;">$0.00</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <span>Envío:</span>
-                        <span id="shippingCost">$0.00</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:1.2rem; color:var(--primary); border-top:1px dashed #ccc; padding-top:10px; margin-top:5px;">
-                        <span>Total:</span>
-                        <span id="total" style="font-weight:800;">$0.00</span>
-                    </div>
-                </div>
-
-                <div style="margin-bottom:15px;">
-                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius: 8px;">
-                        <input type="radio" name="deliveryType" value="pickup" checked>
-                        <span><i class="fas fa-store"></i> Recoger en el local</span>
-                    </label>
-                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; background:white; padding:10px; border:1px solid #eee; border-radius: 8px;">
-                        <input type="radio" name="deliveryType" value="delivery">
-                        <span><i class="fas fa-motorcycle"></i> Envío a domicilio</span>
-                    </label>
-                </div>
-
-                <div id="deliveryAddressSection" style="display: none;">
-                    <button id="useCurrentLocationBtn" style="width:100%; padding:10px; background:#e3f2fd; color:#1565c0; border:none; border-radius:8px; font-weight:600; cursor:pointer; margin-bottom:10px;">
-                        <i class="fas fa-location-arrow"></i> Usar mi ubicación
-                    </button>
-
-                    <div class="mapbox-container" id="mapboxContainer">
-                        <div class="map-address-search">
-                            <input type="text" id="mapSearch" placeholder="Buscar dirección...">
-                            <button id="mapSearchBtn"><i class="fas fa-search"></i></button>
-                        </div>
-                        <div id="map"></div>
-                    </div>
-                    
-                    <div style="margin-top: 10px;">
-                        <label for="deliveryAddress" style="display: block; margin-bottom: 5px; font-weight: 600; color: var(--text-main);">Dirección seleccionada:</label>
-                        <input type="text" id="deliveryAddress" class="form-control" placeholder="Haz clic en el mapa o busca una dirección" readonly style="background-color: #f9f9f9; cursor: pointer;">
-                        <small style="display: block; margin-top: 5px; color: var(--text-light); font-size: 0.85rem;">
-                            <i class="fas fa-info-circle"></i> Haz clic en cualquier punto del mapa para seleccionar la dirección
-                        </small>
-                    </div>
-                    
-                    <div class="loading" id="shippingLoading">
-                        <i class="fas fa-spinner"></i> Calculando distancia...
-                    </div>
-                    
-                    <div class="auto-calculating-status" id="autoCalculatingStatus">
-                        <i class="fas fa-sync-alt"></i> Calculando costo de envío...
-                    </div>
-                    
-                    <div class="distance-details" id="distanceDetails">
-                        <div class="distance-row">
-                            <span>Distancia:</span>
-                            <span id="distanceText">-- km</span>
-                        </div>
-                        <div class="distance-row">
-                            <span>Tiempo estimado:</span>
-                            <span id="timeText">-- min</span>
-                        </div>
-                        <div class="distance-row">
-                            <span>Tarifa por km:</span>
-                            <span>$10.00</span>
-                        </div>
-                        <div class="distance-row total">
-                            <span>Costo de envío:</span>
-                            <span id="calculatedShippingCost" style="color: var(--primary);">$0.00</span>
-                        </div>
-                    </div>
-                    
-                    <div class="delivery-limit-warning" id="deliveryLimitWarning">
-                        <i class="fas fa-exclamation-triangle"></i> No entregamos a más de 15 km de distancia.
-                    </div>
-                </div>
-
-                <button class="checkout-btn" id="checkoutBtn">
-                    <i class="fas fa-shopping-bag"></i> Proceder al Pedido
-                </button>
-            </section>
+            <h1 class="text-4xl font-bold text-gray-800 mb-3">Tutorial CONTPAQi Colabora</h1>
+            <p class="text-xl text-gray-600">Aprende a consultar tus recibos de nómina fácilmente</p>
+            <p class="text-sm text-gray-500 mt-2">📱 Disponible en Web y App Móvil</p>
         </div>
 
-        <section class="checkout-form" id="checkoutForm" style="display: none; max-width: 600px; margin: 0 auto;">
-            <h2 class="section-title">Finalizar Pedido</h2>
-            <form id="orderForm">
-                <div class="form-group">
-                    <label>Nombre Completo *</label>
-                    <input type="text" id="customerName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>Teléfono *</label>
-                    <input type="tel" id="customerPhone" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Tipo de Entrega</label>
-                    <select id="deliveryTypeFinal" class="form-control" required>
-                        <option value="pickup">Recoger en local</option>
-                        <option value="delivery">Envío a domicilio</option>
-                    </select>
-                </div>
-                
-                <div class="form-group" id="finalAddressSection" style="display: none;">
-                    <label>Dirección para envío *</label>
-                    <input type="text" id="customerAddress" class="form-control" placeholder="Calle, número, colonia">
-                </div>
-                
-                <div class="form-group">
-                    <label>Método de Pago *</label>
-                    <div class="payment-methods">
-                        <div class="payment-method" id="cashMethod">
-                            <input type="radio" id="cash" name="paymentMethod" value="cash">
-                            <i class="fas fa-money-bill-wave"></i> Efectivo
-                        </div>
-                        <div class="payment-method selected" id="cardMethod">
-                            <input type="radio" id="card" name="paymentMethod" value="card" checked>
-                            <i class="fas fa-credit-card"></i> Tarjeta
-                        </div>
-                    </div>
-                    
-                    <div class="cash-details" id="cashDetails">
-                        <label>¿Con cuánto pagarás? *</label>
-                        <input type="number" id="cashAmount" class="form-control" placeholder="Ej. 500.00" min="0" step="0.01">
-                        <div class="change-info" id="changeInfo">
-                            Cambio: <span id="changeAmount">$0.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Notas adicionales</label>
-                    <textarea id="customerNotes" class="form-control" rows="2" placeholder="Ej: Entregar después de las 5pm, timbre azul, etc."></textarea>
-                </div>
-
-                <button type="submit" class="submit-order-btn">
-                    <i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp
+        <!-- Tabs -->
+        <div class="tutorial-card p-8 mb-8">
+            <div class="flex flex-wrap mb-6">
+                <button class="tab-button active" onclick="showTab('inicio')">
+                    <i class="fas fa-home mr-2"></i>Inicio
                 </button>
-                <button type="button" id="cancelCheckout" style="width:100%; padding:10px; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer;">
-                    <i class="fas fa-arrow-left"></i> Regresar
+                <button class="tab-button" onclick="showTab('web')">
+                    <i class="fas fa-desktop mr-2"></i>Versión Web
                 </button>
-            </form>
-        </section>
-    </div>
-
-    <div class="product-modal" id="productModal">
-        <div class="product-modal-content">
-            <button class="product-modal-close" id="closeProductModal">
-                <i class="fas fa-times"></i>
-            </button>
-            <img id="modalProductImage" src="" alt="" class="product-modal-img">
-            <div class="product-modal-info">
-                <h3 id="modalProductTitle" class="product-modal-title"></h3>
-                <p id="modalProductDesc" class="modal-product-desc"></p>
-                <div id="modalProductPrice" class="product-modal-price"></div>
-                
-                <div class="modifiers-section" id="modifiersSection">
-                    <h4 class="modifiers-title">Selecciona la marca de tu envase</h4>
-                    <div class="brand-selection" id="brandsList">
-                        </div>
-                    
-                    <h4 class="modifiers-title" style="margin-top: 25px;">Tipo de servicio</h4>
-                    <div class="service-type" id="serviceType">
-                        <div class="service-option" id="tradicionalOption">
-                            <input type="radio" id="tradicional" name="serviceType" value="tradicional">
-                            <div class="service-name">Tradicional</div>
-                            <div class="service-price">$35.00</div>
-                            <div class="service-desc">Proceso estándar de purificación</div>
-                        </div>
-                        <div class="service-option" id="plusOption">
-                            <input type="radio" id="plus" name="serviceType" value="plus">
-                            <div class="service-name">Plus</div>
-                            <div class="service-price">$45.00</div>
-                            <div class="service-desc">Proceso con perlas de plata</div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 25px;" id="extrasSection">
-                        <h4 class="modifiers-title">Extras</h4>
-                        <div id="extrasList">
-                            </div>
-                    </div>
-                </div>
-                
-                <div class="modal-total">
-                    Total: <span id="modalTotalPrice" class="modal-total-price">$0.00</span>
-                </div>
-                
-                <div class="modal-quantity-controls">
-                    <button class="modal-quantity-btn" id="modalDecreaseBtn">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <div id="modalQuantityDisplay" class="modal-quantity-display">1</div>
-                    <button class="modal-quantity-btn" id="modalIncreaseBtn">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                
-                <button class="modal-add-to-cart" id="modalAddToCartBtn">
-                    <i class="fas fa-cart-plus"></i> Añadir al carrito
+                <button class="tab-button" onclick="showTab('app')">
+                    <i class="fas fa-mobile-alt mr-2"></i>App Móvil
+                </button>
+                <button class="tab-button" onclick="showTab('faq')">
+                    <i class="fas fa-question-circle mr-2"></i>Preguntas Frecuentes
                 </button>
             </div>
-        </div>
-    </div>
 
-    <div class="confirmation-modal" id="confirmationModal">
-        <div class="confirmation-modal-content">
-            <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo" class="confirmation-modal-logo">
-            <h3 style="color: var(--primary); margin-bottom: 15px;">¡Pedido Enviado!</h3>
-            <p style="margin-bottom: 20px; color: var(--text-light);">Tu pedido ha sido enviado por WhatsApp. Te contactaremos pronto para confirmar el precio exacto.</p>
-            <p style="margin-bottom: 20px; font-weight: 600;">WhatsApp: +52 55 7867 7774</p>
-            <button class="checkout-btn" id="closeModalBtn" style="background: var(--primary);">
-                <i class="fas fa-check"></i> Cerrar
-            </button>
-        </div>
-    </div>
+            <!-- Tab: Inicio -->
+            <div id="inicio" class="tab-content active">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">¿Qué es CONTPAQi Colabora?</h2>
+                <p class="text-lg text-gray-700 mb-6">
+                    Es una plataforma en la nube que te permite consultar y descargar tus recibos de nómina 
+                    de forma rápida y segura, desde cualquier lugar y en cualquier momento.
+                </p>
 
-    <div class="notification" id="notification">Mensaje aquí</div>
-
-    <footer>
-        <div class="container">
-            <img src="https://i.ibb.co/jkWp21kD/IMG-4398.jpg" alt="Logo Footer" class="footer-logo">
-            <p>&copy; 2025 GluGlu MX - Purificadora de Agua</p>
-            <p style="margin-top: 10px; font-size: 0.9rem;">
-                <i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp: +52 55 7867 7774
-            </p>
-            <p style="margin-top: 5px; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
-                Selecciona tu marca: Bonafont, E-pura, Electropura, Ciel, Genérico
-            </p>
-        </div>
-    </footer>
-
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
-    <script>
-        // ============================================
-        // CONFIGURACIÓN
-        // ============================================
-        const whatsappNumber = "+525578677774";
-        const purificadoraAddress = "Tu ubicación, Ciudad de México";
-        const purificadoraCoords = [-99.1853, 19.4646];
-        
-        // Tarifas de envío
-        const shippingRates = {
-            perKmRate: 10.00, // $10 por km
-            maxDistance: 15, // Límite de 15 km
-            minOrderForDelivery: 50.00 // Pedido mínimo para envío
-        };
-
-        // NOTA: Reemplaza este token con uno propio de Mapbox para producción
-        const mapboxToken = 'pk.eyJ1IjoiY3Jvbm9zYmFyYmFjb2EiLCJhIjoiY21qYXlzN2EzMGEwcTNkcTF3c2w2YWc2bCJ9.dKvmIuJz1h-loUcVlx5Ojw';
-        mapboxgl.accessToken = mapboxToken;
-
-        // Un solo producto: Garrafón
-        const products = [
-            {
-                id: 1,
-                name: "Garrafón de Agua",
-                category: "agua",
-                description: "Garrafón de agua purificada. Te entregamos un garrafón de la marca que prefieras: Bonafont, E-pura, Electropura, Ciel o Genérico.",
-                price: 35.00, // Precio base tradicional
-                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                extras: [
-                    { id: 1, name: "Dispensador de agua", description: "Dispensador para facilitar el uso del garrafón", price: 120.00 },
-                    { id: 2, name: "Base para garrafón", description: "Base con grifo incluido", price: 85.00 },
-                    { id: 3, name: "Garrafón adicional", description: "Un garrafón extra vacío", price: 65.00 },
-                    { id: 4, name: "Entrega urgente", description: "Entrega en menos de 2 horas", price: 50.00 }
-                ]
-            }
-        ];
-
-        // Marcas disponibles para el garrafón
-        const brands = [
-            { id: 1, name: "Bonafont", image: "https://logodownload.org/wp-content/uploads/2018/10/bonafont-logo.png" },
-            { id: 2, name: "E-pura", image: "https://seeklogo.com/images/E/epura-logo-CEB7AB3A69-seeklogo.com.png" },
-            { id: 3, name: "Electropura", image: "https://www.electropura.com.mx/images/logo-electropura.png" },
-            { id: 4, name: "Ciel", image: "https://logodownload.org/wp-content/uploads/2018/10/ciel-logo.png" },
-            { id: 5, name: "Genérico", image: "https://cdn-icons-png.flaticon.com/512/3208/3208720.png" }
-        ];
-
-        // ============================================
-        // VARIABLES GLOBALES
-        // ============================================
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let currentShippingCost = 0;
-        let deliveryDistance = 0;
-        let deliveryTime = 0;
-        let paymentMethod = 'card';
-        let cashAmount = 0;
-        let changeAmount = 0;
-        let map = null;
-        let purificadoraMarker = null;
-        let deliveryMarker = null;
-        let routeLayer = null;
-        let userLocation = null;
-        let deliveryZone = "";
-        
-        // Variables para el modal de producto
-        let currentModalProduct = null;
-        let modalQuantity = 1;
-        let selectedBrand = null;
-        let selectedServiceType = "tradicional"; // Por defecto tradicional
-        let selectedExtras = [];
-
-        // ============================================
-        // INICIALIZACIÓN
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            renderProduct();
-            updateCartDisplay();
-            
-            // Icono flotante del carrito
-            document.getElementById('floatingCartIcon').addEventListener('click', function() {
-                document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // Cambio en tipo de entrega
-            document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const deliveryType = this.value;
-                    const addressSection = document.getElementById('deliveryAddressSection');
-                    
-                    if (deliveryType === 'delivery') {
-                        addressSection.style.display = 'block';
-                        document.getElementById('mapboxContainer').classList.add('active');
-                        initMap();
-                    } else {
-                        addressSection.style.display = 'none';
-                        currentShippingCost = 0;
-                        updateCartDisplay();
-                        document.getElementById('mapboxContainer').classList.remove('active');
-                        document.getElementById('distanceDetails').classList.remove('active');
-                        document.getElementById('deliveryLimitWarning').classList.remove('active');
-                        document.getElementById('autoCalculatingStatus').classList.remove('active');
-                    }
-                });
-            });
-            
-            // Usar ubicación actual
-            document.getElementById('useCurrentLocationBtn').addEventListener('click', getCurrentLocation);
-            
-            // Buscar dirección
-            document.getElementById('mapSearchBtn').addEventListener('click', searchAddressOnMap);
-            document.getElementById('mapSearch').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchAddressOnMap();
-                }
-            });
-            
-            // Métodos de pago
-            document.getElementById('cashMethod').addEventListener('click', function() {
-                selectPaymentMethod('cash');
-            });
-            
-            document.getElementById('cardMethod').addEventListener('click', function() {
-                selectPaymentMethod('card');
-            });
-            
-            // Calcular cambio
-            document.getElementById('cashAmount').addEventListener('input', calculateChange);
-            
-            // Checkout
-            document.getElementById('checkoutBtn').addEventListener('click', function() {
-                if (cart.length === 0) {
-                    showNotification('Tu carrito está vacío');
-                    return;
-                }
-                
-                const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
-                const deliveryTypeFinal = document.getElementById('deliveryTypeFinal');
-                const finalAddressSection = document.getElementById('finalAddressSection');
-                
-                if (deliveryType === 'delivery') {
-                    deliveryTypeFinal.value = 'delivery';
-                    finalAddressSection.style.display = 'block';
-                    
-                    // Verificación más estricta de envío
-                    if (currentShippingCost === 0 && deliveryDistance === 0) {
-                        showNotification('Por favor selecciona una ubicación en el mapa primero para calcular el envío');
-                        return;
-                    }
-                    
-                    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                    if (subtotal < shippingRates.minOrderForDelivery) {
-                        showNotification(`El pedido mínimo para envío a domicilio es de $${shippingRates.minOrderForDelivery}.00`);
-                        return;
-                    }
-                    
-                    document.getElementById('customerAddress').value = document.getElementById('deliveryAddress').value;
-                } else {
-                    deliveryTypeFinal.value = 'pickup';
-                    finalAddressSection.style.display = 'none';
-                }
-                
-                selectPaymentMethod('card');
-                
-                document.getElementById('checkoutForm').style.display = 'block';
-                // Pequeña corrección para scroll suave
-                setTimeout(() => {
-                    document.getElementById('checkoutForm').scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            });
-            
-            // Cancelar checkout
-            document.getElementById('cancelCheckout').addEventListener('click', function() {
-                document.getElementById('checkoutForm').style.display = 'none';
-            });
-            
-            // Enviar formulario
-            document.getElementById('orderForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                if (validatePayment()) {
-                    sendOrderToWhatsApp();
-                }
-            });
-            
-            // Cerrar modal de confirmación
-            document.getElementById('closeModalBtn').addEventListener('click', function() {
-                document.getElementById('confirmationModal').classList.remove('active');
-            });
-            
-            // Modal de producto
-            document.getElementById('closeProductModal').addEventListener('click', function() {
-                document.getElementById('productModal').classList.remove('active');
-            });
-            
-            // Cerrar modal al hacer clic fuera
-            document.getElementById('productModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.classList.remove('active');
-                }
-            });
-            
-            // Controles de cantidad en modal
-            document.getElementById('modalDecreaseBtn').addEventListener('click', function() {
-                if (modalQuantity > 1) {
-                    modalQuantity--;
-                    updateModalQuantity();
-                    calculateModalTotal();
-                }
-            });
-            
-            document.getElementById('modalIncreaseBtn').addEventListener('click', function() {
-                modalQuantity++;
-                updateModalQuantity();
-                calculateModalTotal();
-            });
-            
-            // Selección de tipo de servicio
-            document.querySelectorAll('.service-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    const serviceTypeInput = this.querySelector('input');
-                    selectedServiceType = serviceTypeInput.value;
-                    
-                    // Actualizar precio según tipo de servicio
-                    if (currentModalProduct) {
-                        calculateModalTotal();
-                    }
-                });
-            });
-            
-            // Añadir al carrito desde modal
-            document.getElementById('modalAddToCartBtn').addEventListener('click', function() {
-                if (currentModalProduct && selectedBrand) {
-                    addToCartFromModal();
-                } else {
-                    showNotification('Por favor selecciona una marca primero');
-                }
-            });
-            
-            // Seleccionar tradicional por defecto
-            if(document.getElementById('tradicionalOption')) {
-                 document.getElementById('tradicionalOption').click();
-            }
-        });
-
-        // ============================================
-        // FUNCIONES DE PRODUCTO Y CARRITO
-        // ============================================
-        function renderProduct() {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = '';
-            
-            const product = products[0];
-            // Safe navigation for item properties
-            const cartItem = cart.find(item => 
-                item.id === product.id && 
-                item.serviceType === selectedServiceType && 
-                item.selectedBrand && selectedBrand &&
-                item.selectedBrand.id === selectedBrand.id &&
-                JSON.stringify(item.selectedExtras) === JSON.stringify(selectedExtras)
-            );
-                
-            const quantity = cartItem ? cartItem.quantity : 0;
-            
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-            productCard.dataset.productId = product.id;
-            productCard.innerHTML = `
-                <img src="${product.image}" alt="${product.name}" class="product-img">
-                <div class="product-info">
-                    <h3 class="product-title">${product.name}</h3>
-                    <p class="product-desc">${product.description}</p>
-                    <div class="product-footer">
-                        <div class="product-price">Desde $${product.price.toFixed(2)}</div>
-                        <div class="product-quantity-controls">
-                            ${quantity > 0 ? `
-                                <div class="quantity-display">${quantity} en carrito</div>
-                            ` : ''}
-                            <button class="add-to-cart ${quantity > 0 ? 'in-cart' : ''}" onclick="event.stopPropagation(); openProductModal(${product.id})">
-                                <i class="fas fa-${quantity > 0 ? 'check' : 'cart-plus'}"></i>
-                                ${quantity > 0 ? 'Añadir más' : 'Seleccionar'}
-                            </button>
-                        </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl">
+                        <i class="fas fa-desktop device-icon"></i>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Versión Web</h3>
+                        <p class="text-gray-600">Accede desde tu computadora con cualquier navegador</p>
+                    </div>
+                    <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
+                        <i class="fas fa-mobile-alt device-icon"></i>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">App Móvil</h3>
+                        <p class="text-gray-600">Disponible para Android, iOS y Huawei</p>
                     </div>
                 </div>
-            `;
-            
-            // Abrir modal al hacer clic en el producto (excepto en los botones)
-            productCard.addEventListener('click', function(e) {
-                if (!e.target.closest('.quantity-btn') && !e.target.closest('.add-to-cart')) {
-                    openProductModal(product.id);
-                }
-            });
-            
-            productsGrid.appendChild(productCard);
-        }
 
-        function openProductModal(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            currentModalProduct = product;
-            modalQuantity = 1;
-            selectedBrand = null;
-            selectedExtras = [];
-            
-            // Actualizar contenido del modal
-            document.getElementById('modalProductImage').src = product.image;
-            document.getElementById('modalProductImage').alt = product.name;
-            document.getElementById('modalProductTitle').textContent = product.name;
-            document.getElementById('modalProductDesc').textContent = product.description;
-            document.getElementById('modalProductPrice').textContent = `Desde $${product.price.toFixed(2)}`;
-            
-            // Actualizar controles de cantidad
-            updateModalQuantity();
-            
-            // Cargar opciones de marca
-            loadBrandOptions();
-            
-            // Cargar extras
-            loadExtras(product.extras);
-            
-            // Calcular total inicial
-            calculateModalTotal();
-            
-            // Mostrar modal
-            document.getElementById('productModal').classList.add('active');
-        }
-
-        function loadBrandOptions() {
-            const brandsList = document.getElementById('brandsList');
-            brandsList.innerHTML = '';
-            
-            brands.forEach(brand => {
-                const brandOption = document.createElement('div');
-                brandOption.className = `brand-option ${brand.id === 1 ? 'selected' : ''}`;
-                brandOption.dataset.brandId = brand.id;
-                
-                brandOption.innerHTML = `
-                    <img src="${brand.image}" alt="${brand.name}" style="width: 40px; height: 40px; object-fit: contain; margin: 0 auto 5px;">
-                    <div class="brand-name">${brand.name}</div>
-                `;
-                
-                brandOption.addEventListener('click', function() {
-                    document.querySelectorAll('.brand-option').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    const selectedBrandId = parseInt(this.dataset.brandId);
-                    selectedBrand = brands.find(b => b.id === selectedBrandId);
-                    
-                    calculateModalTotal();
-                });
-                
-                brandsList.appendChild(brandOption);
-            });
-            
-            // Seleccionar primera marca por defecto
-            if (brands.length > 0) {
-                selectedBrand = brands[0];
-            }
-        }
-
-        function loadExtras(extras) {
-            const extrasList = document.getElementById('extrasList');
-            extrasList.innerHTML = '';
-            
-            if (!extras || extras.length === 0) {
-                document.getElementById('extrasSection').style.display = 'none';
-                return;
-            }
-            
-            document.getElementById('extrasSection').style.display = 'block';
-            
-            extras.forEach(extra => {
-                const extraItem = document.createElement('div');
-                extraItem.className = 'extra-item';
-                extraItem.style.display = 'flex';
-                extraItem.style.justifyContent = 'space-between';
-                extraItem.style.alignItems = 'center';
-                extraItem.style.padding = '10px 0';
-                extraItem.style.borderBottom = '1px solid #eee';
-                extraItem.dataset.extraId = extra.id;
-                
-                extraItem.innerHTML = `
-                    <div>
-                        <div style="font-weight: 600;">${extra.name}</div>
-                        <div style="font-size: 0.85rem; color: var(--text-light);">${extra.description}</div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="font-weight: 700; color: var(--primary);">+$${extra.price.toFixed(2)}</div>
-                        <div class="extra-toggle" style="width: 40px; height: 20px; border-radius: 10px; background: #ddd; position: relative; cursor: pointer; transition: all 0.3s;">
-                            <div style="position: absolute; width: 16px; height: 16px; border-radius: 50%; background: white; top: 2px; left: 2px; transition: all 0.3s;"></div>
-                        </div>
-                    </div>
-                `;
-                
-                // Configurar el toggle
-                const toggle = extraItem.querySelector('.extra-toggle');
-                toggle.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    
-                    if (this.classList.contains('active')) {
-                        this.style.backgroundColor = 'var(--primary)';
-                        this.querySelector('div').style.left = '22px';
-                        selectedExtras.push(extra);
-                    } else {
-                        this.style.backgroundColor = '#ddd';
-                        this.querySelector('div').style.left = '2px';
-                        selectedExtras = selectedExtras.filter(e => e.id !== extra.id);
-                    }
-                    
-                    calculateModalTotal();
-                });
-                
-                extrasList.appendChild(extraItem);
-            });
-        }
-
-        function updateModalQuantity() {
-            document.getElementById('modalQuantityDisplay').textContent = modalQuantity;
-            document.getElementById('modalDecreaseBtn').disabled = modalQuantity <= 1;
-        }
-
-        function calculateModalTotal() {
-            if (!currentModalProduct) return;
-            
-            let basePrice = selectedServiceType === "plus" ? 45 : 35;
-            let total = basePrice;
-            
-            // Sumar precios de extras seleccionados
-            selectedExtras.forEach(extra => {
-                total += extra.price;
-            });
-            
-            // Multiplicar por cantidad
-            total *= modalQuantity;
-            
-            document.getElementById('modalTotalPrice').textContent = `$${total.toFixed(2)}`;
-        }
-
-        function addToCartFromModal() {
-            if (!currentModalProduct || !selectedBrand) return;
-            
-            // Determinar precio según tipo de servicio
-            let basePrice = selectedServiceType === "plus" ? 45 : 35;
-            let totalPrice = basePrice;
-            
-            // Sumar precios de extras
-            selectedExtras.forEach(extra => {
-                totalPrice += extra.price;
-            });
-            
-            const cartItem = {
-                id: currentModalProduct.id,
-                name: currentModalProduct.name,
-                basePrice: basePrice,
-                price: totalPrice,
-                quantity: modalQuantity,
-                serviceType: selectedServiceType,
-                serviceName: selectedServiceType === "plus" ? "Plus (perlas de plata)" : "Tradicional",
-                selectedBrand: selectedBrand,
-                selectedExtras: [...selectedExtras],
-                image: currentModalProduct.image
-            };
-            
-            // Buscar si ya existe el mismo producto con las mismas características
-            const existingIndex = cart.findIndex(item => {
-                if (item.id !== cartItem.id) return false;
-                if (item.serviceType !== cartItem.serviceType) return false;
-                if (item.selectedBrand.id !== cartItem.selectedBrand.id) return false;
-                
-                // Verificar si los extras son iguales
-                const itemExtras = item.selectedExtras.map(e => e.id).sort();
-                const cartExtras = cartItem.selectedExtras.map(e => e.id).sort();
-                
-                return JSON.stringify(itemExtras) === JSON.stringify(cartExtras);
-            });
-            
-            if (existingIndex >= 0) {
-                // Actualizar cantidad si es el mismo producto con las mismas características
-                cart[existingIndex].quantity += modalQuantity;
-            } else {
-                // Añadir nuevo item
-                cart.push(cartItem);
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartDisplay();
-            renderProduct();
-            
-            // Cerrar modal
-            document.getElementById('productModal').classList.remove('active');
-            
-            // Mostrar notificación
-            showNotification(`${currentModalProduct.name} (${selectedBrand.name}) agregado al carrito`);
-        }
-
-        function updateCartDisplay() {
-            const cartItemsContainer = document.getElementById('cartItems');
-            const floatingCartCount = document.getElementById('floatingCartCount');
-            const subtotalElement = document.getElementById('subtotal');
-            const shippingCostElement = document.getElementById('shippingCost');
-            const totalElement = document.getElementById('total');
-            
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            floatingCartCount.textContent = totalItems;
-            
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const total = subtotal + currentShippingCost;
-            
-            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-            shippingCostElement.textContent = `$${currentShippingCost.toFixed(2)}`;
-            totalElement.textContent = `$${total.toFixed(2)}`;
-            
-            if (paymentMethod === 'cash' && cashAmount > 0) {
-                calculateChange();
-            }
-            
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = `
-                    <p style="text-align:center; color:#999; margin-top:20px;">Tu carrito está vacío</p>
-                `;
-            } else {
-                cartItemsContainer.innerHTML = '';
-                cart.forEach((item, index) => {
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'cart-item';
-                    
-                    let extrasText = '';
-                    if (item.selectedExtras && item.selectedExtras.length > 0) {
-                        extrasText = `<small style="color: var(--accent); font-size: 0.8rem;">
-                            Extras: ${item.selectedExtras.map(e => e.name).join(', ')}
-                        </small><br>`;
-                    }
-                    
-                    cartItem.innerHTML = `
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">✨ Beneficios</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3 mt-1"></i>
                         <div>
-                            <h4>${item.name} (${item.selectedBrand.name})</h4>
-                            <small style="color: #666; font-size: 0.8rem;">
-                                ${item.serviceName}
-                            </small><br>
-                            ${extrasText}
-                            <small>$${item.price.toFixed(2)} c/u</small>
+                            <h4 class="font-bold text-gray-800">Acceso 24/7</h4>
+                            <p class="text-gray-600">Consulta tus recibos cuando lo necesites</p>
                         </div>
-                        <div class="cart-item-controls">
-                            <input type="number" min="1" value="${item.quantity}" class="cart-item-qty" onchange="updateQuantity(${index}, this.value)">
-                            <button class="remove-item" onclick="removeItem(${index})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                    cartItemsContainer.appendChild(cartItem);
-                });
-            }
-        }
-
-        function updateQuantity(index, newQuantity) {
-            const quantity = parseInt(newQuantity);
-            
-            if (quantity < 1) {
-                removeItem(index);
-                return;
-            }
-            
-            if (cart[index]) {
-                cart[index].quantity = quantity;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                renderProduct();
-            }
-        }
-
-        function removeItem(index) {
-            if (cart[index]) {
-                cart.splice(index, 1);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartDisplay();
-                renderProduct();
-                showNotification('Producto eliminado del carrito');
-            }
-        }
-
-        // ============================================
-        // FUNCIONES DE MAPA Y ENVÍO
-        // ============================================
-        function initMap() {
-            if (map) {
-                map.resize(); // Asegurar que el mapa se pinte bien
-                return;
-            }
-            
-            if (!mapboxgl.accessToken) {
-                console.error('Token de Mapbox no configurado');
-                return;
-            }
-            
-            try {
-                map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v12',
-                    center: purificadoraCoords,
-                    zoom: 13
-                });
-
-                // Esperar a que cargue para añadir marcadores
-                map.on('load', () => {
-                   map.resize(); // Forzar resize
-                   
-                   purificadoraMarker = new mapboxgl.Marker({ color: '#3498db' })
-                    .setLngLat(purificadoraCoords)
-                    .setPopup(new mapboxgl.Popup().setHTML(`
-                        <div style="padding: 10px;">
-                            <h4 style="margin: 0 0 5px; color: #3498db;">GluGlu MX</h4>
-                            <p style="margin: 0; font-size: 0.9rem;">${purificadoraAddress}</p>
-                        </div>
-                    `))
-                    .addTo(map);
-                });
-
-                // Al hacer clic en el mapa, obtener la dirección del lugar
-                map.on('click', function(e) {
-                    placeDeliveryMarker(e.lngLat);
-                    getAddressFromCoordinates(e.lngLat);
-                });
-            } catch (error) {
-                console.error("Error inicializando mapa:", error);
-                showNotification("Error al cargar el mapa. Verifica tu conexión.");
-            }
-        }
-
-        function getCurrentLocation() {
-            if (!navigator.geolocation) {
-                showNotification('Tu navegador no soporta geolocalización');
-                return;
-            }
-            
-            // Mostrar estado de cálculo
-            document.getElementById('autoCalculatingStatus').classList.add('active');
-            
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const userCoords = [position.coords.longitude, position.coords.latitude];
-                    userLocation = userCoords;
-                    
-                    placeDeliveryMarker({lng: userCoords[0], lat: userCoords[1]});
-                    getAddressFromCoordinates({lng: userCoords[0], lat: userCoords[1]});
-                },
-                function(error) {
-                    console.error('Error al obtener ubicación:', error);
-                    showNotification('No se pudo obtener tu ubicación. Por favor ingresa tu dirección manualmente.');
-                    document.getElementById('autoCalculatingStatus').classList.remove('active');
-                },
-                { 
-                    enableHighAccuracy: true, 
-                    timeout: 10000, 
-                    maximumAge: 0 
-                }
-            );
-        }
-
-        function getAddressFromCoordinates(coords) {
-            // Configurar parámetros para geocodificación inversa en México
-            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?access_token=${mapboxgl.accessToken}&language=es&country=mx&limit=1`;
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.features && data.features.length > 0) {
-                        const address = data.features[0].place_name;
-                        document.getElementById('deliveryAddress').value = address;
-                        document.getElementById('mapSearch').value = address;
-                        
-                        // Calcular envío automáticamente
-                        setTimeout(() => calculateShippingWithMapbox(), 500);
-                        
-                    } else {
-                        // Si no encuentra dirección en México, intentar sin restricción de país
-                        const fallbackUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.lng},${coords.lat}.json?access_token=${mapboxgl.accessToken}&language=es&limit=1`;
-                        
-                        return fetch(fallbackUrl)
-                            .then(response => response.json())
-                            .then(fallbackData => {
-                                if (fallbackData.features && fallbackData.features.length > 0) {
-                                    const fallbackAddress = fallbackData.features[0].place_name;
-                                    document.getElementById('deliveryAddress').value = fallbackAddress;
-                                    document.getElementById('mapSearch').value = fallbackAddress;
-                                    
-                                    // Calcular envío automáticamente
-                                    setTimeout(() => calculateShippingWithMapbox(), 500);
-                                } else {
-                                    document.getElementById('deliveryAddress').value = `Coordenadas: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`;
-                                    // Calcular envío automáticamente incluso sin dirección
-                                    setTimeout(() => calculateShippingWithMapbox(), 500);
-                                }
-                            });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al obtener dirección:', error);
-                    showNotification('Error al obtener la dirección');
-                    document.getElementById('deliveryAddress').value = `Coordenadas: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}`;
-                    // Calcular envío automáticamente incluso con error
-                    setTimeout(() => calculateShippingWithMapbox(), 500);
-                });
-        }
-
-        function placeDeliveryMarker(coords) {
-            if (deliveryMarker) {
-                deliveryMarker.remove();
-            }
-            
-            if (routeLayer && map.getLayer('route')) {
-                map.removeLayer('route');
-                map.removeSource('route');
-            }
-            
-            deliveryMarker = new mapboxgl.Marker({ color: '#2ecc71' })
-                .setLngLat(coords)
-                .setPopup(new mapboxgl.Popup().setHTML(`
-                    <div style="padding: 10px;">
-                        <h4 style="margin: 0 0 5px; color: #2ecc71;">Dirección de entrega</h4>
-                        <p style="margin: 0; font-size: 0.9rem;">Ubicación seleccionada para entrega</p>
                     </div>
-                `))
-                .addTo(map);
-            
-            if (purificadoraMarker && deliveryMarker) {
-                const bounds = new mapboxgl.LngLatBounds();
-                bounds.extend(purificadoraMarker.getLngLat());
-                bounds.extend(deliveryMarker.getLngLat());
-                map.fitBounds(bounds, { padding: 50 });
-            }
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Descarga PDF y XML</h4>
+                            <p class="text-gray-600">Ambos formatos disponibles</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Seguro y Confiable</h4>
+                            <p class="text-gray-600">Tu información protegida</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Fácil de Usar</h4>
+                            <p class="text-gray-600">Interfaz intuitiva y amigable</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-yellow-600 text-2xl mr-3"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Requisitos previos</h4>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>✓ Correo electrónico registrado en la empresa</li>
+                                <li>✓ RFC con homoclave</li>
+                                <li>✓ Conexión a internet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Web -->
+            <div id="web" class="tab-content">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-desktop mr-3 text-purple-600"></i>Guía para Versión Web
+                </h2>
+
+                <!-- Paso 1 -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">1</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Accede al Portal</h3>
+                            <p class="text-gray-700 mb-3">
+                                Abre tu navegador web (Chrome, Firefox, Edge, Safari) e ingresa a:
+                            </p>
+                            <div class="bg-white p-4 rounded-lg border-2 border-purple-200 mb-3">
+                                <p class="text-center font-mono text-lg text-purple-700">
+                                    <i class="fas fa-globe mr-2"></i>
+                                    <a href="https://app.contpaqinube.com/" target="_blank" class="underline">
+                                        app.contpaqinube.com
+                                    </a>
+                                </p>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                <strong>Tip:</strong> Guarda esta página en tus favoritos para acceder más rápido.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">2</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Primera vez: Acepta la Invitación</h3>
+                            <p class="text-gray-700 mb-3">
+                                Si es tu primer acceso, revisa tu correo electrónico. Tu empresa te habrá enviado una 
+                                <span class="highlight">invitación</span> para registrarte.
+                            </p>
+                            <div class="bg-blue-50 p-4 rounded-lg mb-3">
+                                <p class="text-gray-700 mb-2"><strong>Pasos del registro:</strong></p>
+                                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                    <li>Haz clic en el enlace de la invitación</li>
+                                    <li>Ingresa tu <span class="highlight">RFC con homoclave</span></li>
+                                    <li>Completa tus datos personales</li>
+                                    <li>Crea una contraseña segura</li>
+                                    <li>Confirma tu registro</li>
+                                </ol>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-envelope text-blue-500 mr-2"></i>
+                                Si no encuentras el correo, revisa tu carpeta de spam o contacta a Recursos Humanos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">3</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Inicia Sesión</h3>
+                            <p class="text-gray-700 mb-3">
+                                Una vez registrado, ingresa tus credenciales:
+                            </p>
+                            <div class="bg-white p-4 rounded-lg border-2 border-gray-200">
+                                <div class="mb-3">
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">
+                                        <i class="fas fa-envelope mr-2"></i>Correo electrónico
+                                    </label>
+                                    <input type="email" placeholder="tu.correo@empresa.com" 
+                                           class="w-full p-3 border-2 border-gray-300 rounded-lg" disabled>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">
+                                        <i class="fas fa-lock mr-2"></i>Contraseña
+                                    </label>
+                                    <input type="password" placeholder="••••••••" 
+                                           class="w-full p-3 border-2 border-gray-300 rounded-lg" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">4</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Navega a Recibos de Nómina</h3>
+                            <p class="text-gray-700 mb-3">
+                                Una vez dentro del portal:
+                            </p>
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-3">
+                                <li>Busca el menú principal (generalmente en la parte izquierda o superior)</li>
+                                <li>Haz clic en la opción <span class="highlight">"Recibos de Nómina"</span> o <span class="highlight">"Nómina"</span></li>
+                                <li>Verás una lista con todos tus recibos disponibles</li>
+                            </ol>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-700">
+                                    <i class="fas fa-calendar-alt text-purple-600 mr-2"></i>
+                                    Los recibos están organizados por fecha, del más reciente al más antiguo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">5</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Visualiza y Descarga tu Recibo</h3>
+                            <p class="text-gray-700 mb-3">
+                                Para ver o descargar un recibo:
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mb-3">
+                                <div class="bg-white p-4 rounded-lg border-2 border-red-200">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-file-pdf text-red-600 text-3xl mr-3"></i>
+                                        <h4 class="font-bold text-gray-800">Formato PDF</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">
+                                        Ideal para visualizar e imprimir. Haz clic en el botón "Descargar PDF" o en el ícono de PDF.
+                                    </p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border-2 border-green-200">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-file-code text-green-600 text-3xl mr-3"></i>
+                                        <h4 class="font-bold text-gray-800">Formato XML</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">
+                                        Archivo fiscal oficial. Haz clic en el botón "Descargar XML" o en el ícono de XML.
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-download text-blue-500 mr-2"></i>
+                                Los archivos se guardarán en tu carpeta de "Descargas".
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-6 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 text-3xl mr-4"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg">¡Listo!</h4>
+                            <p class="text-gray-700">Ya puedes consultar tus recibos de nómina cuando lo necesites.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: App -->
+            <div id="app" class="tab-content">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-mobile-alt mr-3 text-purple-600"></i>Guía para App Móvil
+                </h2>
+
+                <!-- Paso 1 App -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">1</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Descarga la Aplicación</h3>
+                            <p class="text-gray-700 mb-4">
+                                Busca <span class="highlight">"CONTPAQi Colabora"</span> en la tienda de aplicaciones de tu dispositivo:
+                            </p>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="bg-white p-4 rounded-lg text-center border-2 border-gray-200">
+                                    <i class="fab fa-google-play text-green-600 text-4xl mb-2"></i>
+                                    <h4 class="font-bold text-gray-800">Android</h4>
+                                    <p class="text-sm text-gray-600">Google Play Store</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg text-center border-2 border-gray-200">
+                                    <i class="fab fa-apple text-gray-800 text-4xl mb-2"></i>
+                                    <h4 class="font-bold text-gray-800">iOS</h4>
+                                    <p class="text-sm text-gray-600">App Store</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg text-center border-2 border-gray-200">
+                                    <i class="fas fa-mobile-alt text-red-600 text-4xl mb-2"></i>
+                                    <h4 class="font-bold text-gray-800">Huawei</h4>
+                                    <p class="text-sm text-gray-600">AppGallery</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 2 App -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">2</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Registro Inicial</h3>
+                            <p class="text-gray-700 mb-3">
+                                Al igual que en la versión web, necesitas aceptar la invitación de tu empresa:
+                            </p>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                    <li>Revisa tu correo electrónico y busca la invitación</li>
+                                    <li>Abre el enlace desde tu celular</li>
+                                    <li>Ingresa tu RFC con homoclave</li>
+                                    <li>Completa el registro con tus datos</li>
+                                    <li>Crea una contraseña segura</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 3 App -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">3</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Abre la App e Inicia Sesión</h3>
+                            <p class="text-gray-700 mb-3">
+                                Una vez instalada la aplicación:
+                            </p>
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-3">
+                                <li>Toca el ícono de CONTPAQi Colabora en tu celular</li>
+                                <li>Ingresa tu correo electrónico</li>
+                                <li>Ingresa tu contraseña</li>
+                                <li>Toca el botón "Iniciar Sesión"</li>
+                            </ol>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-700">
+                                    <i class="fas fa-fingerprint text-purple-600 mr-2"></i>
+                                    <strong>Tip:</strong> Algunos dispositivos permiten usar huella digital o reconocimiento facial para acceder más rápido.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 4 App -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">4</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Accede a tus Recibos</h3>
+                            <p class="text-gray-700 mb-3">
+                                En el menú principal de la app:
+                            </p>
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-3">
+                                <li>Busca la opción <span class="highlight">"Recibos de Nómina"</span></li>
+                                <li>Toca sobre esta opción</li>
+                                <li>Verás la lista de todos tus recibos disponibles</li>
+                            </ol>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-list text-blue-500 mr-2"></i>
+                                Los recibos aparecen ordenados por fecha, del más reciente al más antiguo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 5 App -->
+                <div class="step-card">
+                    <div class="flex items-start">
+                        <div class="step-number">5</div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Visualiza y Descarga</h3>
+                            <p class="text-gray-700 mb-3">
+                                Para ver o descargar un recibo:
+                            </p>
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-4">
+                                <li>Toca sobre el recibo que deseas consultar</li>
+                                <li>Se abrirá una vista previa del recibo</li>
+                                <li>Toca el botón de descarga <i class="fas fa-download text-blue-600"></i></li>
+                                <li>Selecciona el formato: <strong>PDF</strong> o <strong>XML</strong></li>
+                            </ol>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-700">
+                                    <i class="fas fa-share-alt text-green-600 mr-2"></i>
+                                    <strong>Funciones adicionales:</strong> Puedes compartir el recibo por WhatsApp, correo o guardarlo en tu nube personal.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-6 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 text-3xl mr-4"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg">¡Perfecto!</h4>
+                            <p class="text-gray-700">Ahora puedes consultar tus recibos desde tu celular en cualquier momento.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: FAQ -->
+            <div id="faq" class="tab-content">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-question-circle mr-3 text-purple-600"></i>Preguntas Frecuentes
+                </h2>
+
+                <div class="faq-item" onclick="toggleFaq(1)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-envelope-open-text text-purple-600 mr-2"></i>
+                            ¿No recibí el correo de invitación?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-1"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-1">
+                        <p class="text-gray-700">
+                            Primero revisa tu carpeta de <strong>spam o correo no deseado</strong>. Si no lo encuentras, 
+                            contacta al área de <strong>Recursos Humanos</strong> de tu empresa para que te reenvíen la invitación. 
+                            Asegúrate de que tengan tu correo electrónico correcto registrado.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(2)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-key text-purple-600 mr-2"></i>
+                            ¿Olvidé mi contraseña, qué hago?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-2"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-2">
+                        <p class="text-gray-700 mb-2">
+                            En la pantalla de inicio de sesión (web o app), busca la opción <strong>"¿Olvidaste tu contraseña?"</strong> 
+                            o <strong>"Recuperar contraseña"</strong>.
+                        </p>
+                        <ol class="list-decimal list-inside space-y-1 text-gray-700">
+                            <li>Haz clic en esa opción</li>
+                            <li>Ingresa tu correo electrónico registrado</li>
+                            <li>Recibirás un correo con instrucciones para crear una nueva contraseña</li>
+                            <li>Sigue los pasos del correo para restablecer tu contraseña</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(3)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-file-excel text-purple-600 mr-2"></i>
+                            ¿No veo mi recibo más reciente?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-3"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-3">
+                        <p class="text-gray-700">
+                            Los recibos se publican en la plataforma una vez que el área de <strong>Nómina</strong> los procesa y autoriza. 
+                            Si ya pasó la fecha de pago y no ves tu recibo, espera unas horas. Si después de 24 horas no aparece, 
+                            contacta a Recursos Humanos o al área de Nómina de tu empresa.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(4)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-download text-purple-600 mr-2"></i>
+                            ¿Dónde se guardan los archivos descargados?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-4"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-4">
+                        <p class="text-gray-700 mb-2"><strong>En computadora:</strong></p>
+                        <p class="text-gray-700 mb-3">Los archivos se guardan en tu carpeta de "Descargas" o "Downloads". 
+                        Puedes acceder desde el explorador de archivos.</p>
+                        <p class="text-gray-700 mb-2"><strong>En celular:</strong></p>
+                        <p class="text-gray-700">Generalmente en la carpeta "Descargas" o "Downloads". Puedes verlos desde 
+                        la app "Archivos" o "Mis archivos" de tu dispositivo.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(5)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-file-pdf text-purple-600 mr-2"></i>
+                            ¿Cuál es la diferencia entre PDF y XML?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-5"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-5">
+                        <p class="text-gray-700 mb-3">
+                            <strong>PDF:</strong> Es el formato visual, fácil de leer e imprimir. Úsalo cuando necesites 
+                            revisar tu recibo o presentarlo impreso.
+                        </p>
+                        <p class="text-gray-700">
+                            <strong>XML:</strong> Es el archivo fiscal oficial con validez ante el SAT. Úsalo para tu 
+                            contabilidad personal, declaraciones de impuestos o cuando necesites el comprobante fiscal digital.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(6)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-mobile-alt text-purple-600 mr-2"></i>
+                            ¿Puedo usar la misma cuenta en web y app?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-6"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-6">
+                        <p class="text-gray-700">
+                            <strong>¡Sí!</strong> Puedes usar las mismas credenciales (correo y contraseña) tanto en la 
+                            versión web como en la aplicación móvil. Tu información se sincroniza automáticamente en ambas plataformas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(7)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">
+                            <i class="fas fa-shield-alt text-purple-600 mr-2"></i>
+                            ¿Es segura la plataforma?
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-400" id="icon-7"></i>
+                    </div>
+                    <div class="faq-answer" id="answer-7">
+                        <p class="text-gray-700">
+                            Sí, CONTPAQi Colabora utiliza protocolos de seguridad avanzados para proteger tu información personal 
+                            y financiera. Tus datos están encriptados y solo tú puedes acceder a ellos con tu contraseña. 
+                            <strong>Nunca compartas tu contraseña con nadie.</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-headset text-blue-600 text-3xl mr-4"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg mb-2">¿Necesitas más ayuda?</h4>
+                            <p class="text-gray-700">
+                                Si tienes alguna otra duda o problema técnico, contacta al área de 
+                                <strong>Recursos Humanos</strong> o <strong>Soporte Técnico</strong> de tu empresa. 
+                                Ellos podrán ayudarte con cualquier situación específica.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="tutorial-card p-6 text-center">
+            <p class="text-gray-600 mb-2">
+                <i class="fas fa-info-circle mr-2"></i>
+                Este tutorial es una guía general para el uso de CONTPAQi Colabora
+            </p>
+            <p class="text-sm text-gray-500">
+                Para soporte específico, contacta al área de Recursos Humanos de tu empresa
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.closest('.tab-button').classList.add('active');
         }
 
-        function searchAddressOnMap() {
-            const searchInput = document.getElementById('mapSearch').value;
-            if (!searchInput.trim()) return;
-            
-            // Mostrar estado de cálculo
-            document.getElementById('autoCalculatingStatus').classList.add('active');
-            
-            // Configurar búsqueda en México
-            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(searchInput)}.json?access_token=${mapboxgl.accessToken}&limit=1&language=es&country=mx&proximity=${purificadoraCoords[0]},${purificadoraCoords[1]}`;
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.features && data.features.length > 0) {
-                        const coords = data.features[0].center;
-                        const placeName = data.features[0].place_name;
-                        
-                        document.getElementById('deliveryAddress').value = placeName;
-                        placeDeliveryMarker({lng: coords[0], lat: coords[1]});
-                        
-                        // Calcular envío automáticamente
-                        setTimeout(() => calculateShippingWithMapbox(), 500);
-                        
-                    } else {
-                        showNotification('Dirección no encontrada en México. Intenta con más detalles.');
-                        document.getElementById('autoCalculatingStatus').classList.remove('active');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error en búsqueda de dirección:', error);
-                    showNotification('Error al buscar la dirección. Intenta nuevamente.');
-                    document.getElementById('autoCalculatingStatus').classList.remove('active');
+        function toggleFaq(num) {
+            const answer = document.getElementById('answer-' + num);
+            const icon = document.getElementById('icon-' + num);
+
+            if (answer.classList.contains('open')) {
+                answer.classList.remove('open');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer').forEach(item => {
+                    item.classList.remove('open');
                 });
-        }
-
-        function calculateShippingWithMapbox() {
-            if (!deliveryMarker) {
-                showNotification('Por favor selecciona una ubicación en el mapa primero');
-                document.getElementById('autoCalculatingStatus').classList.remove('active');
-                return;
-            }
-            
-            const deliveryCoords = deliveryMarker.getLngLat();
-            
-            // Mostrar estado de cálculo
-            document.getElementById('autoCalculatingStatus').classList.add('active');
-            document.getElementById('distanceDetails').classList.remove('active');
-            document.getElementById('deliveryLimitWarning').classList.remove('active');
-            
-            const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${purificadoraCoords[0]},${purificadoraCoords[1]};${deliveryCoords.lng},${deliveryCoords.lat}?access_token=${mapboxgl.accessToken}&overview=full&geometries=geojson&steps=true&language=es`;
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.routes && data.routes.length > 0) {
-                        const route = data.routes[0];
-                        
-                        deliveryDistance = route.distance / 1000;
-                        deliveryTime = Math.round(route.duration / 60);
-                        
-                        calculateShippingCost();
-                        updateShippingUI();
-                        
-                        drawRouteOnMap(route.geometry);
-                        
-                        showNotification('Costo de envío calculado automáticamente');
-                    } else {
-                        throw new Error('No se pudo calcular la ruta');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al calcular ruta:', error);
-                    
-                    // Calcular distancia en línea recta como respaldo
-                    calculateStraightLineDistance(deliveryCoords);
-                    calculateShippingCost();
-                    updateShippingUI();
-                    
-                    showNotification('Costo de envío calculado (distancia aproximada)');
-                })
-                .finally(() => {
-                    // Ocultar estado de cálculo
-                    document.getElementById('autoCalculatingStatus').classList.remove('active');
+                document.querySelectorAll('.faq-item i:last-child').forEach(item => {
+                    item.classList.remove('fa-chevron-up');
+                    item.classList.add('fa-chevron-down');
                 });
-        }
 
-        function calculateStraightLineDistance(deliveryCoords) {
-            const R = 6371;
-            const lat1 = purificadoraCoords[1] * Math.PI / 180;
-            const lat2 = deliveryCoords.lat * Math.PI / 180;
-            const deltaLat = (deliveryCoords.lat - purificadoraCoords[1]) * Math.PI / 180;
-            const deltaLon = (deliveryCoords.lng - purificadoraCoords[0]) * Math.PI / 180;
-            
-            const a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
-                     Math.cos(lat1) * Math.cos(lat2) *
-                     Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            
-            deliveryDistance = R * c;
-            deliveryTime = Math.round(deliveryDistance * 1.5);
-        }
-
-        function drawRouteOnMap(routeGeometry) {
-            if (routeLayer && map.getLayer('route')) {
-                map.removeLayer('route');
-                map.removeSource('route');
+                // Open clicked FAQ
+                answer.classList.add('open');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
             }
-            
-            map.addSource('route', {
-                type: 'geojson',
-                data: {
-                    type: 'Feature',
-                    properties: {},
-                    geometry: routeGeometry
-                }
-            });
-            
-            map.addLayer({
-                id: 'route',
-                type: 'line',
-                source: 'route',
-                layout: {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                },
-                paint: {
-                    'line-color': '#2ecc71',
-                    'line-width': 4,
-                    'line-opacity': 0.7
-                }
-            });
-            
-            routeLayer = 'route';
-        }
-
-        function calculateShippingCost() {
-            let zoneName = "Fuera de zona";
-            let zoneClass = "zone-out";
-            
-            if (deliveryDistance <= 5) {
-                zoneName = "Zona Cercana";
-                zoneClass = "zone-close";
-            } else if (deliveryDistance <= 10) {
-                zoneName = "Zona Media";
-                zoneClass = "zone-medium";
-            } else if (deliveryDistance <= 15) {
-                zoneName = "Zona Lejana";
-                zoneClass = "zone-far";
-            } else {
-                zoneName = "Fuera de zona";
-                zoneClass = "zone-out";
-            }
-            
-            deliveryZone = zoneName;
-            
-            let calculatedCost = 0;
-            
-            if (deliveryDistance <= shippingRates.maxDistance && deliveryDistance > 0) {
-                calculatedCost = deliveryDistance * shippingRates.perKmRate;
-                calculatedCost = Math.round(calculatedCost * 100) / 100;
-            } else if (deliveryDistance > shippingRates.maxDistance) {
-                document.getElementById('deliveryLimitWarning').classList.add('active');
-                calculatedCost = 0;
-            } else {
-                document.getElementById('deliveryLimitWarning').classList.remove('active');
-            }
-            
-            currentShippingCost = calculatedCost;
-            
-            updateCartDisplay();
-            
-            return {
-                cost: calculatedCost,
-                zone: zoneName,
-                zoneClass: zoneClass
-            };
-        }
-
-        function updateShippingUI() {
-            // Nota: No llamar recursivamente a calculateShippingCost aqui si esa función llama a esta
-            // Solo actualizamos la interfaz
-            
-            if (deliveryDistance > 0 && deliveryDistance <= shippingRates.maxDistance) {
-                document.getElementById('distanceText').textContent = `${deliveryDistance.toFixed(1)} km`;
-                document.getElementById('timeText').textContent = `${deliveryTime} min`;
-                document.getElementById('calculatedShippingCost').innerHTML = `$${currentShippingCost.toFixed(2)}`;
-                
-                document.getElementById('distanceDetails').classList.add('active');
-                document.getElementById('deliveryLimitWarning').classList.remove('active');
-            } else if (deliveryDistance > shippingRates.maxDistance) {
-                document.getElementById('distanceDetails').classList.remove('active');
-                document.getElementById('deliveryLimitWarning').classList.add('active');
-            }
-        }
-
-        // ============================================
-        // FUNCIONES DE PAGO
-        // ============================================
-        function selectPaymentMethod(method) {
-            paymentMethod = method;
-            
-            document.getElementById('cashMethod').classList.remove('selected');
-            document.getElementById('cardMethod').classList.remove('selected');
-            document.getElementById('cashDetails').classList.remove('active');
-            document.getElementById('changeInfo').classList.remove('active');
-            
-            if (method === 'cash') {
-                document.getElementById('cashMethod').classList.add('selected');
-                document.getElementById('cashDetails').classList.add('active');
-                document.getElementById('cash').checked = true;
-                calculateChange();
-            } else {
-                document.getElementById('cardMethod').classList.add('selected');
-                document.getElementById('card').checked = true;
-            }
-        }
-
-        function calculateChange() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const total = subtotal + currentShippingCost;
-            
-            cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-            
-            if (cashAmount > 0 && cashAmount >= total) {
-                changeAmount = cashAmount - total;
-                document.getElementById('changeAmount').textContent = `$${changeAmount.toFixed(2)}`;
-                document.getElementById('changeInfo').classList.add('active');
-            } else if (cashAmount > 0 && cashAmount < total) {
-                document.getElementById('changeInfo').classList.remove('active');
-            } else {
-                document.getElementById('changeInfo').classList.remove('active');
-            }
-        }
-
-        function validatePayment() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const total = subtotal + currentShippingCost;
-            
-            if (paymentMethod === 'cash') {
-                cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-                
-                if (cashAmount === 0) {
-                    showNotification('Por favor ingresa el monto con el que pagarás en efectivo');
-                    return false;
-                }
-                
-                if (cashAmount < total) {
-                    showNotification(`El monto en efectivo debe ser mayor o igual al total de $${total.toFixed(2)}`);
-                    return false;
-                }
-            }
-            
-            return true;
-        }
-
-        // ============================================
-        // WHATSAPP
-        // ============================================
-        function sendOrderToWhatsApp() {
-            const customerName = document.getElementById('customerName').value;
-            const customerPhone = document.getElementById('customerPhone').value;
-            const deliveryType = document.getElementById('deliveryTypeFinal').value;
-            const customerNotes = document.getElementById('customerNotes').value;
-            
-            let customerAddress = '';
-            if (deliveryType === 'delivery') {
-                customerAddress = document.getElementById('customerAddress').value;
-                if (!customerAddress) {
-                    showNotification('Por favor ingresa una dirección para envío');
-                    return;
-                }
-            }
-            
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const total = subtotal + currentShippingCost;
-            
-            const paymentMethodText = paymentMethod === 'cash' ? 'Efectivo' : 'Tarjeta (Terminal)';
-            let paymentDetails = '';
-            
-            if (paymentMethod === 'cash') {
-                cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-                changeAmount = cashAmount - total;
-                paymentDetails = `*Monto con el que paga:* $${cashAmount.toFixed(2)}%0A*Cambio a dar:* $${changeAmount.toFixed(2)}%0A`;
-            }
-            
-            let message = `*NUEVO PEDIDO - GluGlu MX Purificadora*%0A%0A`;
-            message += `*Cliente:* ${customerName}%0A`;
-            message += `*Teléfono:* ${customerPhone}%0A`;
-            
-            if (deliveryType === 'delivery') {
-                message += `*Tipo de entrega:* Envío a domicilio%0A`;
-                message += `*Dirección:* ${customerAddress}%0A`;
-                message += `*Distancia:* ${deliveryDistance.toFixed(1)} km%0A`;
-                message += `*Zona de entrega:* ${deliveryZone}%0A`;
-                message += `*Costo de envío:* $${currentShippingCost.toFixed(2)}%0A`;
-            } else {
-                message += `*Tipo de entrega:* Recoger en local%0A`;
-            }
-            
-            message += `*Método de pago:* ${paymentMethodText}%0A`;
-            
-            if (paymentMethod === 'cash') {
-                message += paymentDetails;
-            }
-            
-            if (customerNotes) {
-                message += `*Instrucciones:* ${customerNotes}%0A`;
-            }
-            
-            message += `%0A*DETALLE DEL PEDIDO:*%0A`;
-            
-            cart.forEach(item => {
-                message += `- ${item.name} (${item.selectedBrand.name}) - ${item.serviceName} x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}`;
-                if (item.selectedExtras && item.selectedExtras.length > 0) {
-                    message += `%0A  Extras: ${item.selectedExtras.map(e => e.name).join(', ')}`;
-                }
-                message += `%0A`;
-            });
-            
-            message += `%0A*SUBTOTAL:* $${subtotal.toFixed(2)}%0A`;
-            
-            if (deliveryType === 'delivery') {
-                message += `*ENVÍO:* $${currentShippingCost.toFixed(2)}%0A`;
-            }
-            
-            message += `*TOTAL:* $${total.toFixed(2)}%0A%0A`;
-            message += `*Nota:* Te confirmaremos el precio exacto al momento de recoger o entregar tu pedido.%0A`;
-            message += `*Fecha y hora:* ${new Date().toLocaleString('es-MX')}`;
-            
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-            window.open(whatsappUrl, '_blank');
-            
-            document.getElementById('confirmationModal').classList.add('active');
-            
-            // Limpiar datos
-            cart = [];
-            localStorage.removeItem('cart');
-            document.getElementById('orderForm').reset();
-            document.getElementById('checkoutForm').style.display = 'none';
-            document.getElementById('deliveryAddress').value = '';
-            document.getElementById('mapSearch').value = '';
-            document.getElementById('distanceDetails').classList.remove('active');
-            document.getElementById('deliveryLimitWarning').classList.remove('active');
-            document.getElementById('autoCalculatingStatus').classList.remove('active');
-            
-            if (deliveryMarker) {
-                deliveryMarker.remove();
-                deliveryMarker = null;
-            }
-            
-            if (routeLayer && map.getLayer('route')) {
-                map.removeLayer('route');
-                map.removeSource('route');
-                routeLayer = null;
-            }
-            
-            currentShippingCost = 0;
-            cashAmount = 0;
-            changeAmount = 0;
-            
-            selectPaymentMethod('card');
-            updateCartDisplay();
-            renderProduct();
-        }
-
-        // ============================================
-        // UTILIDADES
-        // ============================================
-        function showNotification(text) {
-            const notification = document.getElementById('notification');
-            notification.textContent = text;
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
         }
     </script>
 </body>
